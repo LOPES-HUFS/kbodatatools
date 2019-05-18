@@ -38,6 +38,5 @@ def get_data(soup):
     temp_all.update({'away_pitcher':ast.literal_eval(away_pitcher(temp_page['tables'],temp_page['teams']).to_json(orient='records'))})
     temp_all.update({'home_pitcher':ast.literal_eval(home_pitcher(temp_page['tables'],temp_page['teams']).to_json(orient='records'))})
 
-    temp_name = temp_page['date']+'_'+temp_page['id']
-    return{'tables':tables, 'record_etc':record_etc, 'teams':teams, 'date':date, 'id':gameld}
-    return soup
+    return temp_all 
+  
