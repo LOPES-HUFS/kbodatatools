@@ -6,6 +6,5 @@ def get_game(date, home_team, away_team, double=0):
     session = HTMLSession()
     r = session.get(url)
     r.html.render()
-    r.html.text
-    soup = BeautifulSoup(r.html.full_text, "lxml")
-    print(soup)
+    soup = BeautifulSoup(r.html.html, "lxml")
+    return soup
