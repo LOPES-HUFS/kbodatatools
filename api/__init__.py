@@ -40,3 +40,4 @@ def get_data(soup):
 
     temp_name = temp_page['date']+'_'+temp_page['id']
     return{'tables':tables, 'record_etc':record_etc, 'teams':teams, 'date':date, 'id':gameld}
+    return soup
