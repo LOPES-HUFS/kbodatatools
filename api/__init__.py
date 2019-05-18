@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 
 import api.pasing_page
 
-def get_game(date, home_team, away_team, isDoubleheader=False):
+def get_game(date, home_team, away_team, double=0):
     ''' 개별 게임을 가져오는 함수
     쉽게 분석할 수 있도록 soup 으로 내보낸다.
 
@@ -39,4 +39,4 @@ def get_data(soup):
     temp_all.update({'home_pitcher':ast.literal_eval(home_pitcher(temp_page['tables'],temp_page['teams']).to_json(orient='records'))})
 
     temp_name = temp_page['date']+'_'+temp_page['id']
-    return {temp_name:temp_all}
+    return{'tables':tables, 'record_etc':record_etc, 'teams':teams, 'date':date, 'id':gameld}
