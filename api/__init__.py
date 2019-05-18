@@ -32,7 +32,7 @@ def get_data(soup):
     temp_scoreboard = api.pasing_page.scoreboard(tables, teams)
 
     temp_all = {'scoreboard':ast.literal_eval(temp_scoreboard.to_json(orient='records'))}
-    temp_all.update({"ETC_info":ETC_info(temp_page['tables'],temp_page['record_etc'])})
+    temp_all.update({"ETC_info":api.pasing_page.ETC_info(temp_page['tables'],temp_page['record_etc'])})
     temp_all.update({'away_batter':ast.literal_eval(away_batter(temp_page['tables'],temp_page['teams']).to_json(orient='records'))})
     temp_all.update({'home_batter':ast.literal_eval(home_batter(temp_page['tables'],temp_page['teams']).to_json(orient='records'))})
     temp_all.update({'away_pitcher':ast.literal_eval(away_pitcher(temp_page['tables'],temp_page['teams']).to_json(orient='records'))})
