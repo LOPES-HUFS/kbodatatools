@@ -25,6 +25,17 @@ def get_game(date, home_team, away_team, double=0):
     return soup
 
 def get_data(soup):
+    '''가져온 개별 게임들을 스코어보드 ,타자, 투수 별로 정리 합니다. 
+    
+    Args:
+        soup: get_game의 return 값 
+    
+    Returns:
+        temp_all: 스코어 보드와 기타정보, 원정,홈 팀의 타자, 투수 정보가 담긴 딕트  
+
+    '''
+
+
     tables = soup.find_all('table')
     record_etc = soup.findAll('div',{'class':'record-etc'})
     box_score = soup.findAll('div',{'class':'box-score-wrap'})
@@ -32,11 +43,11 @@ def get_data(soup):
     temp_scoreboard = api.pasing_page.scoreboard(tables, teams)
 
     temp_all = {'scoreboard':ast.literal_eval(temp_scoreboard.to_json(orient='records'))}
-    temp_all.update({"ETC_info":api.pasing_page.ETC_info(temp_page['tables'],temp_page['record_etc'])})
-    temp_all.update({'away_batter':ast.literal_eval(away_batter(temp_page['tables'],temp_page['teams']).to_json(orient='records'))})
-    temp_all.update({'home_batter':ast.literal_eval(home_batter(temp_page['tables'],temp_page['teams']).to_json(orient='records'))})
-    temp_all.update({'away_pitcher':ast.literal_eval(away_pitcher(temp_page['tables'],temp_page['teams']).to_json(orient='records'))})
-    temp_all.update({'home_pitcher':ast.literal_eval(home_pitcher(temp_page['tables'],temp_page['teams']).to_json(orient='records'))})
+    temp_all.update({"ETC_info":api.pasing_page.ETC_info(tables,record_etc)})
+    temp_all.update({'away_batter':ast.literal_eval(api.pasing_page.away_batter(tables,teams).to_json(orient='records'))})
+    temp_all.update({'home_batter':ast.literal_eval(api.pasing_page.home_batter(tables,teams).to_json(orient='records'))})
+    temp_all.update({'away_pitcher':ast.literal_eval(api.pasing_page.away_pitcher(tables,teams).to_json(orient='records'))})
+    temp_all.update({'home_pitcher':ast.literal_eval(api.pasing_page.home_pitcher(tables,teams).to_json(orient='records'))})
 
     return temp_all 
   
