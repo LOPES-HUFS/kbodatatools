@@ -26,5 +26,15 @@ pipenv shell
 
 ```python
 import api
-api.get_game(date=20190511, home_team= 'OB', away_team='NC')
+single_game = api.get_data(api.get_game(date=20190511, home_team= 'OB', away_team='NC'))
+single_game['scoreboard']
+single_game['ETC_info']
+single_game['away_batter']
+single_game['home_batter']
+single_game['away_pitcher']
+single_game['home_pitcher']
 ```
+
+### 참고 링크
+
+- [Parsing JavaScript rendered pages in Python with pyppeteer | Tchut-Tchut Blog](https://beenje.github.io/blog/posts/parsing-javascript-rendered-pages-in-python-with-pyppeteer/)
