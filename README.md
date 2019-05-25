@@ -28,3 +28,7 @@ pipenv shell
 import api
 api.get_game(date=20190511, home_team= 'OB', away_team='NC')
 ```
+
+### 참고 링크
+
+- [Parsing JavaScript rendered pages in Python with pyppeteer | Tchut-Tchut Blog](https://beenje.github.io/blog/posts/parsing-javascript-rendered-pages-in-python-with-pyppeteer/)
