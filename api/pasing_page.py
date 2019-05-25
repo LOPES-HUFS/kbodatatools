@@ -1,6 +1,17 @@
 import pandas as pd
 
 def scoreboard(tables, teams):
+    '''html 자료를 스코어 보드로 구성하는 함수
+    
+    Args:
+        tables: 야구경기 리뷰 테이블이 담긴 html 
+        teams: 경기를 치른 두 팀에 대한 html 
+    
+    Returns:
+        temp_total: 두 팀의 경기 기록에 대한 스코어 보드가 pandas df 으로 나옴
+
+    '''
+
     temp_df_0 = pd.read_html(str(tables[0]))[0]
     temp_df_0 = temp_df_0.rename(columns={"Unnamed: 0":"승패"})
     temp_df_1 = pd.read_html(str(tables[1]))[0]
@@ -11,6 +22,15 @@ def scoreboard(tables, teams):
     return(temp_total)
 
 def looking_for_team_name(string):
+    '''팀 약자를 가지고 팀 이름을 찾아주는 함수 
+
+    Args:
+        string: 팀 이름 정보가 담긴 html 스트링
+    
+    Returns:
+        temp[1]: 팀 이름 
+    '''
+
     team_list={'HT':'기아','OB':'두산','LT':'롯데','NC':'NC','SK':'SK','LG':'LG','WO':'키움','HH':'한화','SS':'삼성','KT':'KT'}
     temp = [string.find(team) for team in team_list.keys()]
     temp[:] = [0 if ele != -1 else ele for ele in temp]
@@ -25,6 +45,14 @@ def looking_for_teams_name(teams):
     return(temp_0, temp_1)
 
 def ETC_info(tables,record_etc):
+    ''' 결승타, 도루, 심판 등의 정보를 저장하는 함수
+
+    Args:
+        tables: 야구경기 리뷰 테이블이 담긴 html 자료
+        record_etc: 결승타, 도루, 심판 등의 정보가 담긴 html 자료
+    Returns:
+        record (dict): 결승타, 도루자, 심판 등의 정보가 담신 dict 
+    '''
     record = {}
     header_list = tables[3].find_all("th")
     if len(header_list)!=0:
@@ -39,6 +67,16 @@ def ETC_info(tables,record_etc):
     return record
 
 def away_batter(tables, team):
+    '''html 자료에서 원정팀 타격 기록을 df로 만드는 함수  
+    
+    Args:
+        tables: 야구경기 리뷰 테이블이 담긴 html 
+        team: 경기를 치른 두 팀에 대한 html 
+    
+    Returns:
+        away: 원정팀 타격 기록 df 
+
+    '''
     temp1 = pd.read_html(str(tables[4]))[0].dropna()
     temp1 = temp1.rename(columns={'Unnamed: 1':"포지션"})
     del temp1['Unnamed: 0']
@@ -50,6 +88,17 @@ def away_batter(tables, team):
     return away
 
 def home_batter(tables, team):
+    '''html 자료에서 홈팀 타격 기록을 df로 만드는 함수  
+    
+    Args:
+        tables: 야구경기 리뷰 테이블이 담긴 html 
+        team: 경기를 치른 두 팀에 대한 html 
+    
+    Returns:
+        home: 홈팀 타격 기록 df 
+
+    '''
+
     temp1 = pd.read_html(str(tables[7]))[0].dropna()
     temp1 = temp1.rename(columns={'Unnamed: 1':"포지션"})
     del temp1['Unnamed: 0']
@@ -61,12 +110,34 @@ def home_batter(tables, team):
     return home
 
 def away_pitcher(tables, team):
+    '''html 자료에서 원정팀 투수 기록을 df로 만드는 함수  
+    
+    Args:
+        tables: 야구경기 리뷰 테이블이 담긴 html 
+        team: 경기를 치른 두 팀에 대한 html 
+    
+    Returns:
+        away: 원정팀 투수 기록 df 
+
+    '''
+
     away = pd.read_html(str(tables[10]))[0][:-1]
     away['팀'] = looking_for_team_name(str(team[0]))
     away = away.fillna(0)
     return away
 
 def home_pitcher(tables, team):
+    '''html 자료에서 홈팀 투수 기록을 df로 만드는 함수  
+    
+    Args:
+        tables: 야구경기 리뷰 테이블이 담긴 html 
+        team: 경기를 치른 두 팀에 대한 html 
+    
+    Returns:
+        home: 홈팀 투수 기록 df 
+
+    '''
+
     home = pd.read_html(str(tables[11]))[0][:-1]
     home['팀'] = looking_for_team_name(str(team[1]))
     home = home.fillna(0)
