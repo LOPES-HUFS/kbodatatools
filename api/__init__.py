@@ -5,6 +5,7 @@ from requests_html import HTMLSession
 from bs4 import BeautifulSoup
 
 import api.pasing_page
+import api.modifying_data
 
 def get_game(date, home_team, away_team, double=0):
     ''' 개별 게임을 가져오는 함수
@@ -50,4 +51,3 @@ def get_data(soup):
     temp_all.update({'home_pitcher':ast.literal_eval(api.pasing_page.home_pitcher(tables,teams).to_json(orient='records'))})
 
     return temp_all 
-  
