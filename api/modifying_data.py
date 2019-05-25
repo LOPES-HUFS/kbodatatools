@@ -1,5 +1,5 @@
 import pandas as pd
-from pasing_page import looking_for_team_name
+from api.pasing_page import looking_for_team_name
 import ast 
 
 def change_record(temp,column,factorlist):
@@ -11,12 +11,8 @@ def change_record(temp,column,factorlist):
     return temp
 
 def batter_clean(data,section):
-    temp_b=pd.DataFrame(data[list(data.keys())[0]][section])
-    temp_b['경기날짜']= list(data.keys())[0][0:4]+"-"+list(data.keys())[0][4:6]+"-"+list(data.keys())[0][6:8]
-    temp_b['원정팀']=looking_for_team_name(list(data.keys())[0][9:11])
-    temp_b['홈팀']=looking_for_team_name(list(data.keys())[0][11:13])
-    temp_b['더블헤더여부'] = list(data.keys())[0][-1]
-    factorlist = pd.read_csv("./data/KBO_factor_list.csv")
+    temp_b=pd.DataFrame(data[section])
+    factorlist = pd.read_csv("./api/data/KBO_factor_list.csv")
     for i in factorlist.factor_list:
         temp_b=temp_b.replace(i,factorlist.code[factorlist.factor_list==i].tolist()[0])
         
@@ -24,7 +20,7 @@ def batter_clean(data,section):
     for j in columns:
         temp_b=change_record(temp_b,j,factorlist)
 
-    data[list(data.keys())[0]][section]=ast.literal_eval(temp_b.to_json(orient='records'))
+    data[section]=ast.literal_eval(temp_b.to_json(orient='records'))
     return data
 
 def change_inning(item):
@@ -42,11 +38,7 @@ def change_inning(item):
 
 #section은 away_pitcher,home_pitcher 구분
 def pitcher_clean(data,section):
-    temp_p=pd.DataFrame(data[list(data.keys())[0]][section])
-    temp_p['경기날짜'] = list(data.keys())[0][0:4]+"-"+list(data.keys())[0][4:6]+"-"+list(data.keys())[0][6:8]
-    temp_p['원정팀'] = looking_for_team_name(list(data.keys())[0][9:11])
-    temp_p['홈팀'] = looking_for_team_name(list(data.keys())[0][11:13])
-    temp_p['더블헤더여부'] = list(data.keys())[0][-1]
+    temp_p=pd.DataFrame(data[section])
     temp1 = temp_p['등판'] == '선발'
     temp1 = temp1.replace(True,"선발투수")
     temp1 = temp1.replace(False,"불펜투수")
@@ -66,9 +58,9 @@ def pitcher_clean(data,section):
     temp7= temp_p['이닝'].map(lambda x :change_inning(x))
     temp_p['inning'] = temp7.map(lambda x :x[0])
     temp_p['restinning'] = temp7.map(lambda x :x[1])
-    temp_p = temp_p[['경기날짜','선수명','포지션','등판','원정팀','홈팀','더블헤더여부','팀','승리', '패배', '무승부', '홀드', '세이브', 'inning', 
+    temp_p = temp_p[['선수명','포지션','등판','팀','승리', '패배', '무승부', '홀드', '세이브', 'inning', 
             'restinning','4사구','삼진','실점', '자책','투구수','피안타','홈런','타수', '타자']]
-    data[list(data.keys())[0]][section]=ast.literal_eval(temp_p.to_json(orient='records'))
+    data[section]=ast.literal_eval(temp_p.to_json(orient='records'))
     return data
 
 
