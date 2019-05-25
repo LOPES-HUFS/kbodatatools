@@ -25,16 +25,25 @@ def get_game(date, home_team, away_team, double=0):
     return soup
 
 def get_data(soup):
-    '''가져온 개별 게임들을 스코어보드 ,타자, 투수 별로 정리 합니다. 
-    
+    '''가져온 개별 게임들을 스코어보드 ,타자, 투수 별로 정리 합니다.
+    단순하게 사용하는 방법은 다음 링클를 참고합니다.
+
+    https://github.com/LOPES-HUFS/KBO_data_analysis/blob/master/README.md#개별-게임-자료를-받아오는-방법
+
     Args:
-        soup: get_game의 return 값 
+        soup (soup): get_game()으로 받아온 한 경기 자료
     
     Returns:
-        temp_all: 스코어 보드와 기타정보, 원정,홈 팀의 타자, 투수 정보가 담긴 딕트  
+        temp_all (dict): JSON 형식으로 되어 있는 값이 
+        아래와 같은 키로 저장되어 있다.
 
+        scoreboard (스코어 보드)
+        ETC_info 
+        away_batter (원정팀 타자 정보)
+        home_batter (홈팀 타자 정보)
+        away_pitcher (원정팀 투수 정보)
+        home_pitcher (홈팀 투수 정보) 
     '''
-
 
     tables = soup.find_all('table')
     record_etc = soup.findAll('div',{'class':'record-etc'})
