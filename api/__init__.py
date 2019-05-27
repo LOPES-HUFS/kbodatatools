@@ -60,3 +60,20 @@ def get_data(soup):
     temp_all.update({'home_pitcher':ast.literal_eval(api.pasing_page.home_pitcher(tables,teams).to_json(orient='records'))})
 
     return temp_all 
+
+def modify_data(data):
+    '''투수와 타자 기록을 보기 좋게 정리합니다. 
+    
+    Args:
+        data: get_data 함수의 return 값 
+    
+    Returns:
+        data: 타자 기록과 투수 기록이 보기 좋게 정리된 dict
+
+    '''  
+    data = api.modifying_data.batter_clean(data,'away_batter')
+    data = api.modifying_data.batter_clean(data,'home_batter')
+    data = api.modifying_data.pitcher_clean(data,'away_pitcher')
+    data = api.modifying_data.pitcher_clean(data,'home_pitcher')
+
+    return(data)

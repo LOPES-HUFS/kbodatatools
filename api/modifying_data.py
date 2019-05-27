@@ -46,7 +46,7 @@ def change_inning(item):
     return [inning,rest_inning]
 
 def pitcher_clean(data,section):
-     '''투수 기록 df를 보기 좋게 정리하는 함수
+    '''투수 기록 df를 보기 좋게 정리하는 함수
     Args:
         data: 투수 기록이 저장된 딕트  
         section (str): 어떤 투수 기록인지를 지칭 예를 들면 원정팀 타자기록이면 'away_pitcher'
@@ -55,8 +55,6 @@ def pitcher_clean(data,section):
         data: 기존에 입력된 data 중 투수 기록이 보기 좋게 변경되어 저장된 dict
 
     '''
-
-
     temp_p=pd.DataFrame(data[section])
     temp1 = temp_p['등판'] == '선발'
     temp1 = temp1.replace(True,"선발투수")
