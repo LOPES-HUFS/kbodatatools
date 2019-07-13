@@ -26,7 +26,7 @@ pipenv shell
 
 ```python
 import api
-single_game = api.get_data(api.get_game(date=20190511, home_team= 'OB', away_team='NC'))
+single_game = api.get_data(api.get_game(date=20190511, home_team= 'NC', away_team='OB'))
 single_game['scoreboard']
 single_game['ETC_info']
 single_game['away_batter']
