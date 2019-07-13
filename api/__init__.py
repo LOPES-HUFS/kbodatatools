@@ -18,7 +18,7 @@ def get_game(date, home_team, away_team, double=0):
     Returns:
         soup (soup): BeautifulSoup의 soup
     '''
-    url = (f'https://www.koreabaseball.com/Schedule/GameCenter/Main.aspx?gameDate={date}&gameId={date}{home_team}{away_team}{double}&section=REVIEW')
+    url = (f'https://www.koreabaseball.com/Schedule/GameCenter/Main.aspx?gameDate={date}&gameId={date}{away_team}{home_team}{double}&section=REVIEW')
     session = HTMLSession()
     r = session.get(url)
     r.html.render()
