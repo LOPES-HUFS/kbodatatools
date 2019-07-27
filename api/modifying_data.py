@@ -21,7 +21,7 @@ def batter_clean(data,section):
 
     '''
     temp_b=pd.DataFrame(data[section])
-    factorlist = pd.read_csv("./api/data/KBO_factor_list.csv")
+    factorlist = pd.read_csv("./data/KBO_factor_list.csv")
     for i in factorlist.factor_list:
         temp_b=temp_b.replace(i,factorlist.code[factorlist.factor_list==i].tolist()[0])
         

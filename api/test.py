@@ -6,7 +6,7 @@ import api
 import pandas as pd 
 import json
 
-gameid = pd.read_csv("./api/data/KBO_gameid_season2019.csv")
+gameid = pd.read_csv("./data/KBO_gameid_season2019.csv")
 
 full_data = {}
 
