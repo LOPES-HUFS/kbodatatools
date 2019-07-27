@@ -15,7 +15,7 @@ def stack_game_data(gameid):
     '''
     full_data = {}
 
-    for i in range(0,12):
+    for i in range(0,len(gameid)):
         index = str(gameid.date[i])+gameid.gameid[i]
         print(index)
         temp_data = api.get_data(api.get_game(date=gameid.date[i], home_team= gameid.home[i], away_team=gameid.away[i]))
@@ -29,7 +29,7 @@ def write_json(data):
     input:data는 경기가 담긴 json
     output: json file 
     '''
-    temp_file_name = "./data/test_data.json"
+    temp_file_name = "./data/sample/test_data.json"
     with open(temp_file_name, 'w') as outfile:  
         json.dump(data, outfile)
 
