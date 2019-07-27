@@ -18,7 +18,7 @@ for i in range(0,len(gameid)):
     full_data.update({index:temp_data})
 
 
-temp_file_name = "./api/data/test_data.json"
+temp_file_name = "./data/test_data.json"
 with open(temp_file_name, 'w') as outfile:  
     json.dump(full_data, outfile)
 
