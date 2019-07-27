@@ -4,8 +4,8 @@ import json
 from requests_html import HTMLSession
 from bs4 import BeautifulSoup
 
-import api.pasing_page
-import api.modifying_data
+from . import pasing_page
+from . import modifying_data
 
 def get_game(date, home_team, away_team, double=0):
     ''' 개별 게임을 가져오는 함수
@@ -51,14 +51,14 @@ def get_data(soup):
     record_etc = soup.findAll('div',{'class':'record-etc'})
     box_score = soup.findAll('div',{'class':'box-score-wrap'})
     teams = box_score[0].findAll('span',{'class':'logo'})
-    temp_scoreboard = api.pasing_page.scoreboard(tables, teams)
+    temp_scoreboard = pasing_page.scoreboard(tables, teams)
 
     temp_all = {'scoreboard':ast.literal_eval(temp_scoreboard.to_json(orient='records'))}
-    temp_all.update({"ETC_info":api.pasing_page.ETC_info(tables,record_etc)})
-    temp_all.update({'away_batter':ast.literal_eval(api.pasing_page.away_batter(tables,teams).to_json(orient='records'))})
-    temp_all.update({'home_batter':ast.literal_eval(api.pasing_page.home_batter(tables,teams).to_json(orient='records'))})
-    temp_all.update({'away_pitcher':ast.literal_eval(api.pasing_page.away_pitcher(tables,teams).to_json(orient='records'))})
-    temp_all.update({'home_pitcher':ast.literal_eval(api.pasing_page.home_pitcher(tables,teams).to_json(orient='records'))})
+    temp_all.update({"ETC_info":pasing_page.ETC_info(tables,record_etc)})
+    temp_all.update({'away_batter':ast.literal_eval(pasing_page.away_batter(tables,teams).to_json(orient='records'))})
+    temp_all.update({'home_batter':ast.literal_eval(pasing_page.home_batter(tables,teams).to_json(orient='records'))})
+    temp_all.update({'away_pitcher':ast.literal_eval(pasing_page.away_pitcher(tables,teams).to_json(orient='records'))})
+    temp_all.update({'home_pitcher':ast.literal_eval(pasing_page.home_pitcher(tables,teams).to_json(orient='records'))})
 
     return temp_all 
 
@@ -72,9 +72,9 @@ def modify_data(data):
         data: 타자 기록과 투수 기록이 보기 좋게 정리된 dict
 
     '''  
-    data = api.modifying_data.batter_clean(data,'away_batter')
-    data = api.modifying_data.batter_clean(data,'home_batter')
-    data = api.modifying_data.pitcher_clean(data,'away_pitcher')
-    data = api.modifying_data.pitcher_clean(data,'home_pitcher')
+    data = modifying_data.batter_clean(data,'away_batter')
+    data = modifying_data.batter_clean(data,'home_batter')
+    data = modifying_data.pitcher_clean(data,'away_pitcher')
+    data = modifying_data.pitcher_clean(data,'home_pitcher')
 
     return(data)
