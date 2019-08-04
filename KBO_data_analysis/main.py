@@ -21,7 +21,7 @@ def stack_game_data(gameid):
     error_list = {}
     for i in range(0,len(gameid)):
         index = str(gameid.date[i])+gameid.gameid[i]
-        print(index)
+        print(i/len(gameid))
         try:
             temp_data = api.get_data(api.get_game(date=gameid.date[i], home_team= gameid.iloc[i].gameid[2:4], away_team=gameid.iloc[i].gameid[0:2],double=gameid.iloc[i].gameid[4]))
         except:
