@@ -30,7 +30,7 @@ def stack_game_data(gameid):
             temp_data = api.modify_data(temp_data)
             full_data.update({index:temp_data})
 
-    return {'fulldata':full_data,'error':error_list}
+    return {'fulldata':full_data}
 
 def write_json(data):
     '''
