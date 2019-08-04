@@ -12,7 +12,7 @@ gamedict = main.stack_game_data(gameid_2019)
 
 temp_file_name = "./data/sample/test_data.json"
 with open(temp_file_name, 'w') as outfile:  
-    json.dump(data, outfile)
+    json.dump(gamedict, outfile)
 
 with open(temp_file_name, 'r') as outfile:
     playerdata = json.load(outfile)
