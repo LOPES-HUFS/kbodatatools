@@ -25,7 +25,6 @@ def stack_game_data(gameid):
         try:
             temp_data = api.get_data(api.get_game(date=gameid.date[i], home_team= gameid.iloc[i].gameid[2:4], away_team=gameid.iloc[i].gameid[0:2],double=gameid.iloc[i].gameid[4]))
         except:
-            #error_list.update({date=gameid.date[i], home_team=gameid.iloc[i].gameid[2:4], away_team=gameid.iloc[i].gameid[0:2],double=gameid.iloc[i].gameid[4]})
             temp_data = api.get_data(api.get_game(date=gameid.date[i], home_team= gameid.iloc[i].gameid[2:4], away_team=gameid.iloc[i].gameid[0:2],double=gameid.iloc[i].gameid[4]))
         finally: 
             temp_data = api.modify_data(temp_data)
