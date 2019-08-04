@@ -19,11 +19,11 @@ with open(temp_file_name, 'r') as outfile:
 
 temp = pd.DataFrame()
 
-for i in range(0,len(playerdata.keys())):
-    away = pd.DataFrame(playerdata[list(playerdata.keys())[i]]['away_batter'])
-    home = pd.DataFrame(playerdata[list(playerdata.keys())[i]]['home_batter'])
-    home['dateindex'] = list(playerdata.keys())[i]
-    away['dateindex'] = list(playerdata.keys())[i]
+for i in range(0,len(playerdata['fulldata'].keys())):
+    away = pd.DataFrame(playerdata[list(playerdata['fulldata'].keys())[i]]['away_batter'])
+    home = pd.DataFrame(playerdata[list(playerdata['fulldata'].keys())[i]]['home_batter'])
+    home['dateindex'] = list(playerdata['fulldata'].keys())[i]
+    away['dateindex'] = list(playerdata['fulldata'].keys())[i]
     temp = temp.append(away.append(home))
 
 temp.to_csv("./data/sample/test.csv",index=False)
