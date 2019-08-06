@@ -26,6 +26,7 @@ for i in range(0,len(playerdata['fulldata'].keys())):
     away['dateindex'] = list(playerdata['fulldata'].keys())[i]
     temp = temp.append(away.append(home))
 
+temp.fillna(-1)
 temp.to_csv("./data/sample/test.csv",index=False)
 
 
