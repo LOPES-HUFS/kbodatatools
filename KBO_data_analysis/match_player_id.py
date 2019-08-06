@@ -2,6 +2,7 @@
 선수 이름으로 선수 id를 만들고, 선수 id를 이용해 생년 월일을 찾아 동명이인 구분을 해준다.
 만들어진 선수 id 정보 데이터로 동명이인이 아닌 선수들과 id를 매치시킨다.
 만약 동명이인인 선수가 있다면 데이터에 있는 정보를 가지고 선수의 기록과 비교하여 id를 매치한다.
+TODO: 동명이인과 은퇴한 선수들의 경기기록일 경우 어떻게 id 붙일지 고민 - 전체 데이터를 가지고 해볼 것 
 '''
 
 import pandas as pd
@@ -39,14 +40,26 @@ elif get_id(name) > 1:
     
 
 def check_player_position(id)
-
+    '''
+    TODO: 현역 투수와 현역 타자 선수 간 동명이인 구분용 함수 여기에 은퇴한 선수와 투수 간 구분도 필요 
+    '''
+    url = f"https://www.koreabaseball.com/Record/Player/HitterDetail/Daily.aspx?playerId={id}"
+    r = requests.post(url)
+    soup = BeautifulSoup(r.text, "lxml")
+    
+    if soup.find_all("td")[0].text == '기록이 없습니다.':
+        return "투수 id이거나 은퇴한 선수입니다"
+    else:
+        return "현역 타자 id 입니다"
 
 
 def make_player_data(id):
     '''
+    현재 선수 id가 투수나 은퇴한 선수의 id일 경우 에러 발생
     동명이인 선수의 시즌 경기 기록을 조회하기 위한 함수 
     input(string): 선수의 id 
     output(dataframe): 선수의 시즌 월별 경기기록 데이터 프레임
+    TODO: 동명이인 선수들 id 이름 있는 dict 활용해서 현역 타자 선수들 id 넣기해야함 
     '''
 
     url = f"https://www.koreabaseball.com/Record/Player/HitterDetail/Daily.aspx?playerId={id}"
@@ -73,3 +86,8 @@ for i in sample['선수명']:
         sampledata.id[sampledata['선수명']==i] = 0
     else:
         sampledata.id[sampledata['선수명']==i] = find_id(i)
+
+samename_dict={}
+for i in samenamelist:
+    for j in get_id(i):
+        samename_dict.update({j:{i:check_player_position(j)}})
