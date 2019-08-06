@@ -20,8 +20,8 @@ with open(temp_file_name, 'r') as outfile:
 temp = pd.DataFrame()
 
 for i in range(0,len(playerdata['fulldata'].keys())):
-    away = pd.DataFrame(playerdata[list(playerdata['fulldata'].keys())[i]]['away_batter'])
-    home = pd.DataFrame(playerdata[list(playerdata['fulldata'].keys())[i]]['home_batter'])
+    away = pd.DataFrame(playerdata['fulldata'][list(playerdata['fulldata'].keys())[i]]['away_batter'])
+    home = pd.DataFrame(playerdata['fulldata'][list(playerdata['fulldata'].keys())[i]]['home_batter'])
     home['dateindex'] = list(playerdata['fulldata'].keys())[i]
     away['dateindex'] = list(playerdata['fulldata'].keys())[i]
     temp = temp.append(away.append(home))
