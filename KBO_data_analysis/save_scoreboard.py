@@ -16,7 +16,7 @@ team_list={'기아':'HT','두산':'OB','롯데':'LT','NC':'NC','SK':'SK','LG':'L
 
 def 
 
-def chang_null_to_negative_number(temp):
+def change_null_to_negative_number(temp):
     '''
     input: 스코어보드의 회 정보가 담긴 열들  
     '''
@@ -47,7 +47,23 @@ row_des = {
 
 filters = tb.Filters(complevel=0)
 tab = h5.create_table('/', 'scoreboard', row_des, title='scoreboard', filters=filters)
+
+def insult_data(colname,j):
+    '''
+     1~12회, 기록 4개 경기 없는 경우 -1로 변경
+    input(colname): 스코어보드 1~12회, 기록 4개 열정보
+    input(j): 스코어보드의 줄 (for문에서 돌아가는 것)
+    '''
+    tab.row[colname] = change_null_to_negative_number(j[colname])
+
 '''
-TODO: 스코어 보드에 날짜 넣기 코드 짜고 keylist 로 전체 스코어보드  돌려보기 ? 
+TODO: for 문을 뭔가 줄여보기  
 '''
-scoreboard =[data['fulldata'][i]['scoreboard'] for i in key_list]
+
+for i in key_list:
+    for j in data['fulldata'][i]['scoreboard']:
+        tab.row['date'] = i[0:8]
+        tab.row['team'] = team_list[j['팀']]
+        [test(k,j) for k in tab.colnames[2:]]
+        tab.row.append()
+tab.flush()
