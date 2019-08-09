@@ -3,6 +3,7 @@
 만들어진 선수 id 정보 데이터로 동명이인이 아닌 선수들과 id를 매치시킨다.
 만약 동명이인인 선수가 있다면 데이터에 있는 정보를 가지고 선수의 기록과 비교하여 id를 매치한다.
 TODO: 동명이인과 은퇴한 선수들의 경기기록일 경우 어떻게 id 붙일지 고민 - 전체 데이터를 가지고 해볼 것 
+일단 현역 동명이인 애들부터 처리하는거 고민 ! 
 '''
 
 import pandas as pd
@@ -31,7 +32,7 @@ output(int): 선수의 id, 선수 이름이 동명이인이면 동명이인 선�
 '''
 if len(get_id(name))== 1:
     return get_id(name)[0]
-elif get_id(name) > 1:
+elif len(get_id(name)) > 1:
     samename = test_name[test_name['이름']==name]
     if len(samename.ID[samename['현재 상태']=="KBO"]) ==1:
         return list(samename.ID[samename['현재 상태']=="KBO"])[0]
@@ -39,7 +40,7 @@ elif get_id(name) > 1:
         return("check player status")
     
 
-def check_player_position(id)
+def check_player_position(id):
     '''
     TODO: 현역 투수와 현역 타자 선수 간 동명이인 구분용 함수 여기에 은퇴한 선수와 투수 간 구분도 필요 
     '''
@@ -91,3 +92,7 @@ samename_dict={}
 for i in samenamelist:
     for j in get_id(i):
         samename_dict.update({j:{i:check_player_position(j)}})
+
+for i,j in samename_dict.items():
+    if list(j.values())[0]=="현역 타자 id 입니다":
+        print(i,list(j.keys())[0])
