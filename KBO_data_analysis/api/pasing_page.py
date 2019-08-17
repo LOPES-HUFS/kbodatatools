@@ -30,7 +30,7 @@ def looking_for_team_name(string):
     Returns:
         temp[1]: 팀 이름 
     '''
-
+    # 과거 넥센 팀은 현재 키움 히어로즈로 바뀌었기 때문에 2010 ~ 2018년 데이터에서도 키움으로 표시됩니다. 
     team_list={'HT':'기아','OB':'두산','LT':'롯데','NC':'NC','SK':'SK','LG':'LG','WO':'키움','HH':'한화','SS':'삼성','KT':'KT'}
     temp = [string.find(team) for team in team_list.keys()]
     temp[:] = [0 if ele != -1 else ele for ele in temp]
