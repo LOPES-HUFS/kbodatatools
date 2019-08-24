@@ -7,13 +7,13 @@ import json
 import pandas as pd
 
 
-#gameid = pd.read_csv("./data/KBO_gameid_full_season.csv")
+gameid = pd.read_csv("./data/KBO_gameid_full_season.csv")
 
-#gamedict = main.stack_game_data(gameid)
+gamedict = main.stack_game_data(gameid)
 
 temp_file_name = "./data/sample/all_data.json"
-#with open(temp_file_name, 'w') as outfile:  
-#    json.dump(gamedict, outfile)
+with open(temp_file_name, 'w') as outfile:  
+    json.dump(gamedict, outfile)
 
 with open(temp_file_name, 'r') as outfile:
     playerdata = json.load(outfile)
@@ -28,6 +28,18 @@ for i in range(0,len(playerdata['fulldata'].keys())):
     temp = temp.append(away.append(home))
 
 temp = temp.fillna(-1)
-temp.to_csv("./data/sample/KBO_normal_season_data_full.csv",index=False)
+temp.to_csv("./data/sample/KBO_batter_data_full.csv",index=False)
 
+# 투수기록 
 
+pitcher_temp = pd.DataFrame()
+
+for i in range(0,len(playerdata['fulldata'].keys())):
+    away = pd.DataFrame(playerdata['fulldata'][list(playerdata['fulldata'].keys())[i]]['away_pitcher'])
+    home = pd.DataFrame(playerdata['fulldata'][list(playerdata['fulldata'].keys())[i]]['home_pitcher'])
+    home['dateindex'] = list(playerdata['fulldata'].keys())[i]
+    away['dateindex'] = list(playerdata['fulldata'].keys())[i]
+    pitcher_temp = pitcher_temp.append(away.append(home))
+
+pitcher_temp = pitcher_temp.fillna(-1)
+pitcher_temp.to_csv("./data/sample/KBO_pitcher_data_full.csv",index=False)
