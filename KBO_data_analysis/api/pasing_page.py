@@ -4,11 +4,11 @@ def scoreboard(tables, teams):
     '''html 자료를 스코어 보드로 구성하는 함수
     
     Args:
-        tables: 야구경기 리뷰 테이블이 담긴 html 
-        teams: 경기를 치른 두 팀에 대한 html 
+        tables(html): 야구경기 리뷰 테이블이 담긴 html 
+        teams(html): 경기를 치른 두 팀에 대한 html 
     
     Returns:
-        temp_total: 두 팀의 경기 기록에 대한 스코어 보드가 pandas df 으로 나옴
+        temp_total(pandas DF): 두 팀의 경기 기록에 대한 스코어 보드가 pandas df 으로 나옴
 
     '''
 
@@ -25,10 +25,10 @@ def looking_for_team_name(string):
     '''팀 약자를 가지고 팀 이름을 찾아주는 함수 
 
     Args:
-        string: 팀 이름 정보가 담긴 html 스트링
+        string(str): 팀 이름 정보가 담긴 html 스트링
     
     Returns:
-        temp[1]: 팀 이름 
+        temp[1](str): 팀 이름 
     '''
     # 과거 넥센 팀은 현재 키움 히어로즈로 바뀌었기 때문에 2010 ~ 2018년 데이터에서도 키움으로 표시됩니다. 
     team_list={'HT':'기아','OB':'두산','LT':'롯데','NC':'NC','SK':'SK','LG':'LG','WO':'키움','HH':'한화','SS':'삼성','KT':'KT'}
@@ -48,10 +48,10 @@ def ETC_info(tables,record_etc):
     ''' 결승타, 도루, 심판 등의 정보를 저장하는 함수
 
     Args:
-        tables: 야구경기 리뷰 테이블이 담긴 html 자료
-        record_etc: 결승타, 도루, 심판 등의 정보가 담긴 html 자료
+        tables(html): 야구경기 리뷰 테이블이 담긴 html 자료
+        record_etc(html): 결승타, 도루, 심판 등의 정보가 담긴 html 자료
     Returns:
-        record (dict): 결승타, 도루자, 심판 등의 정보가 담신 dict 
+        record(dict): 결승타, 도루자, 심판 등의 정보가 담신 dict 
     '''
     record = {}
     header_list = tables[3].find_all("th")
@@ -70,11 +70,11 @@ def away_batter(tables, team):
     '''html 자료에서 원정팀 타격 기록을 df로 만드는 함수  
     
     Args:
-        tables: 야구경기 리뷰 테이블이 담긴 html 
-        team: 경기를 치른 두 팀에 대한 html 
+        tables(html): 야구경기 리뷰 테이블이 담긴 html 
+        team(html): 경기를 치른 두 팀에 대한 html 
     
     Returns:
-        away: 원정팀 타격 기록 df 
+        away(pandas DF): 원정팀 타격 기록 df 
 
     '''
     temp1 = pd.read_html(str(tables[4]))[0].dropna()
@@ -91,11 +91,11 @@ def home_batter(tables, team):
     '''html 자료에서 홈팀 타격 기록을 df로 만드는 함수  
     
     Args:
-        tables: 야구경기 리뷰 테이블이 담긴 html 
-        team: 경기를 치른 두 팀에 대한 html 
+        tables(html): 야구경기 리뷰 테이블이 담긴 html 
+        team(html): 경기를 치른 두 팀에 대한 html 
     
     Returns:
-        home: 홈팀 타격 기록 df 
+        home(pandas DF): 홈팀 타격 기록 df 
 
     '''
 
@@ -113,11 +113,11 @@ def away_pitcher(tables, team):
     '''html 자료에서 원정팀 투수 기록을 df로 만드는 함수  
     
     Args:
-        tables: 야구경기 리뷰 테이블이 담긴 html 
-        team: 경기를 치른 두 팀에 대한 html 
+        tables(html): 야구경기 리뷰 테이블이 담긴 html 
+        team(html): 경기를 치른 두 팀에 대한 html 
     
     Returns:
-        away: 원정팀 투수 기록 df 
+        away(pandas DF): 원정팀 투수 기록 df 
 
     '''
 
@@ -130,11 +130,11 @@ def home_pitcher(tables, team):
     '''html 자료에서 홈팀 투수 기록을 df로 만드는 함수  
     
     Args:
-        tables: 야구경기 리뷰 테이블이 담긴 html 
-        team: 경기를 치른 두 팀에 대한 html 
+        tables(html): 야구경기 리뷰 테이블이 담긴 html 
+        team(html): 경기를 치른 두 팀에 대한 html 
     
     Returns:
-        home: 홈팀 투수 기록 df 
+        home(pandas DF): 홈팀 투수 기록 df 
 
     '''
 

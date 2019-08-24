@@ -2,8 +2,7 @@
 api에 들어 있는 코드을 사용하여 KBO자료를 받아서 저장합니다.
 
 
-TODO:
-    - [ ] 전체 자료를 받아오는 것과 샘플 받기를 구분합시다.
+TODO: 함수 설명 인자에 (str) 같은 형식으로 통일
 """
 
 import api 
@@ -14,8 +13,8 @@ gameid = pd.read_csv("./data/KBO_gameid_full_season.csv")
 
 def stack_game_data(gameid):
     '''
-    input: 날짜, 게임id, 원정팀, 홈팀의 정보가 담긴 데이터 프레임
-    output: 여러 날짜의 게임 데이터가 담긴 dict  
+    input(pandas DF): 날짜, 게임id, 원정팀, 홈팀의 정보가 담긴 데이터 프레임
+    output(dict): 여러 날짜의 게임 데이터  
     '''
     full_data = {}
     error_list = {}
@@ -34,7 +33,7 @@ def stack_game_data(gameid):
 
 def write_json(data):
     '''
-    input:data는 경기가 담긴 json
+    input(json):경기 데이터
     output: json file 
     '''
     temp_file_name = "./data/sample/all_data.json"

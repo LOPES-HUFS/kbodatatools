@@ -3,6 +3,15 @@ from api.pasing_page import looking_for_team_name
 import ast 
 
 def change_record(temp,column,factorlist):
+    '''
+    타자 기록을 숫자 코드로 변경하는 함수 
+    Args:
+        temp(pandas DF): 타자기록이 저장된 데이터 프레임  
+        column(str): 열이름들 중 이닝
+        factorlist(pandas DF): 타격 기록에 해당하는 숫자코드
+    Returns:
+        temp(pandas DF): 타자기록이 숫자코드로 변경된 데이터 프레임
+    '''
     for i in range(0,len(temp[[str(column)]])):
         if "/" in list(str(temp[str(column)].tolist()[i])):
             temp1=factorlist.code[factorlist.factor_list==str(temp[str(column)].tolist()[i].split("/ ")[0].split("\\")[0])]
@@ -13,11 +22,11 @@ def change_record(temp,column,factorlist):
 def batter_clean(data,section):
     '''타자 기록 df를 보기 좋게 정리하는 함수
     Args:
-        data: 타자기록이 저장된 딕트  
-        section (str): 어떤 타자 기록인지를 지칭 예를 들면 원정팀 타자기록이면 'away_batter'
+        data(dict): 타자기록이 저장된 딕트  
+        section(str): 어떤 타자 기록인지를 지칭 예를 들면 원정팀 타자기록이면 'away_batter'
     
     Returns:
-        data: 기존에 입력된 data 중 타자 기록이 보기 좋게 변경되어 저장된 dict
+        data(dict): 기존에 입력된 data 중 타자 기록이 보기 좋게 변경되어 저장된 dict
 
     '''
     temp_b=pd.DataFrame(data[section])
@@ -48,11 +57,11 @@ def change_inning(item):
 def pitcher_clean(data,section):
     '''투수 기록 df를 보기 좋게 정리하는 함수
     Args:
-        data: 투수 기록이 저장된 딕트  
-        section (str): 어떤 투수 기록인지를 지칭 예를 들면 원정팀 타자기록이면 'away_pitcher'
+        data(dict): 투수 기록이 저장된 딕트  
+        section(str): 어떤 투수 기록인지를 지칭 예를 들면 원정팀 타자기록이면 'away_pitcher'
     
     Returns:
-        data: 기존에 입력된 data 중 투수 기록이 보기 좋게 변경되어 저장된 dict
+        data(dict): 기존에 입력된 data 중 투수 기록이 보기 좋게 변경되어 저장된 dict
 
     '''
     temp_p=pd.DataFrame(data[section])
