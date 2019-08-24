@@ -37,6 +37,14 @@ def find_id(name,year,team):
     return [temp.ID[temp["season_"+year]==i].values[0] for i in list(temp["season_"+year]) if team in i]
 
 def match_id(name,year,team):
+    '''
+    Args:
+        name(str): 선수 이름
+        year(numeric): 선수가 출장한 경기 연도
+        team(str): 선수의 소속팀 
+    Returns:
+        sampledata(pandas DF): id가 입력된 선수 기록 데이터
+    '''
     year = str(year)
     id_list = get_id(name)
     if len(id_list)==1:
@@ -67,4 +75,9 @@ sampledata=test.copy()
 sampledata["year"] = [i[0:4] for i in sampledata.dateindex]
 sampledata["id"] = ""
 play_info = sampledata[["선수명","팀","year"]].drop_duplicates()
+play_info.index = range(0,len(play_info))
+
+for i in range(0,len(play_info)):
+    #print(play_info.선수명[i],play_info.팀[i],play_info.year[i])
+    sampledata = match_id(play_info.선수명[i],play_info.year[i],play_info.팀[i])
 
