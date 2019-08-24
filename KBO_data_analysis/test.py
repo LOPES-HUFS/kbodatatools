@@ -1,5 +1,5 @@
 '''
-샘플용으로 2019년 7월까지의 경기 자료를 받아오고 자료에서 홈팀과 원정팀의 타자 기록만 뽑아서 다시 저장해줍니다.
+샘플용으로 2019년 7월까지의 경기 자료를 받아오고 자료에서 홈팀과 원정팀의 기록만 뽑아서 다시 저장해줍니다.
 '''
 
 import main
@@ -29,4 +29,16 @@ for i in range(0,len(playerdata['fulldata'].keys())):
 temp = temp.fillna(-1)
 temp.to_csv("./data/sample/test.csv",index=False)
 
+# 투수기록 
 
+pitcher_temp = pd.DataFrame()
+
+for i in range(0,len(playerdata['fulldata'].keys())):
+    away = pd.DataFrame(playerdata['fulldata'][list(playerdata['fulldata'].keys())[i]]['away_pitcher'])
+    home = pd.DataFrame(playerdata['fulldata'][list(playerdata['fulldata'].keys())[i]]['home_pitcher'])
+    home['dateindex'] = list(playerdata['fulldata'].keys())[i]
+    away['dateindex'] = list(playerdata['fulldata'].keys())[i]
+    pitcher_temp = pitcher_temp.append(away.append(home))
+
+pitcher_temp = pitcher_temp.fillna(-1)
+pitcher_temp.to_csv("./data/sample/test_pitcher.csv",index=False)
