@@ -10,10 +10,10 @@ test=pd.read_csv("./data/sample/test.csv")
 
 rename_player = pd.read_csv("./data/renamed_player_list.csv")
 
-test=test.fillna(-1)
 test['선수명'][test['선수명']=="페르난데"] = "페르난데스"
 test['선수명'][test['선수명']=="해즐베이"] = "해즐베이커"
 test['선수명'][test['선수명']=="스몰린스"] = "스몰린스키"
+#test['선수명'][test['선수명']=="반슬라이"] = "반슬라이크"
 
 def get_id(name):
     '''
