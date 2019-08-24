@@ -34,9 +34,10 @@ def find_id(name,year,team):
         output(list): 입력된 선수 이름과 연도 팀으로 찾은 선수 id 
     '''
     temp = player_id_list[player_id_list['선수명']==name]
-    return [temp.ID[temp["season_"+year]==i].values[0] for i in list(temp["season_"+year]) if team in i]
+    return [temp.ID[temp["season_"+year]==i].values for i in list(temp["season_"+year]) if team in i]
 
-def match_id(name,year,team):
+error = []
+def match_id(data,name,year,team):
     '''
     Args:
         name(str): 선수 이름
@@ -48,15 +49,19 @@ def match_id(name,year,team):
     year = str(year)
     id_list = get_id(name)
     if len(id_list)==1:
-        sampledata.id[sampledata["선수명"]==name] = id_list[0]
+        data.id[data["선수명"]==name] = id_list[0]
     elif len(id_list)==0:
         newname = check_rename(name)
         id_list = get_id(newname)
-        sampledata.id[sampledata["선수명"]==name] = id_list[0]
+        data.id[data["선수명"]==name] = id_list[0]
     else:
-        id_list = find_id(name,year,team)
-        sampledata.id[(sampledata["선수명"]==name) & (sampledata.팀.isin([team])) & (sampledata.year.isin([year]))] = id_list[0]
-    return(sampledata)
+        id_list = list(find_id(name,year,team)[0])
+        if len(id_list)>=2:
+            print("check_record")
+            error.append([name,year,team])
+        else:
+            data.id[(data["선수명"]==name) & (data.팀.isin([team])) & (data.year.isin([year]))] = id_list[0]
+    return(data)
 
 def check_rename(name):
     '''
