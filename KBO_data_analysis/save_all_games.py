@@ -28,6 +28,10 @@ for i in range(0,len(playerdata['fulldata'].keys())):
     temp = temp.append(away.append(home))
 
 temp = temp.fillna(-1)
+temp['선수명'][temp['선수명']=="페르난데"] = "페르난데스"
+temp['선수명'][temp['선수명']=="해즐베이"] = "해즐베이커"
+temp['선수명'][temp['선수명']=="스몰린스"] = "스몰린스키"
+temp['선수명'][temp['선수명']=="반슬라이"] = "반슬라이크"
 temp.to_csv("./data/sample/KBO_batter_data_full.csv",index=False)
 
 # 투수기록 
