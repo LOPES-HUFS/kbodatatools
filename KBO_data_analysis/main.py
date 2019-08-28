@@ -11,20 +11,24 @@ import json
 
 gameid = pd.read_csv("./data/KBO_gameid_full_season.csv")
 
-def stack_game_data(gameid):
+def stack_game_data(data):
     '''
-    input(pandas DF): 날짜, 게임id, 원정팀, 홈팀의 정보가 담긴 데이터 프레임
-    output(dict): 여러 날짜의 게임 데이터  
+    게임 아이디와 날짜를 가지고 전체 게임 데이터를 모아서 저장하는 함수 
+
+    Args:
+        data(pandas DF): 날짜와 경기 정보가 담긴 데이터 프레임 
+    Returns:
+        full_data(dict): 전체 게임 데이터가 담긴 딕트 
     '''
     full_data = {}
     error_list = {}
-    for i in range(0,len(gameid)):
-        index = str(gameid.date[i])+gameid.gameid[i]
-        print(i/len(gameid))
+    for i in range(0,len(data)):
+        index = str(data.date[i])+data.gameid[i]
+        print(i/len(data))
         try:
-            temp_data = api.get_data(api.get_game(date=gameid.date[i], home_team= gameid.iloc[i].gameid[2:4], away_team=gameid.iloc[i].gameid[0:2],double=gameid.iloc[i].gameid[4]))
+            temp_data = api.get_data(api.get_game(date=data.date[i], home_team= data.iloc[i].gameid[2:4], away_team=data.iloc[i].gameid[0:2],double=data.iloc[i].gameid[4]))
         except:
-            temp_data = api.get_data(api.get_game(date=gameid.date[i], home_team= gameid.iloc[i].gameid[2:4], away_team=gameid.iloc[i].gameid[0:2],double=gameid.iloc[i].gameid[4]))
+            temp_data = api.get_data(api.get_game(date=data.date[i], home_team= data.iloc[i].gameid[2:4], away_team=data.iloc[i].gameid[0:2],double=data.iloc[i].gameid[4]))
         finally: 
             temp_data = api.modify_data(temp_data)
             full_data.update({index:temp_data})
@@ -33,8 +37,12 @@ def stack_game_data(gameid):
 
 def write_json(data):
     '''
-    input(json):경기 데이터
-    output: json file 
+    딕트 데이터를 json 파일로 쓰는 함수 
+
+    Args:
+        data(dict): 전체 경기 데이터가 담긴 dict 파일  
+    Returns:
+        json 파일 
     '''
     temp_file_name = "./data/sample/all_data.json"
     with open(temp_file_name, 'w') as outfile:  

@@ -8,8 +8,8 @@ from . import pasing_page
 from . import modifying_data
 
 def get_game(date, home_team, away_team, double=0):
-    ''' 개별 게임을 가져오는 함수
-    쉽게 분석할 수 있도록 soup 으로 내보낸다.
+    ''' 
+    개별 게임을 가져오는 함수 쉽게 분석할 수 있도록 soup 으로 내보낸다.
 
     Args:
         date (int): 20190511 과 같이 숫자로 만든 경기 날짜
@@ -27,7 +27,8 @@ def get_game(date, home_team, away_team, double=0):
     return soup
 
 def get_data(soup):
-    '''가져온 개별 게임들을 스코어보드 ,타자, 투수 별로 정리 합니다.
+    '''
+    가져온 개별 게임들을 스코어보드 ,타자, 투수 별로 정리 합니다.
     단순하게 사용하는 방법은 다음 링클를 참고합니다.
 
     https://github.com/LOPES-HUFS/KBO_data_analysis/blob/master/README.md#개별-게임-자료를-받아오는-방법
@@ -63,7 +64,8 @@ def get_data(soup):
     return temp_all 
 
 def modify_data(data):
-    '''투수와 타자 기록을 보기 좋게 정리합니다. 
+    '''
+    투수와 타자 기록을 보기 좋게 정리합니다. 
     
     Args:
         data: get_data 함수의 return 값 

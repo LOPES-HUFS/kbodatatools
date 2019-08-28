@@ -1,7 +1,8 @@
 import pandas as pd
 
 def scoreboard(tables, teams):
-    '''html 자료를 스코어 보드로 구성하는 함수
+    '''
+    html 자료를 스코어 보드로 구성하는 함수
     
     Args:
         tables(html): 야구경기 리뷰 테이블이 담긴 html 
@@ -22,7 +23,8 @@ def scoreboard(tables, teams):
     return(temp_total)
 
 def looking_for_team_name(string):
-    '''팀 약자를 가지고 팀 이름을 찾아주는 함수 
+    '''
+    팀 약자를 가지고 팀 이름을 찾아주는 함수 
 
     Args:
         string(str): 팀 이름 정보가 담긴 html 스트링
@@ -45,7 +47,8 @@ def looking_for_teams_name(teams):
     return(temp_0, temp_1)
 
 def ETC_info(tables,record_etc):
-    ''' 결승타, 도루, 심판 등의 정보를 저장하는 함수
+    ''' 
+    결승타, 도루, 심판 등의 정보를 저장하는 함수
 
     Args:
         tables(html): 야구경기 리뷰 테이블이 담긴 html 자료
@@ -67,14 +70,15 @@ def ETC_info(tables,record_etc):
     return record
 
 def away_batter(tables, team):
-    '''html 자료에서 원정팀 타격 기록을 df로 만드는 함수  
+    '''
+    html 자료에서 원정팀 타자 기록을 df로 만드는 함수  
     
     Args:
         tables(html): 야구경기 리뷰 테이블이 담긴 html 
         team(html): 경기를 치른 두 팀에 대한 html 
     
     Returns:
-        away(pandas DF): 원정팀 타격 기록 df 
+        away(pandas DF): 원정팀 타자 기록 df 
 
     '''
     temp1 = pd.read_html(str(tables[4]))[0].dropna()
@@ -88,14 +92,15 @@ def away_batter(tables, team):
     return away
 
 def home_batter(tables, team):
-    '''html 자료에서 홈팀 타격 기록을 df로 만드는 함수  
+    '''
+    html 자료에서 홈팀 타자 기록을 df로 만드는 함수  
     
     Args:
         tables(html): 야구경기 리뷰 테이블이 담긴 html 
         team(html): 경기를 치른 두 팀에 대한 html 
     
     Returns:
-        home(pandas DF): 홈팀 타격 기록 df 
+        home(pandas DF): 홈팀 타자 기록 df 
 
     '''
 
@@ -110,7 +115,8 @@ def home_batter(tables, team):
     return home
 
 def away_pitcher(tables, team):
-    '''html 자료에서 원정팀 투수 기록을 df로 만드는 함수  
+    '''
+    html 자료에서 원정팀 투수 기록을 df로 만드는 함수  
     
     Args:
         tables(html): 야구경기 리뷰 테이블이 담긴 html 
@@ -127,7 +133,8 @@ def away_pitcher(tables, team):
     return away
 
 def home_pitcher(tables, team):
-    '''html 자료에서 홈팀 투수 기록을 df로 만드는 함수  
+    '''
+    html 자료에서 홈팀 투수 기록을 df로 만드는 함수  
     
     Args:
         tables(html): 야구경기 리뷰 테이블이 담긴 html 

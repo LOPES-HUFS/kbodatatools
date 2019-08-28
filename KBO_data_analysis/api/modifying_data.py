@@ -4,11 +4,13 @@ import ast
 
 def change_record(temp,column,factorlist):
     '''
-    타자 기록을 숫자 코드로 변경하는 함수 
+    타자의 이닝별 기록을 숫자 코드로 변경하는 함수 
+
     Args:
         temp(pandas DF): 타자기록이 저장된 데이터 프레임  
         column(str): 열이름들 중 이닝
         factorlist(pandas DF): 타격 기록에 해당하는 숫자코드
+
     Returns:
         temp(pandas DF): 타자기록이 숫자코드로 변경된 데이터 프레임
     '''
@@ -20,7 +22,9 @@ def change_record(temp,column,factorlist):
     return temp
 
 def batter_clean(data,section):
-    '''타자 기록 df를 보기 좋게 정리하는 함수
+    '''
+    딕트 안에 있는 타자 기록 데이터 프레임을 정리하여 다시 json으로 넣어주는 함수
+
     Args:
         data(dict): 타자기록이 저장된 딕트  
         section(str): 어떤 타자 기록인지를 지칭 예를 들면 원정팀 타자기록이면 'away_batter'
@@ -42,6 +46,10 @@ def batter_clean(data,section):
     return data
 
 def change_inning(item):
+    '''
+    투수 데이터의 던진 이닝 수를 분리하는 함수
+    '''
+
     if ('/' and " ") in list(str(item)):
         inning=list(item)[0]
         rest_inning=list(item)[2]
@@ -55,7 +63,9 @@ def change_inning(item):
     return [inning,rest_inning]
 
 def pitcher_clean(data,section):
-    '''투수 기록 df를 보기 좋게 정리하는 함수
+    '''
+    투수 기록 df를 보기 좋게 정리하는 함수
+    
     Args:
         data(dict): 투수 기록이 저장된 딕트  
         section(str): 어떤 투수 기록인지를 지칭 예를 들면 원정팀 타자기록이면 'away_pitcher'
