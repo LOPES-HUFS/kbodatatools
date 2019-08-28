@@ -35,6 +35,13 @@ single_game['away_pitcher']
 single_game['home_pitcher']
 ```
 
+### 자료 소개 
+
+자료는 데이터 폴더에 저장되는 경우와 data 폴더 내 sample 폴더에 저장되는 경우가 있습니다. 두 가지의 차이점은 data 폴더 내의 파일들은 타자의 기록을 숫자 코드로 만든 factorlist 파일과 같이 경기 데이터를 구성하거나 경기 데이터를 수집하는데 필요하는 정보가 담긴 데이터입니다. 이 data 폴더 내의 파일들 목록은 2010년 3월 부터 2019 7월 18일까지의 경기 날짜와 팀정보가 담긴 데이터와 선수 id를 경기 기록정보에 매치하는데 필요한 개명선수 목록과 선수 id와 생년월일이 담긴 데이터 선수의 년도별 이적 정보가 포함된 데이터가 있습니다.
+
+
+
+
 ### 참고 링크
 
 - [Parsing JavaScript rendered pages in Python with pyppeteer | Tchut-Tchut Blog](https://beenje.github.io/blog/posts/parsing-javascript-rendered-pages-in-python-with-pyppeteer/)
