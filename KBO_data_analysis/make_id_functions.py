@@ -1,22 +1,17 @@
 '''
-플레이어 데이터와 선수 id정보를 일치 시키는 코드
+샘플용 데이터의 선수 기록 정보를 토대로 선수 id를 매치시키는 코드 
 '''
 
 import pandas as pd
 
-player_id_list=pd.read_csv("./data/KBO_player_info_full.csv")
-
-test=pd.read_csv("./data/sample/test.csv")
+player_id_list = pd.read_csv("./data/KBO_player_info_full.csv")
 
 rename_player = pd.read_csv("./data/renamed_player_list.csv")
 
-test['선수명'][test['선수명']=="페르난데"] = "페르난데스"
-test['선수명'][test['선수명']=="해즐베이"] = "해즐베이커"
-test['선수명'][test['선수명']=="스몰린스"] = "스몰린스키"
-#test['선수명'][test['선수명']=="반슬라이"] = "반슬라이크"
-
 def get_id(name):
     '''
+    선수 이름을 인자로 받아 선수 id를 얻는 함수 
+
     Args:
         name(str): 선수 이름
     Returns:
@@ -26,10 +21,15 @@ def get_id(name):
 
 def find_id(name,year,team):
     '''
+    이름 연도 팀 정보를 받아 동명이인 선수의 id를 구분하는 함수  
+    단 같은 연도에 같은 팀에서 경기를 한 동명이인 선수의 경우 구분 불가능 
+    추후 그런 선수들의 경우 직접 구분해야함 
+
     Args:
         name(str): 선수 이름
         year(numeric): 선수가 출장한 경기 연도
         team(str): 선수의 소속팀 
+
     Returns:
         output(list): 입력된 선수 이름과 연도 팀으로 찾은 선수 id 
     '''
@@ -39,12 +39,17 @@ def find_id(name,year,team):
 error = []
 def match_id(data,name,year,team):
     '''
+    입력받은 데이터에 선수 이름과 연도 팀 정보를 토대로 해당 선수의 id를 매칭해주는 함수 
+    이 때 같은 연도에 같은 팀에서 경기를 한 동명이인 선수의 경우는 id 매치가 되지 않는다.
+
     Args:
+        data(pandas DF): 타자 데이터 혹은 투수 데이터 
         name(str): 선수 이름
         year(numeric): 선수가 출장한 경기 연도
         team(str): 선수의 소속팀 
+
     Returns:
-        sampledata(pandas DF): id가 입력된 선수 기록 데이터
+        data(pandas DF): id가 입력된 타자 또는 투수 데이터
     '''
     year = str(year)
     id_list = get_id(name)
@@ -64,30 +69,21 @@ def match_id(data,name,year,team):
             error.append([name,year,team])
         else:
             data.id[(data["선수명"]==name) & (data.팀.isin([team])) & (data.year.isin([year]))] = id_list[0]
-    return(data)
+    return data
 
 def check_rename(name):
     '''
+    어떤 선수의 이름이 개명한 선수인지 아닌지를 검사하는 함수
+
     Args:
         name(str): 선수 이름
+
     Returns:
-        output(str): 선수의 개명한 이름 또는 "not_rename_player"
+        output(str): 만약 개명한 선수라면 선수의 개명한 이름이 나오고 아니라면 "not_rename_player" 문구가 리턴
     '''
     rename_tmp=rename_player.where(name == rename_player.before_name).dropna()
     if len(rename_tmp) !=0:
         return rename_tmp["rename"].values[0]
     else:
         return "not_rename_player" 
-
-sampledata=test.copy()
-sampledata["year"] = [i[0:4] for i in sampledata.dateindex]
-sampledata["id"] = ""
-play_info = sampledata[["선수명","팀","year"]].drop_duplicates()
-play_info.index = range(0,len(play_info))
-
-for i in range(0,len(play_info)):
-    #print(play_info.선수명[i],play_info.팀[i],play_info.year[i])
-    sampledata = match_id(play_info.선수명[i],play_info.year[i],play_info.팀[i])
-
-sampledata.to_csv("./data/sample/test.csv",index=False)
 
