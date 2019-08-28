@@ -6,14 +6,14 @@ import pandas as pd
 
 player_id_list=pd.read_csv("./data/KBO_player_info_full.csv")
 
-test=pd.read_csv("./data/sample/test.csv")
-
+batter = pd.read_csv("./data/sample/KBO_batter_data_full.csv")
+pitcher = pd.read_csv("./data/sample/KBO_pitcher_data_full.csv")
 rename_player = pd.read_csv("./data/renamed_player_list.csv")
 
 test['선수명'][test['선수명']=="페르난데"] = "페르난데스"
 test['선수명'][test['선수명']=="해즐베이"] = "해즐베이커"
 test['선수명'][test['선수명']=="스몰린스"] = "스몰린스키"
-#test['선수명'][test['선수명']=="반슬라이"] = "반슬라이크"
+test['선수명'][test['선수명']=="반슬라이"] = "반슬라이크"
 
 def get_id(name):
     '''
@@ -76,13 +76,24 @@ def check_rename(name):
     else:
         return "not_rename_player" 
 
-sampledata=test.copy()
-sampledata["year"] = [i[0:4] for i in sampledata.dateindex]
-sampledata["id"] = ""
-play_info = sampledata[["선수명","팀","year"]].drop_duplicates()
-play_info.index = range(0,len(play_info))
+# 타자 데이터에 선수 아이디 붙이기  
 
-for i in range(0,len(play_info)):
-    #print(play_info.선수명[i],play_info.팀[i],play_info.year[i])
-    sampledata = match_id(play_info.선수명[i],play_info.year[i],play_info.팀[i])
+batterdata = batter.copy()
+batterdata["year"] = [i[0:4] for i in batterdata.dateindex]
+batterdata["id"] = ""
+batter_play_info = batterdata[["선수명","팀","year"]].drop_duplicates()
+batter_play_info.index = range(0,len(batter_play_info))
 
+for i in range(0,len(batter_play_info)):
+    batterdata = match_id(batterdata,batter_play_info.선수명[i],batter_play_info.year[i],batter_play_info.팀[i])
+
+# 투수 데이터에 선수 아이디 붙이기 
+
+pitcherdata = pitcher.copy()
+pitcherdata["year"] = [i[0:4] for i in pitcherdata.dateindex]
+pitcherdata["id"] = ""
+pitcher_play_info = pitcherdata[["선수명","팀","year"]].drop_duplicates()
+pitcher_play_info.index = range(0,len(pitcher_play_info))
+
+for i in range(0,len(pitcher_play_info)):
+    pitcherdata = match_id(pitcherdata,pitcher_play_info.선수명[i],pitcher_play_info.year[i],pitcher_play_info.팀[i])

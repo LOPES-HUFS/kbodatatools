@@ -14,11 +14,10 @@ key_list=list(playerdata['fulldata'].keys())
 
 team_list={'기아':'HT','두산':'OB','롯데':'LT','NC':'NC','SK':'SK','LG':'LG','키움':'WO','한화':'HH','삼성':'SS','KT':'KT'}
 
-def 
-
 def change_null_to_negative_number(temp):
     '''
-    input: 스코어보드의 회 정보가 담긴 열들  
+    input
+    temp: 스코어보드의 회 정보가 담긴 열들  
     '''
     return(-1 if temp == '-' else temp)
 
@@ -48,22 +47,28 @@ row_des = {
 filters = tb.Filters(complevel=0)
 tab = h5.create_table('/', 'scoreboard', row_des, title='scoreboard', filters=filters)
 
-def insult_data(colname,j):
+def insult_data(colname,data):
     '''
-     1~12회, 기록 4개 경기 없는 경우 -1로 변경
-    input(colname): 스코어보드 1~12회, 기록 4개 열정보
-    input(j): 스코어보드의 줄 (for문에서 돌아가는 것)
+    input:
+    colname(str): 스코어보드 1~12회, 기록 4개 열정보
+    data(dict value): 스코어보드의 줄 (for문에서 돌아가는 것)
     '''
-    tab.row[colname] = change_null_to_negative_number(j[colname])
+    tab.row[colname] = change_null_to_negative_number(data[colname])
 
-'''
-TODO: for 문을 뭔가 줄여보기  
-'''
-
-for i in key_list:
-    for j in data['fulldata'][i]['scoreboard']:
-        tab.row['date'] = i[0:8]
-        tab.row['team'] = team_list[j['팀']]
-        [test(k,j) for k in tab.colnames[2:]]
+def append_table(keys):
+    '''
+    input:
+    keys(str): 전체게임 딕트의 게임정보(날짜와 상대팀이 합쳐진 문자열)와 관련된 데이터
+    return: 
+    tab(table): 하나의 경기의 스코어보드가 붙여진 테이블
+    '''
+    for i in playerdata['fulldata'][keys]['scoreboard']:
+        tab.row['date'] = keys[0:8]
+        tab.row['team'] = team_list[i['팀']]
+        [insult_data(j,i) for j in tab.colnames[2:]]
         tab.row.append()
+    return tab
+
+for item in key_list:
+    tab=append_table(item)
 tab.flush()
