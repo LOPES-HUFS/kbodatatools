@@ -23,7 +23,7 @@ def make_date_column(data):
     data["month"] = ""
     for i in range(0,len(data['gameinfo'])):
         data["year"][i] = int(data['gameinfo'][i][0:4])
-        data["month"][i] = int(data['gameinfo'][i][5:6])
+        data["month"][i] = int(data['gameinfo'][i][4:6])
     return data
 
 # 아래의 함수에서 선수의 id를 확인하고 원하는 선수를 선택할 수 있다. 
@@ -56,6 +56,32 @@ def get_player_data(data,player_id):
     rows = data.read_where(f'id=={player_id}')
     player_data = pd.DataFrame(rows)
     return player_data
+
+def get_player_data(data,player_id,the_year="all",the_month=None):
+    '''
+    id와 연도 혹은 월 정보를 가지고 해당 정보의 선수의 데이터를 읽어오는 함수 
+    
+    Args:
+        data(HDF5 table data): hdf5 파일에 저장된 타자나 투수 데이터가 담긴 테이블 
+        player_id(int): 선수의 고유 id
+        the_year(int): 기본 값은 all로 선수가 경기를 한 전체 연도이며 특정 연도 입력시 해당 연도
+        the_month(int): 기본 값은 None으로 전체 월이지만 특정한 월을 지정하면 해당 월
+    
+    Returns:
+        player_data(pandas DF): 조건에 맞는 선수의 경기 기록
+    '''
+    rows = data.read_where(f'id=={player_id}')
+    player_data = pd.DataFrame(rows)
+    player_data = make_date_column(player_data)
+
+    if year != "all" and month != None:
+        return player_data[(player_data.year==the_year) & (player_data.month==the_month)]
+    if year != "all" and month == None:
+        return player_data[player_data.year==the_year]
+    if year == "all" and month == None:
+        return player_data
+    if year == "all" and month != None:
+        return player_data[player_data.month==the_month]
 
 def check_record(data,num1,num2,num3):
     '''
@@ -237,6 +263,7 @@ def get_pitcher_record(data,recordname):
         return sum(data.Lose)
     if recordname == "무":
         return sum(data.Draw)
+    
 
 
         
