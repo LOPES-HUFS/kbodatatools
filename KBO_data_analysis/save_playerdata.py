@@ -11,8 +11,6 @@ batter_data = pd.read_csv("./data/sample/KBO_batter_data_full.csv")
 kbo_batter_record = batter_data[["1","2","3","4","5","6","7","8","9","10","11","12","dateindex","타수","안타","타점","득점","타율","id"]]
 
 kbo_batter_copy = kbo_batter_record.copy()
-kbo_batter_copy['당일타율'] = kbo_batter_copy['안타']/kbo_batter_copy['타수']
-kbo_batter_copy['당일타율'] = kbo_batter_copy['당일타율'].fillna(0)
 
 h5 = tb.open_file("./data/sample/kbo_data_full.h5", 'w')
 
@@ -37,8 +35,6 @@ batter_des = {
     'H': tb.IntCol(pos=16),
     'RBI': tb.IntCol(pos=17),
     'R': tb.IntCol(pos=18),
-    'Today_AVG': tb.IntCol(pos=19),
-    'AVG': tb.IntCol(pos=20), 
 }
 
 tab = h5.create_table('/', 'batter_record', batter_des, title='batter_record', filters=filters)
@@ -62,8 +58,6 @@ for i in range(0,len(kbo_batter_copy)):
     tab.row['H'] = kbo_batter_copy.loc[i]['안타']
     tab.row['RBI'] = kbo_batter_copy.loc[i]['타점']
     tab.row['R'] = kbo_batter_copy.loc[i]['득점']
-    tab.row['Today_AVG'] = kbo_batter_copy.loc[i]['당일타율']
-    tab.row['AVG'] = kbo_batter_copy.loc[i]['타율']
     tab.row.append()
 tab.flush()
 
@@ -72,6 +66,8 @@ tab.flush()
 pitcher_data = pd.read_csv("./data/sample/KBO_pitcher_data_full.csv") 
 
 kbo_pitcher_record = pitcher_data[["dateindex","id","등판","inning","restinning","승리","패배","무승부","삼진","4사구","실점",'자책',"타수","타자","투구수","피안타","홈런","세이브","홀드"]]
+
+kbo_pitcher_copy = kbo_pitcher_record.copy()
 
 pitcher_des = {
     'gameinfo': tb.StringCol(13, pos=1),
