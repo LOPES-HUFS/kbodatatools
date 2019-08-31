@@ -8,6 +8,8 @@ import make_id
 
 tables = tb.open_file("./data/sample/kbo_data_full.h5","r")
 
+kbo_batter_data = tables.root.batter_record
+kbo_pitcher_data = tables.root.pitcher_record
 player_data = pd.read_csv("./data/KBO_player_info_full.csv")
 
 def make_date_column(data):
@@ -30,7 +32,7 @@ def make_date_column(data):
 def find_player_info(name):
     '''
     기록을 확인하고 싶은 선수의 이름을 입력하여 자신이 원하는 선수의 id를 확인하는 함수 
-    단 동명이인일 경우 출력된 데이터의 연도별 팀 정보를 보고 id를 스스로 찾아야함 
+    단 동명이인일 경우 출력된 데이터의 연도별 팀 정보를 보고 원하는 id를 스스로 찾아야함 
     예를 들면 큰 이병규(97109)는 2016년 이후에 은퇴로 소속팀이 없고 
     작은이병규(76100)은 16년 이후에도 소속팀이 있다. 는 정보로 원하는 선수의 id를 찾을 수 있다.
 
@@ -38,24 +40,19 @@ def find_player_info(name):
         name(str): 선수 이름
 
     Returns:
-        output(pandas DF): 선수의 id와 연도별 팀 정보가 담긴 데이터 프레임 
+        output(dict): 선수의 id와 연도별 팀 정보가 담긴 딕트 
     '''
-    return player_data[player_data['선수명']==name]
-
-def get_player_data(data,player_id):
-    '''
-    id를 토대로 해당 선수의 데이터를 읽어오는 함수 
+    id_list=[]
+    data=player_data[player_data['선수명']==name][player_data.columns[0:12]]
+    data.index = range(0,len(data))
+    for j in range(0,len(data)):
+        temp ={}
+        id_list.append({"ID":data['ID'].loc[j]})
+        for i in range(2010,2020):
+            temp.update({i:list(data[data.ID==data['ID'].loc[j]]["season_"+str(i)])[0]})
+        id_list[j].update({"seasons":temp})
     
-    Args:
-        data(HDF5 table data): hdf5 파일에 저장된 타자나 투수 데이터가 담긴 테이블 
-        player_id(int): 선수의 고유 id
-    
-    Returns:
-        player_data(pandas DF): 특정한 선수의 경기 기록 전체
-    '''
-    rows = data.read_where(f'id=={player_id}')
-    player_data = pd.DataFrame(rows)
-    return player_data
+    return id_list
 
 def get_player_data(data,player_id,the_year="all",the_month=None):
     '''
@@ -264,6 +261,8 @@ def get_pitcher_record(data,recordname):
     if recordname == "무":
         return sum(data.Draw)
     
-
+# 동명이인이면 둘다 나오게,      
+def get_player_record(name,record,year=None,month=None,id=None):
+    
 
         
