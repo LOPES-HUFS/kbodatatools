@@ -6,15 +6,15 @@ import pandas as pd
 
 # 타자 데이터를 h5파일에 저장 
 
-batter_data=pd.read_csv("./data/sample/KBO_batter_data_full.csv")
+batter_data = pd.read_csv("./data/sample/KBO_batter_data_full.csv")
 
-kbo_batter_record=batter_data[["1","2","3","4","5","6","7","8","9","10","11","12","dateindex","타수","안타","타점","득점","타율","id"]]
+kbo_batter_record = batter_data[["1","2","3","4","5","6","7","8","9","10","11","12","dateindex","타수","안타","타점","득점","타율","id"]]
 
 kbo_batter_copy = kbo_batter_record.copy()
 kbo_batter_copy['당일타율'] = kbo_batter_copy['안타']/kbo_batter_copy['타수']
 kbo_batter_copy['당일타율'] = kbo_batter_copy['당일타율'].fillna(0)
 
-h5 = tb.open_file("data/sample/kbo_data_full.h5", 'w')
+h5 = tb.open_file("./data/sample/kbo_data_full.h5", 'w')
 
 filters = tb.Filters(complevel=0)
 
@@ -41,7 +41,7 @@ batter_des = {
     'AVG': tb.IntCol(pos=20), 
 }
 
-tab = h5.create_table('/', 'batter_record', row_des, title='batter_record', filters=filters)
+tab = h5.create_table('/', 'batter_record', batter_des, title='batter_record', filters=filters)
 
 for i in range(0,len(kbo_batter_copy)):
     tab.row['gameinfo'] = kbo_batter_copy.loc[i]['dateindex']
@@ -69,9 +69,9 @@ tab.flush()
 
 # 투수 데이터를 h5 파일에 저장 
 
-pitcher_data=pd.read_csv("./data/sample/KBO_pitcher_data_full.csv") 
+pitcher_data = pd.read_csv("./data/sample/KBO_pitcher_data_full.csv") 
 
-kbo_pitcher_record=pitcher_data[["dateindex","id","등판","inning","restinning","승리","패배","무승부","삼진","4사구","실점",'자책',"타수","타자","투구수","피안타","홈런","세이브","홀드"]]
+kbo_pitcher_record = pitcher_data[["dateindex","id","등판","inning","restinning","승리","패배","무승부","삼진","4사구","실점",'자책',"타수","타자","투구수","피안타","홈런","세이브","홀드"]]
 
 pitcher_des = {
     'gameinfo': tb.StringCol(13, pos=1),
