@@ -54,7 +54,7 @@ def find_player_info(name):
     
     return id_list
 
-def get_player_data(data,player_id,the_year="all",the_month=None):
+def get_player_data(data,player_id,the_year=None,the_month=None):
     '''
     id와 연도 혹은 월 정보를 가지고 해당 정보의 선수의 데이터를 읽어오는 함수 
     
@@ -79,6 +79,14 @@ def get_player_data(data,player_id,the_year="all",the_month=None):
         return player_data
     if year == "all" and month != None:
         return player_data[player_data.month==the_month]
+
+def what_record(record):
+    b_fun=['타율','스탯','타점','득점','안타','1루타','2루타','3루타','홈런','볼넷','4구','몸에맞는공','고의4구','병살','출루율','장타율','희생플라이','희생번트','피삼진']
+    p_fun=['방어율','투구수','상대타자수','홀드','세이브','피안타','삼진','피홈런','4사구','자책점','승률','이닝','이닝당투구수','승리','패배','무승부']
+    if record in b_fun:
+        return "kbo_batter_data"
+    if record in p_fun:
+        return "kbo_pitcher_data"
 
 def check_record(data,num1,num2,num3):
     '''
@@ -204,7 +212,7 @@ def get_batter_record(data,recordname):
         return check_record(data,1300,1305,13)
     if recordname == "볼넷":
         return check_record(data,3000,3100,30)+check_record(data,3200,3300,32)
-    if recordname == "삼진":
+    if recordname == "피삼진":
         return check_record(data,2000,2100,20)+check_record(data,2000,2100,21)
     if recordname == "몸에맞는 공":
         return check_record(data,3100,3200,31)
@@ -260,7 +268,7 @@ def get_pitcher_record(data,recordname):
         return sum(data.Lose)
     if recordname == "무":
         return sum(data.Draw)
-    
+
 # 동명이인이면 둘다 나오게,      
 def get_player_record(name,record,year=None,month=None,id=None):
     
