@@ -3,7 +3,7 @@
 '''
 
 import pandas as pd
-import make_id
+import api.make_id
 
 player_id_list=pd.read_csv("./data/KBO_player_info_full.csv")
 
