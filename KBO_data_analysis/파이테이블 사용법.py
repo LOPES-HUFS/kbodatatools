@@ -6,26 +6,26 @@ import pandas as pd
 import tables as tb
 import make_id
 
-tables = tb.open_file("./data/sample/kbo_data_full.h5","r")
+#tables = tb.open_file("./data/sample/kbo_data_full.h5","r")
+#kbo_batter_data = tables.root.batter_record
+#kbo_pitcher_data = tables.root.pitcher_record
 
-kbo_batter_data = tables.root.batter_record
-kbo_pitcher_data = tables.root.pitcher_record
+batter_data = pd.read_csv("./data/sample/KBO_batter_data_full.csv")
+pitcher_data = pd.read_csv("./data/sample/KBO_pitcher_data_full.csv")
 player_data = pd.read_csv("./data/KBO_player_info_full.csv")
 
-def make_date_column(data):
+def make_month_column(data):
     '''
-    날짜 관련된 열을 만들어 주는 함수 
+    월 관련된 열을 만들어 주는 함수 
     Args:
         data(pandas DF): 선수의 기록 데이터 
 
     Returns:
         output(pandas DF): 날짜 관련 정보가 생성된 데이터 
     '''
-    data["year"] = ""
     data["month"] = ""
-    for i in range(0,len(data['gameinfo'])):
-        data["year"][i] = int(data['gameinfo'][i][0:4])
-        data["month"][i] = int(data['gameinfo'][i][4:6])
+    for i in range(0,len(data['dateindex'])):
+        data["month"][i] = int(data['dateindex'][i][4:6])
     return data
 
 # 아래의 함수에서 선수의 id를 확인하고 원하는 선수를 선택할 수 있다. 
@@ -67,17 +67,16 @@ def get_player_data(data,player_id,the_year=None,the_month=None):
     Returns:
         player_data(pandas DF): 조건에 맞는 선수의 경기 기록
     '''
-    rows = data.read_where(f'id=={player_id}')
-    player_data = pd.DataFrame(rows)
+    player_data = data[data.id == player_id]
     player_data = make_date_column(player_data)
 
-    if year != "all" and month != None:
+    if the_year != None and the_month != None:
         return player_data[(player_data.year==the_year) & (player_data.month==the_month)]
-    if year != "all" and month == None:
+    if the_year != None and the_month == None:
         return player_data[player_data.year==the_year]
-    if year == "all" and month == None:
+    if the_year == None and the_month == None:
         return player_data
-    if year == "all" and month != None:
+    if the_year == None and the_month != None:
         return player_data[player_data.month==the_month]
 
 def what_record(record):
@@ -85,14 +84,16 @@ def what_record(record):
     p_fun=['방어율','투구수','상대타자수','홀드','세이브','피안타','삼진','피홈런','4사구','자책점','승률','이닝','이닝당투구수','승리','패배','무승부']
     if record in b_fun:
         return "kbo_batter_data"
-    if record in p_fun:
+    elif record in p_fun:
         return "kbo_pitcher_data"
+    else:
+        return "찾는 기록을 계산할 수 없습니다"
 
 def check_record(data,num1,num2,num3):
     '''
     내부 함수로 코드로 변경된 기록을 보고 개수를 계산하는 함수  
     '''
-    data = data[data.columns[2:14]]
+    data = data[data.columns[0:12]]
     count1 = ['있다' if num1 <= x < num2 else '없다' for x in pd.to_numeric(pd.melt(data)['value'])].count("있다")
     count2 = ['있다' if len(str(x))==8 and str(x)[0:2] == str(num3) else '없다' for x in pd.melt(data)['value']].count("있다")
     count3 = ['있다' if len(str(x))==8 and str(x)[4:6] == str(num3) else '없다' for x in pd.melt(data)['value']].count("있다")
@@ -108,8 +109,8 @@ def get_AVG(data):
     Returns:
         output(numeric): 선수의 타율 
     '''
-    if sum(data.AB)!= 0:
-        return round(sum(data.H)/sum(data.AB),3)
+    if sum(data['타수'])!= 0:
+        return round(sum(data['안타'])/sum(data['타수']),3)
     else:
         return 0
 
@@ -126,10 +127,10 @@ def get_OBP(data):
     bb = check_record(data,3200,3300,32)+check_record(data,3000,3100,30)
     hbp = check_record(data,3100,3200,31)
     sf = check_record(data,5000,5006,50)
-    obp_temp = sum(data.AB)+bb+hbp+sf
+    obp_temp = sum(data['타수'])+bb+hbp+sf
 
     if obp_temp != 0:
-        return round((sum(data.H)+bb+hbp)/obp_temp,3)
+        return round((sum(data['안타'])+bb+hbp)/obp_temp,3)
     else:
         return 0
 
@@ -146,10 +147,10 @@ def get_SLG(data):
     one_b = check_record(data,1000,1029,10)
     two_b = check_record(data,1100,1123,11)
     three_b = check_record(data,1200,1222,12)
-    hormrun = check_record(data,1300,1305,13)
+    homerun = check_record(data,1300,1305,13)
 
-    if sum(data.AB)!= 0:
-        return round((one_b+2*two_b+3*three_b+4*hormrun)/sum(data.AB),3)
+    if sum(data['타수'])!= 0:
+        return round((one_b+2*two_b+3*three_b+4*homerun)/sum(data['타수']),3)
     else:
         return 0
 
@@ -165,7 +166,7 @@ def get_ERA(data):
     '''
     temp_era = sum(data.inning)+sum(data.restinning)
     if temp_era != 0:
-        return round(sum(data.ER)*9 /temp_era)
+        return round(sum(data['자책'])*9 /temp_era)
     else:
         return 99.99
 
@@ -181,7 +182,7 @@ def get_P_IP(data):
     '''
     temp_era = sum(data.inning)+sum(data.restinning)
     if temp_era != 0:
-        return round(sum(data.PIT) /temp_era)
+        return round(sum(data['투구수']) /temp_era)
     else:
         return 99.99
 
@@ -195,7 +196,7 @@ def get_WPCT(data):
     Returns:
         output(numeric): 선수의 이닝당 투구수
     '''
-    temp_wpct = sum(data.Win)+sum(data.Lose)
+    temp_wpct = sum(data['승리'])+sum(data['패배'])
     if temp_wpct != 0:
         return round(sum(data.Win) /temp_wpct)
     else:
