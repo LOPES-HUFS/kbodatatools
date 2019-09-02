@@ -217,11 +217,11 @@ def get_batter_record(data,recordname):
         return check_record(data,2000,2100,20)+check_record(data,2000,2100,21)
     if recordname == "몸에맞는 공":
         return check_record(data,3100,3200,31)
-    if recordname == "고의4구" or "고의사구":
+    if recordname == "고의사구":
         return check_record(data,3200,3300,32)
-    if recordname == "병살" or "병살타":
+    if recordname == "병살":
         return check_record(data,7200,7227,72)
-    if recordname == "희번" or "희생번트":
+    if recordname == "희생번트":
         return check_record(data,4100,4106,41)+check_record(data,6100,6108,61)
     if recordname == "희생플라이":
         return check_record(data,5000,5006,50)
@@ -232,31 +232,31 @@ def get_batter_record(data,recordname):
     if recordname == "장타율":
         return get_SLG(data)
     if recordname == "타점":
-        return sum(data.RBI)
+        return sum(data['타점'])
     if recordname == "득점":
-        return sum(data.R)
+        return sum(data['득점'])
 
 def get_pitcher_record(data,recordname):
     if recordname == "방어율":
         return get_ERA(data)
     if recordname == "투구수":
-        return sum(data.PIT)
+        return sum(data['투구수'])
     if recordname == "타자수":
-        return sum(data.NumberofBatter)
+        return sum(data["타자"])
     if recordname == "홀드":
-        return sum(data.Hold)
+        return sum(data["홀드"])
     if recordname == "세이브":
-        return sum(data.Save)
+        return sum(data['세이브'])
     if recordname == "피안타":
-        return sum(data.H)
+        return sum(data["피안타"])
     if recordname == "삼진":
-        return sum(data.K)
-    if recordname == "사사구" or "4사구":
-        return sum(data.DeadballAndFourball)
+        return sum(data["삼진"])
+    if recordname == "4사구":
+        return sum(data["4사구"])
     if recordname == "자책점":
-        return sum(data.ER)
+        return sum(data["자책"])
     if recordname == "피홈런":
-        return sum(data.HR)
+        return sum(data["홈런"])
     if recordname == "이닝":
         return round(sum(data.inning)+sum(data.restinning)/3,2)
     if recordname == "이닝당투구수":
@@ -264,11 +264,11 @@ def get_pitcher_record(data,recordname):
     if recordname == "승률":
         return get_WPCT(data)
     if recordname == "승":
-        return sum(data.Win)
+        return sum(data["승리"])
     if recordname == "패":
-        return sum(data.Lose)
+        return sum(data['패배'])
     if recordname == "무":
-        return sum(data.Draw)
+        return sum(data['무승부'])
 
 # 동명이인이면 둘다 나오게,      
 def get_player_record(name,record,year=None,month=None,id=None):
