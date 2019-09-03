@@ -5,7 +5,7 @@
 import pandas as pd
 import api.make_id
 
-player_id_list=pd.read_csv("./data/KBO_player_info_full.csv")
+player_id_list = pd.read_csv("./data/KBO_player_info_full.csv")
 
 batter = pd.read_csv("./data/sample/KBO_batter_data_full.csv")
 pitcher = pd.read_csv("./data/sample/KBO_pitcher_data_full.csv")
@@ -20,7 +20,9 @@ batter_play_info = batterdata[["선수명","팀","year"]].drop_duplicates()
 batter_play_info.index = range(0,len(batter_play_info))
 
 for i in range(0,len(batter_play_info)):
-    batterdata = make_id.match_id(batterdata,batter_play_info.선수명[i],batter_play_info.year[i],batter_play_info.팀[i])
+    batterdata = api.make_id.match_id(batterdata,batter_play_info.선수명[i],batter_play_info.year[i],batter_play_info.팀[i])
+
+batterdata.to_csv("./data/sample/KBO_batter_data_full.csv",index=False)
 
 # 투수 데이터에 선수 아이디 붙이기 
 
@@ -31,4 +33,6 @@ pitcher_play_info = pitcherdata[["선수명","팀","year"]].drop_duplicates()
 pitcher_play_info.index = range(0,len(pitcher_play_info))
 
 for i in range(0,len(pitcher_play_info)):
-    pitcherdata = make_id.match_id(pitcherdata,pitcher_play_info.선수명[i],pitcher_play_info.year[i],pitcher_play_info.팀[i])
+    pitcherdata = api.make_id.match_id(pitcherdata,pitcher_play_info.선수명[i],pitcher_play_info.year[i],pitcher_play_info.팀[i])
+
+pitcherdata.to_csv("./data/sample/KBO_pitcher_data_full.csv",index=False)

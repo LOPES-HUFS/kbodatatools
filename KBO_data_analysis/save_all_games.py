@@ -12,9 +12,7 @@ gameid = pd.read_csv("./data/KBO_gameid_full_season.csv")
 
 gamedict = main.stack_game_data(gameid)
 
-temp_file_name = "./data/sample/all_data.json"
-with open(temp_file_name, 'w') as outfile:  
-    json.dump(gamedict, outfile)
+main.write_json(gamedict)
 
 with open(temp_file_name, 'r') as outfile:
     playerdata = json.load(outfile)
