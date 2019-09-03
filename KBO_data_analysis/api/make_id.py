@@ -54,21 +54,22 @@ def match_id(data,name,year,team):
     year = str(year)
     id_list = get_id(name)
     if len(id_list)==1:
-        data.id[data["선수명"]==name] = id_list[0]
+        data.id[data["선수명"]==name] = int(id_list[0])
     elif len(id_list)==0:
         if check_rename(name) != "not_rename_player":
             newname = check_rename(name)
             id_list = get_id(newname)
-            data.id[data["선수명"]==name] = id_list[0]
+            data.id[data["선수명"]==name] = int(id_list[0])
         else:
             error.append([name,year,team])
     else:
+        print(name,year,team)
         id_list = list(find_id(name,year,team)[0])
         if len(id_list)>=2:
             print("check_record")
-            error.append([name,year,team])
+            
         else:
-            data.id[(data["선수명"]==name) & (data.팀.isin([team])) & (data.year.isin([year]))] = id_list[0]
+            data.id[(data["선수명"]==name) & (data.팀.isin([team])) & (data.year.isin([year]))] = int(id_list[0])
     return data
 
 def check_rename(name):
