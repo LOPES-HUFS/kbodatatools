@@ -67,7 +67,7 @@ def match_id(data,name,year,team):
         id_list = list(find_id(name,year,team)[0])
         if len(id_list)>=2:
             print("check_record")
-            
+            data.id[(data["선수명"]==name) & (data.팀.isin([team])) & (data.year.isin([year]))] = 0
         else:
             data.id[(data["선수명"]==name) & (data.팀.isin([team])) & (data.year.isin([year]))] = int(id_list[0])
     return data
