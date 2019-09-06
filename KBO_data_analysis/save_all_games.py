@@ -14,7 +14,7 @@ gamedict = main.stack_game_data(gameid)
 
 main.write_json(gamedict)
 
-with open(temp_file_name, 'r') as outfile:
+with open("./data/sample/all_data.json", 'r') as outfile:
     playerdata = json.load(outfile)
 
 temp = pd.DataFrame()
@@ -26,7 +26,7 @@ for i in range(0,len(playerdata['fulldata'].keys())):
     away['dateindex'] = list(playerdata['fulldata'].keys())[i]
     temp = temp.append(away.append(home))
 
-temp = temp.fillna(-1)
+temp = temp.fillna(0)
 temp['선수명'][temp['선수명']=="페르난데"] = "페르난데스"
 temp['선수명'][temp['선수명']=="해즐베이"] = "해즐베이커"
 temp['선수명'][temp['선수명']=="스몰린스"] = "스몰린스키"
