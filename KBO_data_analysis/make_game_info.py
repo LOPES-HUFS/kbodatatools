@@ -19,7 +19,7 @@ def make_game_info(gameid):
     Returns:
         output(pandas DF): 구장, 심판, 관중 수, 경기 시작, 진행, 끝 시간이 포함된 경기 정보 데이터프레임
     '''
-    ate = gameid[0:8]
+    date = gameid[0:8]
     away = gameid[8:10]
     home = gameid[10:12]
     doubleheader = gameid[12]
@@ -42,4 +42,4 @@ for i in playerdata['fulldata'].keys():
     
 game_info_df.index = range(0,len(game_info_df))
 
-game_info_df.to_csv("/data/sample/KBO_game_info_data.csv",index=False)
+game_info_df.to_csv("./data/sample/KBO_game_info_data.csv",index=False)
