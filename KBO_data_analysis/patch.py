@@ -58,9 +58,9 @@ def compare_lee_record(gamedate):
     return batter_data
 
 for i in data_76100_duplicated.date:
-    batter_data=compare_record(i)
+    batter_data=compare_lee_record(i)
 
-batter_data_full = batter_data[["dateindex","선수명","id","팀","포지션","1","2","3","4","5","6","7","8","9","10","11","12","타수","안타","타율","타점","득점"]]
+batter_data_full = batter_data[["dateindex","year","선수명","id","팀","포지션","1","2","3","4","5","6","7","8","9","10","11","12","타수","안타","타율","타점","득점"]]
 
 batter_data_full.to_csv("./data/sample/KBO_batter_data_full.csv",index=False)
 
