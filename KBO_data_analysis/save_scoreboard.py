@@ -1,5 +1,5 @@
 '''
-스코어 보드 전체 돌리는 코드
+전체 경기의 스코어 보드를 저장하는 코드
 '''
 import tables as tb
 import datetime as dt
@@ -21,7 +21,7 @@ def change_null_to_negative_number(temp):
     '''
     return(-1 if temp == '-' else temp)
 
-h5 = tb.open_file("test.h5", 'w')
+h5 = tb.open_file("./data/sample/KBO_scoreboard_full.h5", 'w')
 
 row_des = {
     'date': tb.StringCol(10, pos=1),

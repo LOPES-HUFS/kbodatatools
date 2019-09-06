@@ -38,6 +38,14 @@ for i in duplicate_date:
 data_76100_duplicated.columns = ['date','away','home','doubleheader','name','team',"1","2","3","4","5","6","7","8","9",'ten','eleven','twelve','ab','h','rbi','r','id']
 
 def compare_lee_record(gamedate):
+    '''
+    이병규의 경기기록을 비교 대조해서 어느 기록이 현역 이병규 선수의 기록인지 찾는 함수
+
+    Args:
+        gamedate(str): 경기 날짜
+    Returns:
+        batter_data(pandas DF): 이병규 id가 붙여진 타자 데이터
+    '''
     record_index=batter_data[(batter_data["선수명"] == "이병규")&(batter_data.date==gamedate)].index
     record_76100=data_76100_duplicated[data_76100_duplicated.date==gamedate][["1","2","3","4","5","6","7","8","9"]].values.tolist()[0] 
     for i in record_index:
@@ -82,6 +90,19 @@ for i in duplicate_date:
     data_70820_duplicated = data_70820_duplicated.append(data_70820[data_70820.date==i])
 
 def pitcher_compare_record(data,name,gamedate,id1,id2):
+    '''
+    동명이인 투수의 경기기록을 비교 대조해서 어느 기록 누구의 것인지 찾아 id를 붙여주는 함수
+
+    Args:
+        data(pandas DF): 같은 날 같은 팀에서 경기한 동명이인 선수의 기록이 있는 데이터
+        name(str): 동명이인 선수의 이름
+        gamedate(str): 경기 날짜
+        id1(int): 두명의 동명이인 선수 id 중 첫 번째
+        id2(int): 두명의 동명이인 선수 id 중 두 번째
+    Returns:
+        pitcher_data(pandas DF): 동명이인인 선수의 기록에 id가 붙여진 투수 데이터
+    '''
+
     record_index=pitcher_data[(pitcher_data["선수명"] == name)&(pitcher_data.date==gamedate)].index
     record_pitch=data[data.date==gamedate][["mound","ab","h","k"]].values.tolist()[0] 
     for i in record_index:
