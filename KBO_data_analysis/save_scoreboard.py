@@ -69,6 +69,8 @@ def append_table(keys):
         tab.row.append()
     return tab
 
-for item in key_list:
-    tab=append_table(item)
-tab.flush()
+
+if __name__ == "__main__":
+    for item in key_list:
+        tab=append_table(item)
+    tab.flush()

@@ -7,7 +7,6 @@ import main
 import json
 import pandas as pd
 
-
 gameid = pd.read_csv("./data/KBO_gameid_full_season.csv")
 
 gamedict = main.stack_game_data(gameid)
