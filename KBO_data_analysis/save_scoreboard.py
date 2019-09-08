@@ -21,6 +21,28 @@ def change_null_to_negative_number(temp):
     '''
     return(-1 if temp == '-' else temp)
 
+def insult_data(colname,data):
+    '''
+    input:
+    colname(str): 스코어보드 1~12회, 기록 4개 열정보
+    data(dict value): 스코어보드의 줄 (for문에서 돌아가는 것)
+    '''
+    tab.row[colname] = change_null_to_negative_number(data[colname])
+
+def append_table(keys):
+    '''
+    input:
+    keys(str): 전체게임 딕트의 게임정보(날짜와 상대팀이 합쳐진 문자열)와 관련된 데이터
+    return: 
+    tab(table): 하나의 경기의 스코어보드가 붙여진 테이블
+    '''
+    for i in playerdata['fulldata'][keys]['scoreboard']:
+        tab.row['date'] = keys[0:8]
+        tab.row['team'] = team_list[i['팀']]
+        [insult_data(j,i) for j in tab.colnames[2:]]
+        tab.row.append()
+    return tab
+
 h5 = tb.open_file("./data/sample/KBO_scoreboard_full.h5", 'w')
 
 row_des = {
@@ -47,30 +69,6 @@ row_des = {
 filters = tb.Filters(complevel=0)
 tab = h5.create_table('/', 'scoreboard', row_des, title='scoreboard', filters=filters)
 
-def insult_data(colname,data):
-    '''
-    input:
-    colname(str): 스코어보드 1~12회, 기록 4개 열정보
-    data(dict value): 스코어보드의 줄 (for문에서 돌아가는 것)
-    '''
-    tab.row[colname] = change_null_to_negative_number(data[colname])
-
-def append_table(keys):
-    '''
-    input:
-    keys(str): 전체게임 딕트의 게임정보(날짜와 상대팀이 합쳐진 문자열)와 관련된 데이터
-    return: 
-    tab(table): 하나의 경기의 스코어보드가 붙여진 테이블
-    '''
-    for i in playerdata['fulldata'][keys]['scoreboard']:
-        tab.row['date'] = keys[0:8]
-        tab.row['team'] = team_list[i['팀']]
-        [insult_data(j,i) for j in tab.colnames[2:]]
-        tab.row.append()
-    return tab
-
-
-if __name__ == "__main__":
-    for item in key_list:
-        tab=append_table(item)
-    tab.flush()
+for item in key_list:
+    tab=append_table(item)
+tab.flush()
