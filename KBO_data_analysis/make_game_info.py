@@ -20,9 +20,13 @@ def make_game_info(gameid):
         output(pandas DF): 구장, 심판, 관중 수, 경기 시작, 진행, 끝 시간이 포함된 경기 정보 데이터프레임
     '''
     date = gameid[0:8]
-    away = gameid[8:10]
-    home = gameid[10:12]
+    away = playerdata['fulldata'][gameid]['scoreboard'][0]['팀']
+    home = playerdata['fulldata'][gameid]['scoreboard'][1]['팀']
     doubleheader = gameid[12]
+    away_score = playerdata['fulldata'][gameid]['scoreboard'][0]['R']
+    home_score = playerdata['fulldata'][gameid]['scoreboard'][1]['R']
+    away_result = playerdata['fulldata'][gameid]['scoreboard'][0]['승패']
+    home_result = playerdata['fulldata'][gameid]['scoreboard'][1]['승패']
     stadium = playerdata['fulldata'][gameid]["ETC_info"]["구장"]
     spactator = playerdata['fulldata'][gameid]["ETC_info"]["관중"]
     start_time =  playerdata['fulldata'][gameid]["ETC_info"]["개시"]
@@ -32,7 +36,7 @@ def make_game_info(gameid):
         referee = "_".join(playerdata['fulldata'][gameid]["ETC_info"]["심판"])
     except:
         referee = ""
-    temp = pd.DataFrame({"경기날짜":date,"더블헤더":doubleheader,"원정팀":away,"홈팀":home,"구장":stadium,"관중":spactator,"개시":start_time,"종료":end_time,"경기시간":match_time,"심판":referee},index=[0])
+    temp = pd.DataFrame({"경기날짜":date,"더블헤더":doubleheader,"원정팀":away,"원정팀점수":away_score,"홈팀점수":home_score,"홈팀":home,"원정팀결과":away_result,"홈팀결과":home_result,"구장":stadium,"관중":spactator,"개시":start_time,"종료":end_time,"경기시간":match_time,"심판":referee},index=[0])
     return temp
 
 
