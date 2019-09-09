@@ -272,6 +272,8 @@ def get_pitcher_record(data,recordname):
 
 def get_player_record(**kwargs):
     '''
+    사용법: name = "이병규", record="장타율" 등등 이런식으로 인자를 입력하면 사용 가능 
+
     Args:
         keyword_Args: 
             name(str): 선수이름
