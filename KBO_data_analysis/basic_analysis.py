@@ -190,7 +190,7 @@ def get_WPCT(data):
     '''
     temp_wpct = sum(data['승리'])+sum(data['패배'])
     if temp_wpct != 0:
-        return round(sum(data.['승리']) /temp_wpct,3)
+        return round(sum(data['승리']) /temp_wpct,3)
     else:
         return 0
 
