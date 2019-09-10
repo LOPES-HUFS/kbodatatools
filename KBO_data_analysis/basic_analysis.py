@@ -156,9 +156,9 @@ def get_ERA(data):
     Returns:
         output(numeric): 선수의 방어율
     '''
-    temp_era = sum(data.inning)+sum(data.restinning)
+    temp_era = sum(data.inning)+sum(data.restinning)/3
     if temp_era != 0:
-        return round(sum(data['자책'])*9 /temp_era)
+        return round(sum(data['자책'])*9 /temp_era,3)
     else:
         return 99.99
 
@@ -172,9 +172,9 @@ def get_P_IP(data):
     Returns:
         output(numeric): 선수의 이닝당 투구수
     '''
-    temp_era = sum(data.inning)+sum(data.restinning)
+    temp_era = sum(data.inning)+sum(data.restinning)/3
     if temp_era != 0:
-        return round(sum(data['투구수']) /temp_era)
+        return round(sum(data['투구수']) /temp_era,3)
     else:
         return 99.99
 
@@ -190,7 +190,7 @@ def get_WPCT(data):
     '''
     temp_wpct = sum(data['승리'])+sum(data['패배'])
     if temp_wpct != 0:
-        return round(sum(data.Win) /temp_wpct)
+        return round(sum(data.Win) /temp_wpct,3)
     else:
         return 0
 
@@ -250,7 +250,7 @@ def get_pitcher_record(data,recordname):
     if recordname == "피홈런":
         return sum(data["홈런"])
     if recordname == "이닝":
-        return round(sum(data.inning)+sum(data.restinning)/3,2)
+        return round(sum(data.inning)+sum(data.restinning)/3,3)
     if recordname == "이닝당투구수":
         return get_P_IP(data)
     if recordname == "승률":
@@ -290,52 +290,52 @@ def get_player_record(**kwargs):
         else:
             if what_record(kwargs['record'])=="kbo_batter_data":
                 if 'year' and 'month' not in kwargs:
-                     return pd.DataFrame({"id":kwargs["id"],"기록":get_batter_record(get_player_data(batter_data,kwargs['id']),kwargs['record'])},index=[0])
+                     return pd.DataFrame({"id":kwargs["id"],kwargs['record']:get_batter_record(get_player_data(batter_data,kwargs['id']),kwargs['record'])},index=[0])
                 if 'year' and 'month' in kwargs:
                     player_df = get_player_data(batter_data,kwargs['id'],kwargs['year'],kwargs['month'])
                     if len(player_df) != 0:
                         temp = get_batter_record(player_df,kwargs['record'])
-                        return pd.DataFrame({"id":kwargs["id"],"기록":temp,"연도":kwargs['year'],"월":kwargs['month']},index=[0])
+                        return pd.DataFrame({"id":kwargs["id"],kwargs['record']:temp,"연도":kwargs['year'],"월":kwargs['month']},index=[0])
                     else:
-                        return pd.DataFrame({"id":kwargs["id"],"기록":"출장 기록이 없습니다.","연도":kwargs['year'],"월":kwargs['month']},index=[0])
+                        return pd.DataFrame({"id":kwargs["id"],kwargs['record']:"출장 기록이 없습니다.","연도":kwargs['year'],"월":kwargs['month']},index=[0])
                 if 'year' in kwargs:
                     player_df = get_player_data(batter_data,kwargs['id'],kwargs['year'])
                     if len(player_df) != 0:
                         temp = get_batter_record(player_df,kwargs['record'])
-                        return pd.DataFrame({"id":kwargs["id"],"기록":temp,"연도":kwargs['year']},index=[0])
+                        return pd.DataFrame({"id":kwargs["id"],kwargs['record']:temp,"연도":kwargs['year']},index=[0])
                     else:
-                        return pd.DataFrame({"id":kwargs["id"],"기록":"출장 기록이 없습니다.","연도":kwargs['year']},index=[0])
+                        return pd.DataFrame({"id":kwargs["id"],kwargs['record']:"출장 기록이 없습니다.","연도":kwargs['year']},index=[0])
                 if 'month' in kwargs:
                     player_df = get_player_data(batter_data,kwargs['id'],None,kwargs['month'])
                     if len(player_df) != 0:
                         temp = get_batter_record(player_df,kwargs['record'])
-                        return pd.DataFrame({"id":kwargs["id"],"기록":temp,"월":kwargs['month']},index=[0])
+                        return pd.DataFrame({"id":kwargs["id"],kwargs['record']:temp,"월":kwargs['month']},index=[0])
                     else:
-                        return pd.DataFrame({"id":kwargs["id"],"기록":"출장 기록이 없습니다.","월":kwargs['month']},index=[0])
+                        return pd.DataFrame({"id":kwargs["id"],kwargs['record']:"출장 기록이 없습니다.","월":kwargs['month']},index=[0])
             elif what_record(kwargs['record'])=="kbo_pitcher_data":
                 if 'year' and 'month' not in kwargs:
-                     return pd.DataFrame({"id":kwargs["id"],"기록":get_pitcher_record(get_player_data(pitcher_data,kwargs['id']),kwargs['record'])},index=[0])
+                    return pd.DataFrame({"id":kwargs["id"],kwargs['record']:get_pitcher_record(get_player_data(pitcher_data,kwargs['id']),kwargs['record'])},index=[0])
                 if 'year' and 'month' in kwargs:
                     player_df = get_player_data(pitcher_data,kwargs['id'],kwargs['year'],kwargs['month'])
                     if len(player_df) != 0:
                         temp = get_pitcher_record(player_df,kwargs['record'])
-                        return pd.DataFrame({"id":kwargs["id"],"기록":temp,"연도":kwargs['year'],"월":kwargs['month']},index=[0])
+                        return pd.DataFrame({"id":kwargs["id"],kwargs['record']:temp,"연도":kwargs['year'],"월":kwargs['month']},index=[0])
                     else:
-                        return pd.DataFrame({"id":kwargs["id"],"기록":"출장 기록이 없습니다.","연도":kwargs['year'],"월":kwargs['month']},index=[0])                            
+                        return pd.DataFrame({"id":kwargs["id"],kwargs['record']:"출장 기록이 없습니다.","연도":kwargs['year'],"월":kwargs['month']},index=[0])                            
                 if 'year' in kwargs:
                     player_df = get_player_data(pitcher_data,kwargs['id'],kwargs['year'])
                     if len(player_df) != 0:
                         temp = get_pitcher_record(player_df,kwargs['record'])
-                        return pd.DataFrame({"id":kwargs["id"],"기록":temp,"연도":kwargs['year']},index=[0])
+                        return pd.DataFrame({"id":kwargs["id"],kwargs['record']:temp,"연도":kwargs['year']},index=[0])
                     else:
-                        return pd.DataFrame({"id":kwargs["id"],"기록":"출장 기록이 없습니다.","연도":kwargs['year']},index=[0])      
+                        return pd.DataFrame({"id":kwargs["id"],kwargs['record']:"출장 기록이 없습니다.","연도":kwargs['year']},index=[0])      
                 if 'month' in kwargs:
                     player_df = get_player_data(pitcher_data,kwargs['id'],None,kwargs['month'])
                     if len(player_df) != 0:
                         temp = get_pitcher_record(player_df,kwargs['record'])
-                        return pd.DataFrame({"id":kwargs["id"],"기록":temp,"월":kwargs['month']},index=[0])
+                        return pd.DataFrame({"id":kwargs["id"],kwargs['record']:temp,"월":kwargs['month']},index=[0])
                     else:
-                        return pd.DataFrame({"id":kwargs["id"],"기록":"출장 기록이 없습니다.","월":kwargs['month']},index=[0])
+                        return pd.DataFrame({"id":kwargs["id"],kwargs['record']:"출장 기록이 없습니다.","월":kwargs['month']},index=[0])
             else:
                 return "이 기록은 현재 데이터로 계산할 수 없습니다"
     if "id" not in kwargs:
@@ -346,54 +346,54 @@ def get_player_record(**kwargs):
                 if 'year' and 'month' not in kwargs:
                     player_df = get_player_data(batter_data,i)
                     player_record = get_batter_record(player_df,kwargs['record'])
-                    temp = pd.DataFrame({"id":i,"기록":player_record},index=[0])
+                    temp = pd.DataFrame({"id":i,kwargs['record']:player_record},index=[0])
                 if 'year' and 'month' in kwargs:
                     player_df = get_player_data(batter_data,i,kwargs['year'],kwargs['month'])
                     if len(player_df) != 0:
                         player_record = get_batter_record(player_df,kwargs['record'])
-                        temp = pd.DataFrame({"id":i,"기록":player_record,"연도":kwargs['year'],"월":kwargs['month']},index=[0])
+                        temp = pd.DataFrame({"id":i,kwargs['record']:player_record,"연도":kwargs['year'],"월":kwargs['month']},index=[0])
                     else:
-                        temp = pd.DataFrame({"id":i,"기록":"출장 기록이 없습니다.","연도":kwargs['year'],"월":kwargs['month']},index=[0])
+                        temp = pd.DataFrame({"id":i,kwargs['record']:"출장 기록이 없습니다.","연도":kwargs['year'],"월":kwargs['month']},index=[0])
                 if 'year' in kwargs:
                     player_df = get_player_data(batter_data,i,kwargs['year'])
                     if len(player_df) != 0:
                         player_record = get_batter_record(player_df,kwargs['record'])
-                        temp = pd.DataFrame({"id":i,"기록":player_record,"연도":kwargs['year']},index=[0])
+                        temp = pd.DataFrame({"id":i,kwargs['record']:player_record,"연도":kwargs['year']},index=[0])
                     else:
-                        temp = pd.DataFrame({"id":i,"기록":"출장 기록이 없습니다.","연도":kwargs['year']},index=[0])
+                        temp = pd.DataFrame({"id":i,kwargs['record']:"출장 기록이 없습니다.","연도":kwargs['year']},index=[0])
                 if 'month' in kwargs:
                     player_df = get_player_data(batter_data,i,None,kwargs['month'])
                     if len(player_df) != 0:
                         player_record = get_batter_record(player_df,kwargs['record'])
-                        temp = pd.DataFrame({"id":i,"기록":player_record,"월":kwargs['month']},index=[0])
+                        temp = pd.DataFrame({"id":i,kwargs['record']:player_record,"월":kwargs['month']},index=[0])
                     else:
-                        temp = pd.DataFrame({"id":i,"기록":"출장 기록이 없습니다.","월":kwargs['month']},index=[0])
+                        temp = pd.DataFrame({"id":i,kwargs['record']:"출장 기록이 없습니다.","월":kwargs['month']},index=[0])
             elif what_record(kwargs['record'])=="kbo_pitcher_data":
                 if 'year' and 'month' not in kwargs:
                     player_df = get_player_data(pitcher_data,i)
                     player_record = get_pitcher_record(player_df,kwargs['record'])
-                    temp = pd.DataFrame({"id":i,"기록":player_record},index=[0])
+                    temp = pd.DataFrame({"id":i,kwargs['record']:player_record},index=[0])
                 if 'year' and 'month' in kwargs:
                     player_df = get_player_data(pitcher_data,i,kwargs['year'],kwargs['month'])
                     if len(player_df) != 0:
                         player_record = get_pitcher_record(player_df,kwargs['record'])
-                        temp = pd.DataFrame({"id":i,"기록":player_record,"연도":kwargs['year'],"월":kwargs['month']},index=[0])
+                        temp = pd.DataFrame({"id":i,kwargs['record']:player_record,"연도":kwargs['year'],"월":kwargs['month']},index=[0])
                     else:
-                        temp = pd.DataFrame({"id":i,"기록":"출장 기록이 없습니다.","연도":kwargs['year'],"월":kwargs['month']},index=[0])
+                        temp = pd.DataFrame({"id":i,kwargs['record']:"출장 기록이 없습니다.","연도":kwargs['year'],"월":kwargs['month']},index=[0])
                 if 'year' in kwargs:
                     player_df = get_player_data(pitcher_data,i,kwargs['year'])
                     if len(player_df) != 0:
                         player_record = get_pitcher_record(player_df,kwargs['record'])
-                        temp = pd.DataFrame({"id":i,"기록":player_record,"연도":kwargs['year']},index=[0])
+                        temp = pd.DataFrame({"id":i,kwargs['record']:player_record,"연도":kwargs['year']},index=[0])
                     else:
-                        temp = pd.DataFrame({"id":i,"기록":"출장 기록이 없습니다.","연도":kwargs['year']},index=[0])
+                        temp = pd.DataFrame({"id":i,kwargs['record']:"출장 기록이 없습니다.","연도":kwargs['year']},index=[0])
                 if 'month' in kwargs:
                     player_df = get_player_data(pitcher_data,i,None,kwargs['month'])
                     if len(player_df) != 0:
                         player_record = get_pitcher_record(player_df,kwargs['record'])
-                        temp = pd.DataFrame({"id":i,"기록":player_record,"월":kwargs['month']},index=[0])
+                        temp = pd.DataFrame({"id":i,kwargs['record']:player_record,"월":kwargs['month']},index=[0])
                     else:
-                        temp = pd.DataFrame({"id":i,"기록":"출장 기록이 없습니다.","월":kwargs['month']},index=[0])
+                        temp = pd.DataFrame({"id":i,kwargs['record']:"출장 기록이 없습니다.","월":kwargs['month']},index=[0])
             else:
                 return "이 기록은 현재 데이터로 계산할 수 없습니다"
             

@@ -74,8 +74,8 @@ for i in pitcher_data.index[(pitcher_data["id"]==0) & (pitcher_data["선수명"]
 data_70820 = pd.read_csv("./data/patch_file/data_70820.csv")
 data_99137 = pd.read_csv("./data/patch_file/data_99137.csv")
 
-date_70820=[i for i in list(pitcher_data.date[(pitcher_data["선수명"] == "이승호")& (pitcher_data.id==0)]) if i not in list(data_70820.date)]
-date_99137=[i for i in list(pitcher_data.date[(pitcher_data["선수명"] == "이승호")& (pitcher_data.id==0)]) if i not in list(data_99137.date)]
+date_70820=[i for i in list(pitcher_data.date[(pitcher_data["선수명"] == "이승호")& (pitcher_data.id==0)]) if i not in list(data_99137.date)]
+date_99137=[i for i in list(pitcher_data.date[(pitcher_data["선수명"] == "이승호")& (pitcher_data.id==0)]) if i not in list(data_70820.date)]
 
 for i in date_70820:
     pitcher_data.id[(pitcher_data.date == i)&(pitcher_data["선수명"] == "이승호")] = 70820
@@ -125,8 +125,8 @@ for i in pitcher_data.index[(pitcher_data["id"]==0) & (pitcher_data["선수명"]
 data_74556 = pd.read_csv("./data/patch_file/data_74556.csv")
 data_79535 = pd.read_csv("./data/patch_file/data_79535.csv")
 
-date_74556 = [i for i in list(pitcher_data.date[(pitcher_data["선수명"] == "허준혁")& (pitcher_data.id==0)]) if i not in list(data_74556.date)]
-date_79535 = [i for i in list(pitcher_data.date[(pitcher_data["선수명"] == "허준혁")& (pitcher_data.id==0)]) if i not in list(data_79535.date)]
+date_74556 = [i for i in list(pitcher_data.date[(pitcher_data["선수명"] == "허준혁")& (pitcher_data.id==0)]) if i not in list(data_79535.date)]
+date_79535 = [i for i in list(pitcher_data.date[(pitcher_data["선수명"] == "허준혁")& (pitcher_data.id==0)]) if i not in list(data_74556.date)]
 
 for i in date_74556:
     pitcher_data.id[(pitcher_data.date == i)&(pitcher_data["선수명"] == "허준혁")] = 74556
