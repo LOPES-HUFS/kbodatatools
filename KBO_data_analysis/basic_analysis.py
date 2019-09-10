@@ -257,11 +257,11 @@ def get_pitcher_record(data,recordname):
         return get_P_IP(data)
     if recordname == "승률":
         return get_WPCT(data)
-    if recordname == "승":
+    if recordname in ["승리","승"]:
         return sum(data["승리"])
-    if recordname == "패":
+    if recordname == in ["패배","패"]:
         return sum(data['패배'])
-    if recordname == "무":
+    if recordname == in ["무","무승부"]:
         return sum(data['무승부'])
 
 def get_player_record(**kwargs):
