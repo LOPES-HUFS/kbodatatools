@@ -14,7 +14,7 @@ def get_game(date, home_team, away_team, double=0):
     Args:
         date (int): 20190511 과 같이 숫자로 만든 경기 날짜
         home_team (str): 홈팀
-    
+        away_team (str): 원정팀
     Returns:
         soup (soup): BeautifulSoup의 soup
     '''
