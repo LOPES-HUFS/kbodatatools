@@ -3,12 +3,6 @@
 '''
 
 import pandas as pd
-import tables as tb
-import make_id
-
-#tables = tb.open_file("./data/sample/kbo_data_full.h5","r")
-#kbo_batter_data = tables.root.batter_record
-#kbo_pitcher_data = tables.root.pitcher_record
 
 batter_data = pd.read_csv("./data/sample/KBO_batter_data_full.csv")
 pitcher_data = pd.read_csv("./data/sample/KBO_pitcher_data_full.csv")
@@ -32,9 +26,6 @@ def make_month_column(data):
 def find_player_info(name):
     '''
     기록을 확인하고 싶은 선수의 이름을 입력하여 자신이 원하는 선수의 id를 확인하는 함수 
-    단 동명이인일 경우 출력된 데이터의 연도별 팀 정보를 보고 원하는 id를 스스로 찾아야함 
-    예를 들면 큰 이병규(97109)는 2016년 이후에 은퇴로 소속팀이 없고 
-    작은이병규(76100)은 16년 이후에도 소속팀이 있다. 는 정보로 원하는 선수의 id를 찾을 수 있다.
 
     Args:
         name(str): 선수 이름
@@ -346,7 +337,6 @@ def get_player_record(**kwargs):
                         return pd.DataFrame({"id":kwargs["id"],"기록":"출장 기록이 없습니다.","월":kwargs['month']},index=[0])
             else:
                 return "이 기록은 현재 데이터로 계산할 수 없습니다"
-    # 데이터 어떻게 출력할지 고려 딕트로 할지 아니면 데이터 프레임으로 쌓을지 
     if "id" not in kwargs:
         idlists =[i["ID"] for i in find_player_info(kwargs['name'])]
         player_record_df = pd.DataFrame()
