@@ -20,7 +20,7 @@ def make_month_column(data):
     data["month"] = ""
     data.index = range(0,len(data))
     for i in range(0,len(data['dateindex'])):
-        data["month"][i] = int(data['dateindex'][i][4:6])
+        data.loc[i,"month"] = int(data.loc[i,'dateindex'][4:6])
     return data
 
 # 아래의 함수에서 선수의 id를 확인하고 원하는 선수를 선택할 수 있다. 
@@ -290,7 +290,11 @@ def get_player_record(**kwargs):
         else:
             if what_record(kwargs['record'])=="kbo_batter_data":
                 if 'year' and 'month' not in kwargs:
-                     return pd.DataFrame({"id":kwargs["id"],kwargs['record']:get_batter_record(get_player_data(batter_data,kwargs['id']),kwargs['record'])},index=[0])
+                    player_df = get_player_data(batter_data,kwargs['id'])
+                    if len(player_df) != 0:
+                        return pd.DataFrame({"id":kwargs["id"],kwargs['record']:get_batter_record(player_df,kwargs['record'])},index=[0])
+                    else:
+                        return pd.DataFrame({"id":kwargs["id"],kwargs['record']:"출장 기록이 없습니다."},index=[0])
                 if 'year' and 'month' in kwargs:
                     player_df = get_player_data(batter_data,kwargs['id'],kwargs['year'],kwargs['month'])
                     if len(player_df) != 0:
@@ -314,7 +318,11 @@ def get_player_record(**kwargs):
                         return pd.DataFrame({"id":kwargs["id"],kwargs['record']:"출장 기록이 없습니다.","월":kwargs['month']},index=[0])
             elif what_record(kwargs['record'])=="kbo_pitcher_data":
                 if 'year' and 'month' not in kwargs:
-                    return pd.DataFrame({"id":kwargs["id"],kwargs['record']:get_pitcher_record(get_player_data(pitcher_data,kwargs['id']),kwargs['record'])},index=[0])
+                    player_df = get_player_data(pitcher_data,kwargs['id'])
+                    if len(player_df) != 0:
+                        return pd.DataFrame({"id":kwargs["id"],kwargs['record']:get_pitcher_record(player_df,kwargs['record'])},index=[0])
+                    else:
+                        return pd.DataFrame({"id":kwargs["id"],kwargs['record']:"출장 기록이 없습니다."},index=[0])
                 if 'year' and 'month' in kwargs:
                     player_df = get_player_data(pitcher_data,kwargs['id'],kwargs['year'],kwargs['month'])
                     if len(player_df) != 0:
