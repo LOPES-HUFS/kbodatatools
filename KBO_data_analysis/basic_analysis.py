@@ -18,6 +18,7 @@ def make_month_column(data):
         output(pandas DF): 날짜 관련 정보가 생성된 데이터 
     '''
     data["month"] = ""
+    data.index = range(0,len(data))
     for i in range(0,len(data['dateindex'])):
         data["month"][i] = int(data['dateindex'][i][4:6])
     return data
@@ -59,7 +60,7 @@ def get_player_data(data,player_id,the_year=None,the_month=None):
         player_data(pandas DF): 조건에 맞는 선수의 경기 기록
     '''
     player_data = data[data.id == player_id]
-    player_data = make_date_column(player_data)
+    player_data = make_month_column(player_data)
 
     if the_year != None and the_month != None:
         return player_data[(player_data.year==the_year) & (player_data.month==the_month)]
@@ -84,7 +85,7 @@ def check_record(data,num1,num2,num3):
     '''
     내부 함수로 코드로 변경된 기록을 보고 개수를 계산하는 함수  
     '''
-    data = data[data.columns[0:12]]
+    data = data[['1','2','3','4','5','6','7','8','9','10','11','12']]
     count1 = ['있다' if num1 <= x < num2 else '없다' for x in pd.to_numeric(pd.melt(data)['value'])].count("있다")
     count2 = ['있다' if len(str(x))==8 and str(x)[0:2] == str(num3) else '없다' for x in pd.melt(data)['value']].count("있다")
     count3 = ['있다' if len(str(x))==8 and str(x)[4:6] == str(num3) else '없다' for x in pd.melt(data)['value']].count("있다")
