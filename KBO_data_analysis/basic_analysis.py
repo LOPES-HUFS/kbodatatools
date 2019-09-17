@@ -28,11 +28,11 @@ def find_player_info(name):
     
     return id_list
 
-def length_test(data):
+def length_test(data,record):
     if len(data) != 0 and hasattr(data, '등판')==False:
-        return get_batter_record(data,kwargs['record'])
+        return get_batter_record(data,record)
     if len(data) != 0 and hasattr(data, '등판')==True:
-        return get_pichter_record(data,kwargs['record'])
+        return get_pitcher_record(data,record)
     if len(data) == 0:
         return "출장 기록이 없습니다."
 
@@ -290,18 +290,18 @@ def arg_test(data,temp_dict):
     '''
     keylist=list(temp_dict.keys())
     print(keylist)
-    if 'year' and 'month' not in keylist:
+    if 'year' not in keylist and 'month' not in keylist:
         player_df = get_player_data(data,temp_dict['id'])
-        return pd.DataFrame({"id":temp_dict["id"],temp_dict['record']:length_test(player_df)},index=[0])
-    if 'year' and 'month' in keylist:
+        return pd.DataFrame({"id":temp_dict["id"],temp_dict['record']:length_test(player_df,temp_dict['record'])},index=[0])
+    if 'year' in keylist and 'month' in keylist:
         player_df = get_player_data(data,temp_dict['id'],temp_dict['year'],temp_dict['month'])
-        return pd.DataFrame({"id":temp_dict["id"],temp_dict['record']:length_test(player_df),"연도":temp_dict['year'],"월":temp_dict['month']},index=[0])
+        return pd.DataFrame({"id":temp_dict["id"],temp_dict['record']:length_test(player_df,temp_dict['record']),"연도":temp_dict['year'],"월":temp_dict['month']},index=[0])
     if 'year' in keylist:
         player_df = get_player_data(data,temp_dict['id'],temp_dict['year'])   
-        return pd.DataFrame({"id":temp_dict["id"],temp_dict['record']:length_test(player_df),"연도":temp_dict['year']},index=[0])
+        return pd.DataFrame({"id":temp_dict["id"],temp_dict['record']:length_test(player_df,temp_dict['record']),"연도":temp_dict['year']},index=[0])
     if 'year' not in keylist and 'month' in keylist:
         player_df = get_player_data(data,temp_dict['id'],None,temp_dict['month'])    
-        return pd.DataFrame({"id":temp_dict["id"],temp_dict['record']:length_test(player_df),"월":temp_dict['month']},index=[0])
+        return pd.DataFrame({"id":temp_dict["id"],temp_dict['record']:length_test(player_df,temp_dict['record']),"월":temp_dict['month']},index=[0])
     
 def get_record_data(**kwargs):
     '''
