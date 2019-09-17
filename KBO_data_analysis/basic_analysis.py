@@ -2,26 +2,7 @@
 타자 데이터와 투수 데이터 파일을 읽어와 원하는 선수를 찾고 선수의 기록을 확인하는 함수들 
 '''
 
-import pandas as pd
-
-batter_data = pd.read_csv("./data/sample/KBO_batter_data_full.csv")
-pitcher_data = pd.read_csv("./data/sample/KBO_pitcher_data_full.csv")
-player_data = pd.read_csv("./data/KBO_player_info_full.csv")
-
-def make_month_column(data):
-    '''
-    월 관련된 열을 만들어 주는 함수 
-    Args:
-        data(pandas DF): 선수의 기록 데이터 
-
-    Returns:
-        output(pandas DF): 날짜 관련 정보가 생성된 데이터 
-    '''
-    data["month"] = ""
-    data.index = range(0,len(data))
-    for i in range(0,len(data['dateindex'])):
-        data.loc[i,"month"] = int(data.loc[i,'dateindex'][4:6])
-    return data
+import bring_datas as dt
 
 # 아래의 함수에서 선수의 id를 확인하고 원하는 선수를 선택할 수 있다. 
 def find_player_info(name):
@@ -35,7 +16,7 @@ def find_player_info(name):
         output(dict): 선수의 id와 연도별 팀 정보가 담긴 딕트 
     '''
     id_list=[]
-    data=player_data[player_data['선수명']==name][player_data.columns[0:12]]
+    data = dt.player_data[dt.player_data['선수명']==name][dt.player_data.columns[0:12]]
     data.index = range(0,len(data))
     for j in range(0,len(data)):
         temp ={}
@@ -46,7 +27,18 @@ def find_player_info(name):
     
     return id_list
 
+def length_test(data):
+    if len(data) != 0 and hasattr(data, '등판')==False:
+        return get_batter_record(data,kwargs['record'])
+    if len(data) != 0 and hasattr(data, '등판')==True:
+        return get_pichter_record(data,kwargs['record'])
+    if len(data) == 0:
+        return "출장 기록이 없습니다."
+
+
+
 def get_player_data(data,player_id,the_year=None,the_month=None):
+    TODO: 데이터 만드는 과정에서 월 열 붙이는 작업 따로 빼고 연도와 월에 따른 데이터 분류 작업 다시 고려 
     '''
     id와 연도 혹은 월 정보를 가지고 해당 정보의 선수의 데이터를 읽어오는 함수 
     
@@ -59,18 +51,19 @@ def get_player_data(data,player_id,the_year=None,the_month=None):
     Returns:
         player_data(pandas DF): 조건에 맞는 선수의 경기 기록
     '''
-    player_data = data[data.id == player_id]
-    player_data = make_month_column(player_data)
+    selected_player_data = data[data.id == player_id]
 
     if the_year != None and the_month != None:
-        return player_data[(player_data.year==the_year) & (player_data.month==the_month)]
+        tempdata = selected_player_data[(selected_player_data.year==the_year) & (selected_player_data.month==the_month)]
     if the_year != None and the_month == None:
-        return player_data[player_data.year==the_year]
+        tempdata = selected_player_data[selected_player_data.year==the_year]
     if the_year == None and the_month == None:
-        return player_data
+        tempdata = selected_player_data
     if the_year == None and the_month != None:
-        return player_data[player_data.month==the_month]
-
+        tempdata = selected_player_data[selected_player_data.month==the_month]
+    
+    return tempdata
+    
 def what_record(record):
     b_fun=['타율','타점','득점','안타','1루타','2루타','3루타','홈런','볼넷','4구','몸에맞는공','고의4구','병살','출루율','장타율','희생플라이','희생번트','피삼진']
     p_fun=['방어율','투구수','타자수','홀드','세이브','피안타','삼진','피홈런','4사구','자책점','승률','이닝','이닝당투구수','승리','패배','무승부']
@@ -264,7 +257,24 @@ def get_pitcher_record(data,recordname):
     if recordname == in ["무","무승부"]:
         return sum(data['무승부'])
 
-def get_player_record(**kwargs):
+
+def arg_test(data,temp_dict):
+    keylist=list(temp_dict.keys())
+   
+    if 'year' and 'month' not in keylist:
+        player_df = get_player_data(data,temp_dict['id'])
+        return pd.DataFrame({"id":temp_dict["id"],temp_dict['record']:length_test(player_df)},index=[0])
+    if 'year' and 'month' in keylist:
+        player_df = get_player_data(data,temp_dict['id'],temp_dict['year'],temp_dict['month'])
+        return pd.DataFrame({"id":temp_dict["id"],temp_dict['record']:length_test(player_df),"연도":temp_dict['year'],"월":temp_dict['month']},index=[0])
+    if 'year' in keylist:
+        player_df = get_player_data(data,temp_dict['id'],temp_dict['year'])   
+        return pd.DataFrame({"id":temp_dict["id"],temp_dict['record']:length_test(player_df),"연도":temp_dict['year']},index=[0])
+    if 'month' in kwargs:
+        player_df = get_player_data(data,temp_dict['id'],None,temp_dict['month'])    
+        return pd.DataFrame({"id":temp_dict["id"],temp_dict['record']:length_test(player_df),"월":temp_dict['month']},index=[0])
+    
+def get_record_data(**kwargs):
     '''
     사용법: name = "이병규", record="장타율" 등등 이런식으로 인자를 입력하면 사용 가능 
 
@@ -279,144 +289,55 @@ def get_player_record(**kwargs):
         output(pandas DF): 선수의 id와 기록이 있는 데이터 프레임
 
     '''
-    
+
     if "name" not in kwargs:
         return "선수 이름이 누락되었습니다"
     if "record" not in kwargs:
         return "찾는 기록이 누락되었습니다"
-    if kwargs['name'] not in list(player_data['선수명'].unique()):
+    if kwargs['name'] not in list(dt.player_data['선수명'].unique()):
         return "해당 선수는 2010년에서 2019년 시즌에 경기 기록이 없습니다."
-    #id 부분 삭제 고려 
     if "id" in kwargs:
-        if  kwargs["id"] not in list(player_data["ID"].unique()):
+        if  kwargs["id"] not in list(dt.player_data["ID"].unique()):
             return "id가 올바르지 않습니다"
         else:
-            if what_record(kwargs['record'])=="kbo_batter_data":
-                if 'year' and 'month' not in kwargs:
-                    player_df = get_player_data(batter_data,kwargs['id'])
-                    if len(player_df) != 0:
-                        return pd.DataFrame({"id":kwargs["id"],kwargs['record']:get_batter_record(player_df,kwargs['record'])},index=[0])
-                    else:
-                        return pd.DataFrame({"id":kwargs["id"],kwargs['record']:"출장 기록이 없습니다."},index=[0])
-                if 'year' and 'month' in kwargs:
-                    player_df = get_player_data(batter_data,kwargs['id'],kwargs['year'],kwargs['month'])
-                    if len(player_df) != 0:
-                        temp = get_batter_record(player_df,kwargs['record'])
-                        return pd.DataFrame({"id":kwargs["id"],kwargs['record']:temp,"연도":kwargs['year'],"월":kwargs['month']},index=[0])
-                    else:
-                        return pd.DataFrame({"id":kwargs["id"],kwargs['record']:"출장 기록이 없습니다.","연도":kwargs['year'],"월":kwargs['month']},index=[0])
-                if 'year' in kwargs:
-                    player_df = get_player_data(batter_data,kwargs['id'],kwargs['year'])
-                    if len(player_df) != 0:
-                        temp = get_batter_record(player_df,kwargs['record'])
-                        return pd.DataFrame({"id":kwargs["id"],kwargs['record']:temp,"연도":kwargs['year']},index=[0])
-                    else:
-                        return pd.DataFrame({"id":kwargs["id"],kwargs['record']:"출장 기록이 없습니다.","연도":kwargs['year']},index=[0])
-                if 'month' in kwargs:
-                    player_df = get_player_data(batter_data,kwargs['id'],None,kwargs['month'])
-                    if len(player_df) != 0:
-                        temp = get_batter_record(player_df,kwargs['record'])
-                        return pd.DataFrame({"id":kwargs["id"],kwargs['record']:temp,"월":kwargs['month']},index=[0])
-                    else:
-                        return pd.DataFrame({"id":kwargs["id"],kwargs['record']:"출장 기록이 없습니다.","월":kwargs['month']},index=[0])
-            elif what_record(kwargs['record'])=="kbo_pitcher_data":
-                if 'year' and 'month' not in kwargs:
-                    player_df = get_player_data(pitcher_data,kwargs['id'])
-                    if len(player_df) != 0:
-                        return pd.DataFrame({"id":kwargs["id"],kwargs['record']:get_pitcher_record(player_df,kwargs['record'])},index=[0])
-                    else:
-                        return pd.DataFrame({"id":kwargs["id"],kwargs['record']:"출장 기록이 없습니다."},index=[0])
-                if 'year' and 'month' in kwargs:
-                    player_df = get_player_data(pitcher_data,kwargs['id'],kwargs['year'],kwargs['month'])
-                    if len(player_df) != 0:
-                        temp = get_pitcher_record(player_df,kwargs['record'])
-                        return pd.DataFrame({"id":kwargs["id"],kwargs['record']:temp,"연도":kwargs['year'],"월":kwargs['month']},index=[0])
-                    else:
-                        return pd.DataFrame({"id":kwargs["id"],kwargs['record']:"출장 기록이 없습니다.","연도":kwargs['year'],"월":kwargs['month']},index=[0])                            
-                if 'year' in kwargs:
-                    player_df = get_player_data(pitcher_data,kwargs['id'],kwargs['year'])
-                    if len(player_df) != 0:
-                        temp = get_pitcher_record(player_df,kwargs['record'])
-                        return pd.DataFrame({"id":kwargs["id"],kwargs['record']:temp,"연도":kwargs['year']},index=[0])
-                    else:
-                        return pd.DataFrame({"id":kwargs["id"],kwargs['record']:"출장 기록이 없습니다.","연도":kwargs['year']},index=[0])      
-                if 'month' in kwargs:
-                    player_df = get_player_data(pitcher_data,kwargs['id'],None,kwargs['month'])
-                    if len(player_df) != 0:
-                        temp = get_pitcher_record(player_df,kwargs['record'])
-                        return pd.DataFrame({"id":kwargs["id"],kwargs['record']:temp,"월":kwargs['month']},index=[0])
-                    else:
-                        return pd.DataFrame({"id":kwargs["id"],kwargs['record']:"출장 기록이 없습니다.","월":kwargs['month']},index=[0])
+            if what_record(kwargs['record']) == "kbo_batter_data":
+                return arg_test(dt.batter,kwargs)
+            elif what_record(kwargs['record']) == "kbo_pitcher_data":
+                return arg_test(dt.pitcher,kwargs)
             else:
                 return "이 기록은 현재 데이터로 계산할 수 없습니다"
     if "id" not in kwargs:
         idlists =[i["ID"] for i in find_player_info(kwargs['name'])]
-        player_record_df = pd.DataFrame()
-        for i in idlists:
-            if what_record(kwargs['record'])=="kbo_batter_data":
-                if 'year' and 'month' not in kwargs:
-                    player_df = get_player_data(batter_data,i)
-                    if len(player_df) != 0:
-                        player_record = get_batter_record(player_df,kwargs['record'])
-                        temp = pd.DataFrame({"id":i,kwargs['record']:player_record},index=[0])
-                    else:
-                        temp = pd.DataFrame({"id":i,kwargs['record']:"출장 기록이 없습니다."},index=[0])
-                if 'year' and 'month' in kwargs:
-                    player_df = get_player_data(batter_data,i,kwargs['year'],kwargs['month'])
-                    if len(player_df) != 0:
-                        player_record = get_batter_record(player_df,kwargs['record'])
-                        temp = pd.DataFrame({"id":i,kwargs['record']:player_record,"연도":kwargs['year'],"월":kwargs['month']},index=[0])
-                    else:
-                        temp = pd.DataFrame({"id":i,kwargs['record']:"출장 기록이 없습니다.","연도":kwargs['year'],"월":kwargs['month']},index=[0])
-                if 'year' in kwargs:
-                    player_df = get_player_data(batter_data,i,kwargs['year'])
-                    if len(player_df) != 0:
-                        player_record = get_batter_record(player_df,kwargs['record'])
-                        temp = pd.DataFrame({"id":i,kwargs['record']:player_record,"연도":kwargs['year']},index=[0])
-                    else:
-                        temp = pd.DataFrame({"id":i,kwargs['record']:"출장 기록이 없습니다.","연도":kwargs['year']},index=[0])
-                if 'month' in kwargs:
-                    player_df = get_player_data(batter_data,i,None,kwargs['month'])
-                    if len(player_df) != 0:
-                        player_record = get_batter_record(player_df,kwargs['record'])
-                        temp = pd.DataFrame({"id":i,kwargs['record']:player_record,"월":kwargs['month']},index=[0])
-                    else:
-                        temp = pd.DataFrame({"id":i,kwargs['record']:"출장 기록이 없습니다.","월":kwargs['month']},index=[0])
-            elif what_record(kwargs['record'])=="kbo_pitcher_data":
-                if 'year' and 'month' not in kwargs:
-                    player_df = get_player_data(pitcher_data,i)
-                    if len(player_df) != 0:
-                        player_record = get_pitcher_record(player_df,kwargs['record'])
-                        temp = pd.DataFrame({"id":i,kwargs['record']:player_record},index=[0])
-                    else:
-                        temp = pd.DataFrame({"id":i,kwargs['record']:"출장 기록이 없습니다."},index=[0])
-                if 'year' and 'month' in kwargs:
-                    player_df = get_player_data(pitcher_data,i,kwargs['year'],kwargs['month'])
-                    if len(player_df) != 0:
-                        player_record = get_pitcher_record(player_df,kwargs['record'])
-                        temp = pd.DataFrame({"id":i,kwargs['record']:player_record,"연도":kwargs['year'],"월":kwargs['month']},index=[0])
-                    else:
-                        temp = pd.DataFrame({"id":i,kwargs['record']:"출장 기록이 없습니다.","연도":kwargs['year'],"월":kwargs['month']},index=[0])
-                if 'year' in kwargs:
-                    player_df = get_player_data(pitcher_data,i,kwargs['year'])
-                    if len(player_df) != 0:
-                        player_record = get_pitcher_record(player_df,kwargs['record'])
-                        temp = pd.DataFrame({"id":i,kwargs['record']:player_record,"연도":kwargs['year']},index=[0])
-                    else:
-                        temp = pd.DataFrame({"id":i,kwargs['record']:"출장 기록이 없습니다.","연도":kwargs['year']},index=[0])
-                if 'month' in kwargs:
-                    player_df = get_player_data(pitcher_data,i,None,kwargs['month'])
-                    if len(player_df) != 0:
-                        player_record = get_pitcher_record(player_df,kwargs['record'])
-                        temp = pd.DataFrame({"id":i,kwargs['record']:player_record,"월":kwargs['month']},index=[0])
-                    else:
-                        temp = pd.DataFrame({"id":i,kwargs['record']:"출장 기록이 없습니다.","월":kwargs['month']},index=[0])
+        if len(idlists)==1:
+            kwargs.update({"id":idlists[0]})
+            if what_record(kwargs['record']) == "kbo_batter_data":
+                return arg_test(dt.batter,kwargs)
+            elif what_record(kwargs['record']) == "kbo_pitcher_data":
+                return arg_test(dt.pitcher,kwargs)
             else:
                 return "이 기록은 현재 데이터로 계산할 수 없습니다"
+        else:
+            player_record_df = pd.DataFrame()
+            for i in idlists:
+                kwargs.update({"id":i})
+                if what_record(kwargs['record']) == "kbo_batter_data":
+                    temp = arg_test(dt.batter,kwargs)
+                elif what_record(kwargs['record']) == "kbo_pitcher_data":
+                    temp = arg_test(dt.pitcher,kwargs)
+                else:
+                    return "이 기록은 현재 데이터로 계산할 수 없습니다"
+
+                player_record_df = player_record_df.append(temp)
+            return player_record_df
+
+
+
+
+        
             
-            player_record_df = player_record_df.append(temp)
+   
             
-        return player_record_df
+        
     
 
         
