@@ -38,7 +38,6 @@ def length_test(data):
 
 
 def get_player_data(data,player_id,the_year=None,the_month=None):
-    TODO: 데이터 만드는 과정에서 월 열 붙이는 작업 따로 빼고 연도와 월에 따른 데이터 분류 작업 다시 고려 
     '''
     id와 연도 혹은 월 정보를 가지고 해당 정보의 선수의 데이터를 읽어오는 함수 
     
@@ -188,6 +187,16 @@ def get_WPCT(data):
         return 0
 
 def get_batter_record(data,recordname):
+    '''
+    타자의 타격 기록을 찾고 계산하는 함수
+    Args:
+        data(pandas DF): 특정한 어떤 타자 선수의 타격 데이터 
+        recordname(str): 타격기록  
+
+    Returns:
+        예를 들어 타율이면 입력한 데이터를 기반으로 해당 선수의 타율을 계산
+        output(numeric): 선수의 입력한 타격 기록 
+    '''
     if recordname == "1루타":
         return check_record(data,1000,1029,10)
     if recordname == "2루타":
@@ -224,6 +233,16 @@ def get_batter_record(data,recordname):
         return sum(data['안타'])
 
 def get_pitcher_record(data,recordname):
+    '''
+    투수의 투구 기록을 찾고 계산하는 함수
+    Args:
+        data(pandas DF): 특정한 어떤 투수 선수의 투구 데이터 
+        recordname(str): 투구기록  
+
+    Returns:
+        예를 들어 방어율이면 입력한 데이터를 기반으로 해당 선수의 방어율을 계산
+        output(numeric): 선수의 입력한 투구 기록 
+    '''
     if recordname == "방어율":
         return get_ERA(data)
     if recordname == "투구수":
@@ -259,6 +278,15 @@ def get_pitcher_record(data,recordname):
 
 
 def arg_test(data,temp_dict):
+    '''
+    연도와 월이 인자로 입력되어 있는지 검사하는 함수 
+    
+    Args:
+        data(pandas DF): 특정 선수의 기록 데이터
+        temp_dict(dict): kwargs에서 받은 인자가 담긴 딕트  
+    Returns:
+        output(pandas DF): 선수의 id와 기록이 있는 데이터 프레임
+    '''
     keylist=list(temp_dict.keys())
    
     if 'year' and 'month' not in keylist:
@@ -285,8 +313,9 @@ def get_record_data(**kwargs):
             year(int): 기본값은 None이지만 2010~2019년도 중 하나를 입력하면 해당 년도의 기록 볼 수 있음
             month(int): 기본값은 None이지만 3~10 월 중 하나를 입력하면 해당 월의 기록 볼 수 있음
             id(int): 기본값은 None이지만 특정 선수의 id 입력하면 해당 선수의 기록이 나옴 
+    
     Returns:
-        output(pandas DF): 선수의 id와 기록이 있는 데이터 프레임
+        output(pandas DF): 선수의 id와 기록이 있는 데이터 프레임 혹은 에러메세지
 
     '''
 
