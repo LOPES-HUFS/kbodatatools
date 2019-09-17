@@ -17,10 +17,7 @@ def make_month_column(data):
     Returns:
         output(pandas DF): 날짜 관련 정보가 생성된 데이터 
     '''
-    data["month"] = ""
-    data.index = range(0,len(data))
-    for i in range(0,len(data['dateindex'])):
-        data.loc[i,"month"] = int(data.loc[i,'dateindex'][4:6])
+    data["month"] = [i[4:6] for i in data.dateindex]
     return data
 
 batter = batter_data.copy()
