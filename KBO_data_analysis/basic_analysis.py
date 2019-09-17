@@ -289,7 +289,7 @@ def arg_test(data,temp_dict):
         output(pandas DF): 선수의 id와 기록이 있는 데이터 프레임
     '''
     keylist=list(temp_dict.keys())
-   
+    print(keylist)
     if 'year' and 'month' not in keylist:
         player_df = get_player_data(data,temp_dict['id'])
         return pd.DataFrame({"id":temp_dict["id"],temp_dict['record']:length_test(player_df)},index=[0])
@@ -299,7 +299,7 @@ def arg_test(data,temp_dict):
     if 'year' in keylist:
         player_df = get_player_data(data,temp_dict['id'],temp_dict['year'])   
         return pd.DataFrame({"id":temp_dict["id"],temp_dict['record']:length_test(player_df),"연도":temp_dict['year']},index=[0])
-    if 'month' in kwargs:
+    if 'year' not in keylist and 'month' in keylist:
         player_df = get_player_data(data,temp_dict['id'],None,temp_dict['month'])    
         return pd.DataFrame({"id":temp_dict["id"],temp_dict['record']:length_test(player_df),"월":temp_dict['month']},index=[0])
     
