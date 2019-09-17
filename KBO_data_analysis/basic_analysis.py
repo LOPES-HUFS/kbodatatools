@@ -271,9 +271,9 @@ def get_pitcher_record(data,recordname):
         return get_WPCT(data)
     if recordname in ["승리","승"]:
         return sum(data["승리"])
-    if recordname == in ["패배","패"]:
+    if recordname in ["패배","패"]:
         return sum(data['패배'])
-    if recordname == in ["무","무승부"]:
+    if recordname in ["무","무승부"]:
         return sum(data['무승부'])
 
 
