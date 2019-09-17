@@ -3,6 +3,7 @@
 '''
 
 import bring_datas as dt
+import pandas as pd
 
 # 아래의 함수에서 선수의 id를 확인하고 원하는 선수를 선택할 수 있다. 
 def find_player_info(name):
