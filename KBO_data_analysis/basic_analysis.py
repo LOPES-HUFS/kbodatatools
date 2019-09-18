@@ -289,7 +289,7 @@ def arg_test(data,temp_dict):
         output(pandas DF): 선수의 id와 기록이 있는 데이터 프레임
     '''
     keylist=list(temp_dict.keys())
-    print(keylist)
+    
     if 'year' not in keylist and 'month' not in keylist:
         player_df = get_player_data(data,temp_dict['id'])
         return pd.DataFrame({"id":temp_dict["id"],temp_dict['record']:length_test(player_df,temp_dict['record'])},index=[0])
