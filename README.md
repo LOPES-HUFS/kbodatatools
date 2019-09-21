@@ -51,6 +51,23 @@ python3 patch.py
 python3 make_game_info.py
 ```
 
+### 간단한 분석 모듈 활용하는 방법
+
+전체 자료가 만들어지면 선수들의 간단한 타격, 투구 기록을 확인해 볼 수 있습니다. 계산 가능한 기록들의 목록은 다음과 같습니다. 타격 기록: 타율, 타점, 득점, 안타, 1루타, 2루타, 3루타, 홈런, 볼넷(4구), 몸에맞는공, 고의4구, 병살, 출루율, 장타율, 희생플라이, 희생번트, 피삼진이 있습니다. 투구 기록: 방어율, 투구수, 타자수, 홀드, 세이브, 피안타, 삼진, 피홈런, 4사구, 자책점, 승률, 이닝, 이닝당투구수, 승리, 패배, 무승부가 있습니다. 이 기록들은 아래와 같은 방식으로 확인할 수 있습니다. 아래에서와 같이 연도별 혹은 월별 기록으로도 확인할 수 있습니다.
+
+```python3
+import basic_analysis
+
+basic_analysis.get_player_record(name="이병규",record="타율")
+basic_analysis.get_player_record(name="허준혁",record="방어율")
+basic_analysis.get_player_record(name="김현수",record="출루율",year=2019)
+basic_analysis.get_player_record(name="김광현",record="방어율",year=2019)
+basic_analysis.get_player_record(name="김현수",record="출루율",year=2019,month=6)
+basic_analysis.get_player_record(name="김광현",record="방어율",year=2019,month=6)
+```
+
+참고로 2019년 힌화의 지성준 선수와 장진혁 선수의 경우 KBO의 리뷰 페이지 상으로 3번째 타석의 기록이 나와있지 않기 때문에 타격 기록의 계산이 맞지 않습니다.
+
 ### data 폴더의 자료 소개
 
 data 폴더에는 선수 id를 구성하는데 필요한 데이터들과 자료 수집하고 구성하기 위한 데이터들이 있습니다. 그 외에 patch_file이라는 폴더에는 이병규, 허준혁, 이승호 선수의 id 구분을 위한 데이터들이 있습니다. 이 데이터들은 이후 patch.py 파일에서 사용하게 됩니다. record_list.csv 파일은 분석 함수에서 계산할 수 있는 기록들을 모아놓은 데이터 입니다. 이 데이터 파일은 함수 사용시 참고용으로만 사용됩니다. sample 폴더는 이후 경기 자료를 수집하는 코드를 실행시키면 그 결과가 저장되는 폴더입니다. 따라서 이 폴더를 지우게 될 경우 코드 실행시 에러가 발생합니다.
