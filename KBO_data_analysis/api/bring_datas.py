@@ -4,9 +4,9 @@
 
 import pandas as pd
 
-batter_data = pd.read_csv("./data/sample/KBO_batter_data_full.csv")
-pitcher_data = pd.read_csv("./data/sample/KBO_pitcher_data_full.csv")
-player_data = pd.read_csv("./data/KBO_player_info_full.csv")
+batter_data = pd.read_csv("../data/sample/KBO_batter_data_full.csv")
+pitcher_data = pd.read_csv("../data/sample/KBO_pitcher_data_full.csv")
+player_data = pd.read_csv("../data/KBO_player_info_full.csv")
 
 def make_month_column(data):
     '''
