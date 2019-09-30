@@ -20,7 +20,6 @@ setuptools.setup(
     author_email=EMAIL,
     description=DESCRIPTION,
     long_description=long_description,
-    long_description_content_type="markdown",
     url=URL,
     python_requires=">=3.6.0",
     packages=setuptools.find_packages(),
