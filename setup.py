@@ -1,6 +1,6 @@
 import setuptools
 
-NAME = "KBO_data_wrangling_analysis_tool"
+NAME = "kbo-data-tool"
 DESCRIPTION = "KBO data wrangling & analysis tool"
 URL = "https://github.com/LOPES-HUFS/KBO_data_analysis"
 EMAIL = "sunsick_choo@naver.com"
