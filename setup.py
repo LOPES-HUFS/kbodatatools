@@ -7,7 +7,7 @@ EMAIL = "sunsick_choo@naver.com"
 AUTHOR = "Sunsick Choo"
 VERSION = "0.0.1"
 REQUIRED = [
-    "pandas", "json", "requests_html", "bs4", "ast", "tables", "datetime"
+    "pandas", "requests_html", "bs4", "tables", "datetime"
 ]
 
 with open("README.md", "r") as fh:
