@@ -25,11 +25,11 @@ def data2dataframe(data:json,datatype:str):
     '''
     temp = pd.DataFrame()
 
-    for i in range(0,len(playerdata['fulldata'].keys())):
-        away = pd.DataFrame(playerdata['fulldata'][list(playerdata['fulldata'].keys())[i]][f'away_{datatype}'])
-        home = pd.DataFrame(playerdata['fulldata'][list(playerdata['fulldata'].keys())[i]][f'home_{datatype}'])
-        home['dateindex'] = list(playerdata['fulldata'].keys())[i]
-        away['dateindex'] = list(playerdata['fulldata'].keys())[i]
+    for i in range(0,len(data['fulldata'].keys())):
+        away = pd.DataFrame(data['fulldata'][list(data['fulldata'].keys())[i]][f'away_{datatype}'])
+        home = pd.DataFrame(data['fulldata'][list(data['fulldata'].keys())[i]][f'home_{datatype}'])
+        home['dateindex'] = list(data['fulldata'].keys())[i]
+        away['dateindex'] = list(data['fulldata'].keys())[i]
         temp = temp.append(away.append(home))
 
     temp = temp.fillna(0)
