@@ -15,7 +15,6 @@ batter_data['date'] = ""
 for i in batter_data.index[(batter_data["id"]==0) & (batter_data["선수명"] == "이병규")]:
     batter_data.date.loc[i] = str(batter_data.year.loc[i])+"-"+ batter_data.dateindex.loc[i][4:6]+"-"+batter_data.dateindex.loc[i][6:8]
 
-
 data_97109 = pd.read_csv("./data/patch_file/data_97109.csv")
 data_76100 = pd.read_csv("./data/patch_file/data_76100.csv")
 
