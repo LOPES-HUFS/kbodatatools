@@ -1,11 +1,13 @@
 '''
 데이터를 열어서 분석 함수를 사용하기 전의 상태로 만들어 줍니다. 
+타자데이터와 투수데이터 선수정보 데이터 파일을 열어줍니다. 
 '''
 
 import pandas as pd
 
 batter_data = pd.read_csv("./data/sample/KBO_batter_data_full.csv")
 pitcher_data = pd.read_csv("./data/sample/KBO_pitcher_data_full.csv")
+player_data = pd.read_csv("./data/KBO_player_info_full.csv")
 
 def make_month_column(data):
     '''
