@@ -38,7 +38,7 @@ def length_test(data,record):
 
 
 
-def get_player_data(data,player_id,the_year=None,the_month=None):
+def get_player_data(data,player_id,the_year=None,the_month=None,full=False):
     '''
     id와 연도 혹은 월 정보를 가지고 해당 정보의 선수의 데이터를 읽어오는 함수 
     
@@ -47,12 +47,13 @@ def get_player_data(data,player_id,the_year=None,the_month=None):
         player_id(int): 선수의 고유 id
         the_year(int): 기본 값은 all로 선수가 경기를 한 전체 연도이며 특정 연도 입력시 해당 연도
         the_month(int): 기본 값은 None으로 전체 월이지만 특정한 월을 지정하면 해당 월
-    
+        full(boolean)
     Returns:
         player_data(pandas DF): 조건에 맞는 선수의 경기 기록
     '''
     selected_player_data = data[data.id == player_id]
-
+    if full == True:
+        return selected_player_data
     if the_year != None and the_month != None:
         tempdata = selected_player_data[(selected_player_data.year==the_year) & (selected_player_data.month==the_month)]
     if the_year != None and the_month == None:
