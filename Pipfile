@@ -12,6 +12,7 @@ requests-html = "*"
 bs4 = "*"
 pandas = "*"
 jupyter = "*"
+tables = "*"
 
 [requires]
 python_version = "3.7"
