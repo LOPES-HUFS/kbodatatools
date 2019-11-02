@@ -1,0 +1,259 @@
+mean(1:10)
+rount(5.5)
+round(5.5)
+mymat <- matrix(nrow=30, ncol=30)
+for(i in 1:dim(mymat)[1]) {#
+  for(j in 1:dim(mymat)[2]) {#
+    mymat[i,j] = i*j#
+  }#
+}
+mymat[1:10, 1:10]
+mymat <- matrix(nrow=30, ncol=30)
+mymat
+u1 <- rnorm(30)
+u1
+usq <- 0
+for(i in 1:10) {#
+  # i-th element of `u1` squared into `i`-th position of `usq`#
+  usq[i] <- u1[i]*u1[i]#
+  print(usq[i])#
+}
+my_array <- ..
+1 / 200 * 30
+1 / 200
+0.005 *30
+library(jsonlite)
+LG <-  fromJSON('http://philosopher.hufs.ac.kr:8000/stock/066570')
+LG
+test <-  fromJSON('"http://127.0.0.1:5000/total/김광현 2010년 방어율"')
+test
+test <-  fromJSON("http://127.0.0.1:5000/total/김광현 2010년 방어율")
+test <-  fromJSON(http://127.0.0.1:5000/total/김광현 2010년 방어율")
+test <-  fromJSON('http://127.0.0.1:5000/total/김광현 2010년 방어율)
+')'
+)
+/
+q
+1
+)
+''
+test <-  fromJSON('http://127.0.0.1:5000/total/김광현 2010년 방어율')
+install.packages("h5")
+install.packages("tidyverse")
+install.packages("quantmod")
+chooseCRANmirror()
+install.packages("quantmod")
+install.packages("h5")
+library(quantmod)
+KS.005930 <- getSymbols("005930.KS", src="yahoo", from="2017-07-01", auto.assign = F)
+KS.005930
+install.packages("dygraphs")
+library(dygraphs)
+library(jsonlite)
+fromJSON("http://lopes.hufs.ac.kr:8080/naver/stock/005930/1/100")
+fromJSON("http://127.0.0.1:8000/naver/stock/삼성전자/1/10")
+fromJSON(http://127.0.0.1:8000/naver/stock/삼성전자/1/10")
+fromJSON("http://127.0.0.1:8000/naver/stock/삼성전자/1/10")
+fromJSON(http://127.0.0.1:8000/naver/stock/005930/1/10)
+fromJSON("http://127.0.0.1:8000/naver/stock/삼성전자/1/10")
+fromJSON(http://127.0.0.1:8000/naver/stock/삼성전자/1/10)
+fromJSON("http://127.0.0.1:8000/naver/stock/삼성전자/1/10")
+fromJSON("http://lopes.hufs.ac.kr:8080/naver/stock/삼성전자/1/10")
+library(jsonlite)
+fromJSON("http://lopes.hufs.ac.kr:8080/naver/stock/삼성전자/1/10")
+rjson::fromJSON(file = "http://lopes.hufs.ac.kr:8080/naver/stock/삼성전자/1/10")
+library(httr)
+response <- GET('http://lopes.hufs.ac.kr:8080/naver/stock/삼성전자/1/10')
+raw <- content(response, as="text")
+results <- fromJSON(raw)
+results
+raw
+fromJSON("http://lopes.hufs.ac.kr:8080/naver/stock/삼성전자/1/10")
+library(jsonlite)
+fromJSON("http://lopes.hufs.ac.kr:8080/naver/stock/삼성전자/1/10")
+fromJSON("http://lopes.hufs.ac.kr:8080/naver/stock/005903/1/10")
+con <- url("http://lopes.hufs.ac.kr:8080/naver/stock/005903/1/10")
+read_html(con)
+library(httr)
+test <- GET(con)
+library(reticulate)
+install.packages('library(reticulate)')
+install.packages('reticulate')
+library(reticulate)
+chooseCRANmirror()
+library(reticulate)
+install.packages('reticulate')
+chooseCRANmirror()
+install.packages("tidyverse")
+library(reticulate)
+os <- import("os")
+os$listdir(".")
+json <- import("json")
+requests <- import("requests")
+requests <- import("requests", convert = FALSE)
+use_python("/usr/local/bin/python3")
+requests <- import("requests")
+fromJSON('http://lopes.hufs.ac.kr:8080/stock/삼성전자')
+library(jsonlite)
+fromJSON('http://lopes.hufs.ac.kr:8080/stock/삼성전자')
+fromJSON('http://lopes.hufs.ac.kr/stock/삼성전자')
+fromJSON("http://lopes.hufs.ac.kr:8080/stock/삼성전자")
+fromJSON("http://lopes.hufs.ac.kr:8080/stock/삼성전자/")
+use_python("/usr/local/bin/python3")
+requests <- import("requests")
+getwd()
+source_python('get.py')
+use_python("/usr/local/bin/python3", required = TRUE)
+library(reticulate)
+use_python("/usr/local/bin/python3", required = TRUE)
+source_python('get.py')
+requests <- import('requests')
+requests$get('http://lopes.hufs.ac.kr:8080/daily/stock/066570/True')
+requests$get('http://lopes.hufs.ac.kr:8080/daily/stock/066570/True').json()
+requests$get('http://lopes.hufs.ac.kr:8080/daily/stock/066570/True')$json()
+get_stocks('005930')
+getting_stock_data('005930')
+temp <- getting_stock_data('005930')
+head()
+head(temp)
+install.packages("dygraphs")
+chooseCRANmirror()
+install.packages("dygraphs")
+library(dygraphs)
+dygraph(temp) %>% dyCandlestick()
+head(hemp)
+head(temp)
+colnames(temp) <- c('adjclose','Close','High','Low','Open', 'Volume')
+head(temp)
+dygraph(temp) %>% dyCandlestick()
+data(sample_matrix)
+library(xts)
+data(sample_matrix)
+m <- tail(sample_matrix, n = 32)
+m
+head(temp[1:100])
+head(temp[1:100][])
+head(temp[:100])
+temp[1]
+temp[1:10,]
+temp[:20,]
+temp[1:20,]
+temp[1:30,]
+temp <- temp[1:30,]
+dygraph(temp) %>% dyCandlestick()
+dygraph(temp) %>% dyCandlestick(
+)
+dim(m)
+m
+dygraph(m) %>% dyCandlestick()
+dygraph(temp) %>% dyCandlestick()
+temp <- getting_stock_data('001200')
+temp <- temp[1:32,]
+dygraph(temp) %>% dyCandlestick()
+colnames(temp) <- c('adjclose','Close','High','Low','Open', 'Volume')
+temp
+dygraph(temp) %>% dyCandlestick()
+newTemp <- select(temp, "Open", "High", "Low", "Close")
+library(tidyverse)
+newTemp <- select(temp, "Open", "High", "Low", "Close")
+newTemp
+dygraph(newTemp) %>% dyCandlestick()
+temp <- getting_stock_data('001200')
+colnames(temp) <- c('adjclose','Close','High','Low','Open', 'Volume')
+newTemp <- select(temp, "Open", "High", "Low", "Close")
+newTemp <- select(temp, "Open", "High", "Low", "Close", 'Volume')
+dygraph(newTemp) %>% dyCandlestick()
+newTemp <- select(temp, "Open", "High", "Low", "Close")
+dygraph(newTemp) %>% dyCandlestick()
+temp$2019
+temp[2019]
+temp['2019']
+temp["2019"]
+class(temp)
+xts(temp)
+xts(temp, order.by=index)
+xts(temp, order.by=index(x))
+dygraph(newTemp) %>% dyCandlestick()
+dygraph(newTemp) %>% dyCandlestick(compress = FALSE)
+dygraph(newTemp) %>% dyCandlestick(compress = TRUE)
+temp <- xts(temp[,-1], order.by= temp[,1])
+rownames(time) = temp[1]
+as.xts(q)
+as.xts(temp)
+as.xts(newTemp)
+newTemp <- as.xts(newTemp)
+class(newTemp)
+newTemp['2019']
+dygraph(newTemp['2019']) %>% dyCandlestick()
+dygraph(newTemp['2019']) %>% dyCandlestick(main = "Important Discoveries")
+dygraph(newTemp['2019'], main = "Important Discoveries") %>% dyCandlestick()
+fromJSON("http://127.0.0.1:8000/stock/005930", simplifyDataFrame=T)
+library(jsonlite)
+fromJSON("http://127.0.0.1:8000/stock/005930", simplifyDataFrame=T)
+fromJSON("http://lopes.hufs.ac.kr:8080/daily/stock/066570/True", simplifyDataFrame=T)
+fromJSON("http://lopes.hufs.ac.kr:8080/yahoo/stocks/0/30", simplifyDataFrame=T)
+dygraph(newTemp) %>% dyCandlestick()
+shooter1 = c(8, 9,9, 10,10,10, 11,11, 12)#
+shooter2 = c(8, 10,10,10,10,10,10,10,10, 12)
+median(shooter1)
+data.frame(c(median(shooter1), mean(shooter1), range(shooter1)), c(median(shooter2), mean(shooter2), range(shooter3)))
+data.frame(c(median(shooter1), mean(shooter1), range(shooter1)), c(median(shooter2), mean(shooter2), range(shooter2)))
+c(median(shooter1), mean(shooter1), range(shooter1)
+)
+c(median(shooter1), mean(shooter1), range(shooter1))
+c(median(shooter2), mean(shooter2), range(shooter2))
+c(median(shooter1), mean(shooter1), range(shooter1))
+c(median(shooter2), mean(shooter2), range(shooter2))
+library(tidyverse)
+ggplot(data=diamonds) +
+geom_bar(mapping= aes(x = cut))
+diamonds %>% count(cut)
+ggplot(data=diamonds) +
+geom_histogram(mapping=aes(x=carat), binwidth=0.5)
+diamonds %>% count(cut_width(carat, 0.5))
+smaller <- diamonds %>% filter(carat < 3)
+ggplot(data= smaller) +
+geom_histogram(mapping=aes(x=carat), binwidth=0.5)
+ggplot(data=diamonds) +
+geom_histogram(mapping=aes(x=carat), binwidth=0.5)
+ggplot(data=diamonds) +
+geom_histogram(mapping=aes(x=carat), binwidth=0.1)
+ggplot(data= smaller) +
+geom_histogram(mapping=aes(x=carat), binwidth=0.1)
+ggplot(data = smaller, mapping = aes(x = carat)) +
+geom_histogram(binwidth = 0.1)
+ggplot(data=smaller, mapping=aes(x=carat, color=cut)) +
+geom_freqpoly(binwidth = 0.1)
+ggplot(data=smaller, mapping=aes(x=carat, color=cut)) +
+geom_histogram(binwidth=0.01)
+ggplot(data=faithful, mapping=aes(x=eruptions)) +
+geom_histogram(binwidth=0.25)
+ggplot(diamonds) +
+geom_histogram(mapping=aes(x=y), binwidth=0.5)
+getwd()
+getwd()
+library(jsonlite)
+dir()
+data <-  fromJSON("test_data.json")
+data
+data['20190323HHOB0']
+library(tidyverse)
+read_csv(https://gist.github.com/dialektike/a851a96238b4ae9baf57672a0d2ff0a1)
+read_csv("https://gist.github.com/dialektike/a851a96238b4ae9baf57672a0d2ff0a1")
+read_csv("https://gist.github.com/dialektike/a851a96238b4ae9baf57672a0d2ff0a1#file-tae_woo-csv")
+read_csv("https://gist.githubusercontent.com/dialektike/a851a96238b4ae9baf57672a0d2ff0a1/raw/340310f11e92aef9e483431d07e8951cac2661c3/tae_woo.csv")
+pinenut.challenge <- read_csv("https://gist.githubusercontent.com/dialektike/a851a96238b4ae9baf57672a0d2ff0a1/raw/340310f11e92aef9e483431d07e8951cac2661c3/tae_woo.csv")
+pinenut.challenge
+parse_date(pinenut.challenge$date)
+parse_date(pinenut.challenge$date, "%y.%m.%d")
+parse_date(pinenut.challenge$date, "%y.%m.%d.")
+parse_date(pinenut.challenge$date, "%y. %m .%d.")
+parse_date(pinenut.challenge$date, "%Y. %m .%d.")
+parse_date("2019. 6. 11.", "%y. %m .%d.")
+parse_date("2019. 6. 11.", "%y.%*%m.%*%d.")
+parse_date("2019. 6. 11.", "%Y.%*%m.%*%d.")
+parse_date(pinenut.challenge$date, "%Y.%*%m.%*%d.")
+pinenut.challenge$date <- parse_date(pinenut.challenge$date, "%Y.%*%m.%*%d.")
+pinenut.challenge$date
+pinenut.challenge
+ggplot(data=pinenut.challenge) + stat_count(mapping=aes(x=try))
