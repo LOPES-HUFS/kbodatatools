@@ -14,7 +14,7 @@ def find_player_info(name):
         name(str): 선수 이름
 
     Returns:
-        output(dict): 선수의 id와 연도별 팀 정보가 담긴 딕트 
+        idlist(list): 선수의 id와 연도별 팀 정보가 담긴 리스트로 리스트 안의 값은 딕트로 구성
     '''
     id_list=[]
     data = dt.player_data[dt.player_data['선수명']==name][dt.player_data.columns[0:12]]
@@ -25,47 +25,23 @@ def find_player_info(name):
         for i in range(2010,2020):
             temp.update({i:list(data[data.ID==data['ID'].loc[j]]["season_"+str(i)])[0]})
         id_list[j].update({"seasons":temp})
-    
     return id_list
 
-def length_test(data,record):
+def check_position(data,record):
+    '''
+    들어온 데이터가 타격 기록 데이터인지 투구 기록 데이터인지 구분하는 함수
+    '''
     if len(data) != 0 and hasattr(data, '등판')==False:
         return get_batter_record(data,record)
     if len(data) != 0 and hasattr(data, '등판')==True:
         return get_pitcher_record(data,record)
     if len(data) == 0:
         return "출장 기록이 없습니다."
-
-
-
-def get_player_data(data,player_id,the_year=None,the_month=None,full=False):
-    '''
-    id와 연도 혹은 월 정보를 가지고 해당 정보의 선수의 데이터를 읽어오는 함수 
-    
-    Args:
-        data(HDF5 table data): hdf5 파일에 저장된 타자나 투수 데이터가 담긴 테이블 
-        player_id(int): 선수의 고유 id
-        the_year(int): 기본 값은 all로 선수가 경기를 한 전체 연도이며 특정 연도 입력시 해당 연도
-        the_month(int): 기본 값은 None으로 전체 월이지만 특정한 월을 지정하면 해당 월
-        full(boolean)
-    Returns:
-        player_data(pandas DF): 조건에 맞는 선수의 경기 기록
-    '''
-    selected_player_data = data[data.id == player_id]
-    if full == True:
-        return selected_player_data
-    if the_year != None and the_month != None:
-        tempdata = selected_player_data[(selected_player_data.year==the_year) & (selected_player_data.month==the_month)]
-    if the_year != None and the_month == None:
-        tempdata = selected_player_data[selected_player_data.year==the_year]
-    if the_year == None and the_month == None:
-        tempdata = selected_player_data
-    if the_year == None and the_month != None:
-        tempdata = selected_player_data[selected_player_data.month==the_month]
-    
-    return tempdata
     
 def what_record(record):
+    '''
+    입력된 기록이 타격 관련 기록인지 투구 관련 기록인지 구분하는 함수 
+    '''
     b_fun=['타율','타점','득점','안타','1루타','2루타','3루타','홈런','볼넷','4구','몸에맞는공','고의4구','병살','출루율','장타율','희생플라이','희생번트','피삼진']
     p_fun=['방어율','투구수','타자수','홀드','세이브','피안타','삼진','피홈런','4사구','자책점','승률','이닝','이닝당투구수','승리','패배','무승부']
     if record in b_fun:
@@ -278,7 +254,62 @@ def get_pitcher_record(data,recordname):
     if recordname in ["무","무승부"]:
         return sum(data['무승부'])
 
+def check_date(data,the_year,the_month):
+    '''
+    년도와 월 인자를 검사하는 함수이다.
+    Args:
+        data(pandas DF): 타자 또는 투수 데이터 
+        year(int): 찾는 년도로 없는 경우 2010~2019년도 전체로 지정
+        month(int): 찾는 월로 없는 경우 년도별 정규시즌의 모든 월로 지정 
+    Returns:
+        입력받은 년도하고 월에 따라 추출된 타자 또는 투수 데이터 
+    '''
+    if the_year == None and the_month == None:
+        return data
+    if the_year != None and the_month == None:
+        return data[(data.year==the_year)]
+    if the_year == None and the_month != None:
+        return data[(data.month==the_month)]
+    if the_year != None and the_month != None:
+        return data[(data.year==the_year)&(data.month==the_month)] 
 
+def get_player_data(name,position,year=None,month=None):
+    '''
+    선수의 이름과 타자인지 투수인지 정보를 입력하면 해당 선수의 전체 출전 데이터를 출력하는 함수
+    기본적으로 모든 일자 데이터가 나옵니다. 
+    단 년도와 월을 입력하면 입력된 정보의 선수 출전 데이터를 출력합니다. 
+    만약 년도만 입력하면 해당 년도의 모든 출전 데이터가 나오고
+    월만 입력하면 2010년부터 2019년까지 해당 월의 모든 출전 데이터가 나옵니다.
+    년도와 월을 동시에 입력할 경우 예를 들면 인자가 2019, 5인 경우에는 2019시즌 5월의 일자별 데이터가 나옵니다.  
+    Args:
+        name(str): 찾는 선수의 이름 
+        position(str): 찾는 선수의 보직으로 타자인지 투수인지를 입력 
+        year(int): 찾는 년도로 없는 경우 기본값은 None으로 2010~2019년도 전체로 지정
+        month(int): 찾는 월로 없는 경우 기본값은 None으로 년도별 정규시즌의 모든 월로 지정 
+    Returns:
+        입력받은 년도하고 월에 따라 추출된 타자 또는 투수 데이터 
+    '''
+    idlists =[i["ID"] for i in find_player_info(kwargs['name'])]
+    if position =="타자":
+        data = df.batter
+    elif position =="투수":
+        data = df.pitcher
+    else:
+        return "에러:찾는 선수가 타자인지 투수인지 입력해 주시기 바랍니다."
+    if len(idlists) == 1:
+        data = data[data.id == idlists[0]]
+        return check_date(data,year,month) 
+    elif len(idlists) > 1:
+        save_dict = {}
+        for i in idlists:
+            data = data[data.id == i]
+            save_dict.update({i:check_date(data,year,month)})
+        return save_dict
+    else:
+        return "에러:찾는 선수의 이름이 잘못되었거나 해당 날짜에 출전 기록이 없습니다."
+
+
+        
 def arg_test(data,temp_dict):
     '''
     연도와 월이 인자로 입력되어 있는지 검사하는 함수 
@@ -290,19 +321,18 @@ def arg_test(data,temp_dict):
         output(pandas DF): 선수의 id와 기록이 있는 데이터 프레임
     '''
     keylist=list(temp_dict.keys())
-    
+    selected_player_data = data[data.id == temp_dict['id']]
     if 'year' not in keylist and 'month' not in keylist:
-        player_df = get_player_data(data,temp_dict['id'])
-        return pd.DataFrame({"id":temp_dict["id"],temp_dict['record']:length_test(player_df,temp_dict['record'])},index=[0])
+        return pd.DataFrame({"name":temp_dict['name'],"id":temp_dict["id"],temp_dict['record']:check_position(selected_player_data,temp_dict['record'])},index=[0])
     if 'year' in keylist and 'month' in keylist:
-        player_df = get_player_data(data,temp_dict['id'],temp_dict['year'],temp_dict['month'])
-        return pd.DataFrame({"id":temp_dict["id"],temp_dict['record']:length_test(player_df,temp_dict['record']),"연도":temp_dict['year'],"월":temp_dict['month']},index=[0])
+        player_df = selected_player_data[(selected_player_data.year==temp_dict['year']) & (selected_player_data.month==temp_dict['month'])]
+        return pd.DataFrame({"name":temp_dict['name'],"id":temp_dict["id"],temp_dict['record']:check_position(player_df,temp_dict['record']),"년도":temp_dict['year'],"월":temp_dict['month']},index=[0])
     if 'year' in keylist:
-        player_df = get_player_data(data,temp_dict['id'],temp_dict['year'])   
-        return pd.DataFrame({"id":temp_dict["id"],temp_dict['record']:length_test(player_df,temp_dict['record']),"연도":temp_dict['year']},index=[0])
+        player_df = selected_player_data[selected_player_data.year==temp_dict['year']]
+        return pd.DataFrame({"name":temp_dict['name'],"id":temp_dict["id"],temp_dict['record']:check_position(player_df,temp_dict['record']),"년도":temp_dict['year']},index=[0])
     if 'year' not in keylist and 'month' in keylist:
-        player_df = get_player_data(data,temp_dict['id'],None,temp_dict['month'])    
-        return pd.DataFrame({"id":temp_dict["id"],temp_dict['record']:length_test(player_df,temp_dict['record']),"월":temp_dict['month']},index=[0])
+        player_df = selected_player_data[selected_player_data.month==temp_dict['month']]   
+        return pd.DataFrame({"name":temp_dict['name'],"id":temp_dict["id"],temp_dict['record']:check_position(player_df,temp_dict['record']),"월":temp_dict['month']},index=[0])
     
 def get_record_data(**kwargs):
     '''
@@ -322,21 +352,21 @@ def get_record_data(**kwargs):
     '''
 
     if "name" not in kwargs:
-        return "선수 이름이 누락되었습니다"
+        return "에러:선수 이름이 누락되었습니다"
     if "record" not in kwargs:
-        return "찾는 기록이 누락되었습니다"
+        return "에러:찾을 타격기록 혹은 투구기록이 누락되었습니다"
     if kwargs['name'] not in list(dt.player_data['선수명'].unique()):
-        return "해당 선수는 2010년에서 2019년 시즌에 경기 기록이 없습니다."
+        return "에러:해당 선수는 2010년에서 2019년 시즌에 경기 출장 기록이 없습니다."
     if "id" in kwargs:
         if  kwargs["id"] not in list(dt.player_data["ID"].unique()):
-            return "id가 올바르지 않습니다"
+            return "에러: 입력된 id가 올바르지 않습니다. \nfind_player_info 함수를 사용해 id를 다시 찾을 수 있습니다."
         else:
             if what_record(kwargs['record']) == "kbo_batter_data":
                 return arg_test(dt.batter,kwargs)
             elif what_record(kwargs['record']) == "kbo_pitcher_data":
                 return arg_test(dt.pitcher,kwargs)
             else:
-                return "이 기록은 현재 데이터로 계산할 수 없습니다"
+                return "에러:죄송합니다. 찾는 기록은 현재 데이터로 계산할 수 없습니다."
     if "id" not in kwargs:
         idlists =[i["ID"] for i in find_player_info(kwargs['name'])]
         if len(idlists)==1:
@@ -346,7 +376,7 @@ def get_record_data(**kwargs):
             elif what_record(kwargs['record']) == "kbo_pitcher_data":
                 return arg_test(dt.pitcher,kwargs)
             else:
-                return "이 기록은 현재 데이터로 계산할 수 없습니다"
+                return "에러:죄송합니다. 찾는 기록은 현재 데이터로 계산할 수 없습니다."
         else:
             player_record_df = pd.DataFrame()
             for i in idlists:
@@ -356,7 +386,7 @@ def get_record_data(**kwargs):
                 elif what_record(kwargs['record']) == "kbo_pitcher_data":
                     temp = arg_test(dt.pitcher,kwargs)
                 else:
-                    return "이 기록은 현재 데이터로 계산할 수 없습니다"
+                    return "에러:죄송합니다. 찾는 기록은 현재 데이터로 계산할 수 없습니다."
 
                 player_record_df = player_record_df.append(temp)
             return player_record_df
