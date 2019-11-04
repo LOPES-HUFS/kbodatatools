@@ -254,7 +254,7 @@ def get_pitcher_record(data,recordname):
     if recordname in ["무","무승부"]:
         return sum(data['무승부'])
 
-def check_date(data,the_year,the_month):
+def check_date(data,the_year,the_month,full=False):
     '''
     년도와 월 인자를 검사하는 함수이다.
     Args:
@@ -264,8 +264,10 @@ def check_date(data,the_year,the_month):
     Returns:
         입력받은 년도하고 월에 따라 추출된 타자 또는 투수 데이터 
     '''
-    if the_year == None and the_month == None:
+    if the_year == None and the_month == None and full == True:
         return data
+    if the_year == None and the_month == None:
+        return data[(data.year==max(data.year))]
     if the_year != None and the_month == None:
         return data[(data.year==the_year)]
     if the_year == None and the_month != None:
@@ -273,10 +275,12 @@ def check_date(data,the_year,the_month):
     if the_year != None and the_month != None:
         return data[(data.year==the_year)&(data.month==the_month)] 
 
-def get_player_data(name,position,year=None,month=None):
+def get_player_data(name,position,year=None,month=None,full=False):
     '''
     선수의 이름과 타자인지 투수인지 정보를 입력하면 해당 선수의 전체 출전 데이터를 출력하는 함수
-    기본적으로 모든 일자 데이터가 나옵니다. 
+    기본적으로 선수가 경기를 출전한 가장 최근 시즌의 데이터가 나옵니다. 
+    선수가 출전한 모든 기록을 보고 싶다면 년도와 월을 입력하지 않고 full 인자를 True로 설정하면
+    모든 출전 데이터가 나옵니다.
     단 년도와 월을 입력하면 입력된 정보의 선수 출전 데이터를 출력합니다. 
     만약 년도만 입력하면 해당 년도의 모든 출전 데이터가 나오고
     월만 입력하면 2010년부터 2019년까지 해당 월의 모든 출전 데이터가 나옵니다.
@@ -286,6 +290,7 @@ def get_player_data(name,position,year=None,month=None):
         position(str): 찾는 선수의 보직으로 타자인지 투수인지를 입력 
         year(int): 찾는 년도로 없는 경우 기본값은 None으로 2010~2019년도 전체로 지정
         month(int): 찾는 월로 없는 경우 기본값은 None으로 년도별 정규시즌의 모든 월로 지정 
+        full(boolean): True 면 모든 출전 기록 False가 기본 값
     Returns:
         입력받은 년도하고 월에 따라 추출된 타자 또는 투수 데이터 
     '''
@@ -298,12 +303,12 @@ def get_player_data(name,position,year=None,month=None):
         return "에러:찾는 선수가 타자인지 투수인지 입력해 주시기 바랍니다."
     if len(idlists) == 1:
         data = data[data.id == idlists[0]]
-        return check_date(data,year,month) 
+        return check_date(data,year,month,full) 
     elif len(idlists) > 1:
         save_dict = {}
         for i in idlists:
             data = data[data.id == i]
-            save_dict.update({i:check_date(data,year,month)})
+            save_dict.update({i:check_date(data,year,month,full)})
         return save_dict
     else:
         return "에러:찾는 선수의 이름이 잘못되었거나 해당 날짜에 출전 기록이 없습니다."
@@ -323,7 +328,8 @@ def arg_test(data,temp_dict):
     keylist=list(temp_dict.keys())
     selected_player_data = data[data.id == temp_dict['id']]
     if 'year' not in keylist and 'month' not in keylist:
-        return pd.DataFrame({"name":temp_dict['name'],"id":temp_dict["id"],temp_dict['record']:check_position(selected_player_data,temp_dict['record'])},index=[0])
+        player_df = selected_player_data[(selected_player_data.year==max(selected_player_data.year))
+        return pd.DataFrame({"name":temp_dict['name'],"id":temp_dict["id"],temp_dict['record']:check_position(player_df,temp_dict['record'])},index=[0])
     if 'year' in keylist and 'month' in keylist:
         player_df = selected_player_data[(selected_player_data.year==temp_dict['year']) & (selected_player_data.month==temp_dict['month'])]
         return pd.DataFrame({"name":temp_dict['name'],"id":temp_dict["id"],temp_dict['record']:check_position(player_df,temp_dict['record']),"년도":temp_dict['year'],"월":temp_dict['month']},index=[0])
