@@ -264,7 +264,7 @@ def check_date(data,the_year,the_month,full=False):
     Returns:
         입력받은 년도하고 월에 따라 추출된 타자 또는 투수 데이터 
     '''
-    if the_year == None and the_month == None and full == True:
+    if  full == True:
         return data
     if the_year == None and the_month == None:
         return data[(data.year==max(data.year))]
