@@ -254,26 +254,38 @@ def get_pitcher_record(data,recordname):
     if recordname in ["무","무승부"]:
         return sum(data['무승부'])
 
-def check_date(data,the_year,the_month,full=False):
+def check_date(data,theyear=None,themonth=None,full=False):
     '''
     년도와 월 인자를 검사하는 함수이다.
     Args:
         data(pandas DF): 타자 또는 투수 데이터 
-        year(int): 찾는 년도로 없는 경우 2010~2019년도 전체로 지정
-        month(int): 찾는 월로 없는 경우 년도별 정규시즌의 모든 월로 지정 
+        year(int): 찾는 년도로 없는 경우 최근 년도로 지정
+        month(int): 찾는 월로 없는 경우 년도별 정규시즌의 모든 월로 지정
+        full(boolean): False가 기본 값으로 True 입력시 전체 데이터 반환 
     Returns:
-        입력받은 년도하고 월에 따라 추출된 타자 또는 투수 데이터 
+       output(pandas DF): 입력받은 년도하고 월에 따라 추출된 타자 또는 투수 데이터 
     '''
-    if  full == True:
+    '''
+    if theyear == None and themonth == None:
+            return data[(data.year == max(data.year))]
+        if theyear != None and themonth == None:
+            return data[(data.year==theyear)]
+        if theyear == None and themonth != None:
+            return data[(data.month==themonth)]
+        if theyear != None and themonth != None:
+            return data[(data.year==theyear)&(data.month==themonth)] 
+    '''
+    if full == True:
         return data
-    if the_year == None and the_month == None:
-        return data[(data.year==max(data.year))]
-    if the_year != None and the_month == None:
-        return data[(data.year==the_year)]
-    if the_year == None and the_month != None:
-        return data[(data.month==the_month)]
-    if the_year != None and the_month != None:
-        return data[(data.year==the_year)&(data.month==the_month)] 
+    else:
+        if theyear is None and themonth is None:
+            return data[data.year == max(data.year)]
+        if theyear is not None and themonth is None:
+            return data[data.year == theyear]
+        if theyear is None and themonth is not None:
+            return data[data.month == themonth]
+        if theyear is not None and themonth is not None:
+            return data[(data.year==theyear)&(data.month == themonth)]
 
 def get_player_data(name,position,year=None,month=None,full=False):
     '''
@@ -328,7 +340,7 @@ def arg_test(data,temp_dict):
     keylist=list(temp_dict.keys())
     selected_player_data = data[data.id == temp_dict['id']]
     if 'year' not in keylist and 'month' not in keylist:
-        player_df = selected_player_data[(selected_player_data.year==max(selected_player_data.year))
+        player_df = selected_player_data[(selected_player_data.year==max(selected_player_data.year))]
         return pd.DataFrame({"name":temp_dict['name'],"id":temp_dict["id"],temp_dict['record']:check_position(player_df,temp_dict['record'])},index=[0])
     if 'year' in keylist and 'month' in keylist:
         player_df = selected_player_data[(selected_player_data.year==temp_dict['year']) & (selected_player_data.month==temp_dict['month'])]
