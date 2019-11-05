@@ -304,13 +304,14 @@ def get_player_data(name,position,year=None,month=None,full=False):
         month(int): 찾는 월로 없는 경우 기본값은 None으로 년도별 정규시즌의 모든 월로 지정 
         full(boolean): True 면 모든 출전 기록 False가 기본 값
     Returns:
-        입력받은 년도하고 월에 따라 추출된 타자 또는 투수 데이터 
+        output(dict or pandas DF):입력받은 년도하고 월에 따라 추출된 타자 또는 투수 데이터
+                                단 동명이인 있는 선수일 경우 dict 형식으로 출력 
     '''
-    idlists =[i["ID"] for i in find_player_info(kwargs['name'])]
+    idlists =[i["ID"] for i in find_player_info(name)]
     if position =="타자":
-        data = df.batter
+        data = dt.batter
     elif position =="투수":
-        data = df.pitcher
+        data = dt.pitcher
     else:
         return "에러:찾는 선수가 타자인지 투수인지 입력해 주시기 바랍니다."
     if len(idlists) == 1:
@@ -319,8 +320,8 @@ def get_player_data(name,position,year=None,month=None,full=False):
     elif len(idlists) > 1:
         save_dict = {}
         for i in idlists:
-            data = data[data.id == i]
-            save_dict.update({i:check_date(data,year,month,full)})
+            playdata = data[data.id == i]
+            save_dict.update({i:check_date(playdata,year,month,full)})
         return save_dict
     else:
         return "에러:찾는 선수의 이름이 잘못되었거나 해당 날짜에 출전 기록이 없습니다."
