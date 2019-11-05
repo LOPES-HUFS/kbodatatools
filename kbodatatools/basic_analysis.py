@@ -260,7 +260,7 @@ def check_date(data,theyear=None,themonth=None,full=False):
     Args:
         data(pandas DF): 타자 또는 투수 데이터 
         year(int): 찾는 년도로 없는 경우 최근 년도로 지정
-        month(int): 찾는 월로 없는 경우 년도별 정규시즌의 모든 월로 지정
+        month(str): 입력은 06과 같은 스트링 타입 찾는 월로 없는 경우 년도별 정규시즌의 모든 월로 지정
         full(boolean): False가 기본 값으로 True 입력시 전체 데이터 반환 
     Returns:
        output(pandas DF): 입력받은 년도하고 월에 따라 추출된 타자 또는 투수 데이터 
@@ -301,7 +301,7 @@ def get_player_data(name,position,year=None,month=None,full=False):
         name(str): 찾는 선수의 이름 
         position(str): 찾는 선수의 보직으로 타자인지 투수인지를 입력 
         year(int): 찾는 년도로 없는 경우 기본값은 None으로 2010~2019년도 전체로 지정
-        month(int): 찾는 월로 없는 경우 기본값은 None으로 년도별 정규시즌의 모든 월로 지정 
+        month(str): 찾는 월로 입력 형태는 06과 같은 형태 입력이 없는 경우 기본값은 None으로 년도별 정규시즌의 모든 월로 지정 
         full(boolean): True 면 모든 출전 기록 False가 기본 값
     Returns:
         output(dict or pandas DF):입력받은 년도하고 월에 따라 추출된 타자 또는 투수 데이터
