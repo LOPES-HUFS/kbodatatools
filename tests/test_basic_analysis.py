@@ -24,9 +24,11 @@ def request_stat(name,birth,opt_num,date_year,date_month):
     Args:
         name(str): 선수의 이름
         birth(str): ex) 1982-05-11 같은 형식의 스트링
-        number(int): 1(연도별),4(상황별)
+        opt_num(int): 1(연도별),4(상황별)
+        date_year(int): 년도
+        date_month(str): 월
     Returns:
-
+            output(dict): 스탯티즈의 선수 기록 자료 
 
     '''
     if opt_num == 1:
@@ -65,6 +67,9 @@ def test_find_player_info():
     assert idlists == [75808,76100,97109,77211,74556,79535]
 
 @pytest.mark.ok
+'''
+최근 출전 데이터 출력 테스트
+'''
 def test_get_player_data_typeone():
     len_list = []
     for i in ["정근우","이병규"]:
@@ -88,6 +93,9 @@ def test_get_player_data_typeone():
 
 @pytest.mark.ok
 def test_get_player_data_typetwo():
+    '''
+    특정 날짜의 출전 데이터 출력 테스트
+    '''
     len_list = []
     for i in ["정근우","이병규"]:
         if type(get_player_data(i,"타자")) == dict:
@@ -110,5 +118,33 @@ def test_get_player_data_typetwo():
 
 
 @pytest.mark.ok
-def test_get_record():
-    pass
+def test_get_record_type1():
+    '''
+    최근 시즌 기록 출력확인 및 특정년도
+    대표적으로 타율이나 방어율을 통해 테스트 
+    '''
+    record_list = [get_record_data(name=i,record="타율").to_dict("series") for i in ["정근우","이병규"]]
+    record_list_p = [get_record_data(name=i,record="방어율").to_dict("series") for i in ["이용찬","허준혁"]]    
+    
+    assert request_stat("정근우","1982-10-02",1,2019,None)["타율"] in record_list[0]['타율'].values
+    assert request_stat("이병규","1983-10-09",1,2019,None)["타율"] in record_list[1]['타율'].values
+    assert request_stat("이병규","1974-10-25",1,2016,None)["타율"] in record_list[1]['타율'].values
+    assert request_stat("이용찬","1989-01-02",1,2019,None)['ERA'] in record_list_p[0]['방어율'].values
+    assert request_stat("허준혁","1985-12-15",1,2015,None)['ERA'] in record_list_p[1]['방어율'].values
+    assert request_stat("허준혁","1990-09-30",1,2018,None)['ERA'] in record_list_p[1]['방어율'].values
+
+@pytest.mark.ok
+def test_get_record_type2():
+    '''
+    특정년도의 월 기록 출력 테스트
+    대표적으로 타율이나 방어율을 통해 테스트 
+    '''
+    record_list = [get_record_data(name=i,record="타율",year=2015,month="05").to_dict("series") for i in ["정근우","이병규"]]
+    record_list_p = [get_record_data(name=i,record="방어율",,year=2014,month="05").to_dict("series") for i in ["이용찬","허준혁"]]    
+    
+    assert request_stat("정근우","1982-10-02",4,2015,"05")["타율"] in record_list[0]['타율'].values
+    assert request_stat("이병규","1983-10-09",4,2015,"05")["타율"] in record_list[1]['타율'].values
+    assert request_stat("이병규","1974-10-25",4,2015,"05")["타율"] in record_list[1]['타율'].values
+    assert request_stat("이용찬","1989-01-02",1,2014,"05")['ERA'] in record_list_p[0]['방어율'].values
+    assert request_stat("허준혁","1985-12-15",1,2014,"05")['ERA'] in record_list_p[1]['방어율'].values
+    assert request_stat("허준혁","1990-09-30",1,2014,"05")['ERA'] in record_list_p[1]['방어율'].values
