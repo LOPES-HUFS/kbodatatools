@@ -340,9 +340,11 @@ def arg_test(data,temp_dict):
     '''
     keylist=list(temp_dict.keys())
     selected_player_data = data[data.id == temp_dict['id']]
+    if len(selected_player_data) == 0:
+        return "출장 기록이 없습니다."
     if 'year' not in keylist and 'month' not in keylist:
         player_df = selected_player_data[(selected_player_data.year==max(selected_player_data.year))]
-        return pd.DataFrame({"name":temp_dict['name'],"id":temp_dict["id"],temp_dict['record']:check_position(player_df,temp_dict['record'])},index=[0])
+        return pd.DataFrame({"name":temp_dict['name'],"id":temp_dict["id"],temp_dict['record']:check_position(player_df,temp_dict['record']),"최근시즌":max(selected_player_data.year)},index=[0])
     if 'year' in keylist and 'month' in keylist:
         player_df = selected_player_data[(selected_player_data.year==temp_dict['year']) & (selected_player_data.month==temp_dict['month'])]
         return pd.DataFrame({"name":temp_dict['name'],"id":temp_dict["id"],temp_dict['record']:check_position(player_df,temp_dict['record']),"년도":temp_dict['year'],"월":temp_dict['month']},index=[0])
@@ -362,7 +364,7 @@ def get_record_data(**kwargs):
             name(str): 선수이름
             record(str): 타격 혹은 투구 기록
             year(int): 기본값은 None이지만 2010~2019년도 중 하나를 입력하면 해당 년도의 기록 볼 수 있음
-            month(int): 기본값은 None이지만 3~10 월 중 하나를 입력하면 해당 월의 기록 볼 수 있음
+            month(str): 기본값은 None이지만 3~10 월 중 하나를 입력하면 해당 월의 기록 볼 수 있음
             id(int): 기본값은 None이지만 특정 선수의 id 입력하면 해당 선수의 기록이 나옴 
     
     Returns:
