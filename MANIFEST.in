@@ -1,1 +1,2 @@
-include ./KBO_data_analysis/data/KBO_factor_list.csv ./KBO_data_analysis/data/KBO_gameid_full_season.csv ./KBO_data_analysis/data/KBO_player_info_full.csv ./KBO_data_analysis/data/renamed_player_list.csv ./KBO_data_analysis/data/patch_file/data_70820.csv ./KBO_data_analysis/data/patch_file/data_74556.csv ./KBO_data_analysis/data/patch_file/data_76100.csv ./KBO_data_analysis/data/patch_file/data_79535.csv ./KBO_data_analysis/data/patch_file/data_97109.csv ./KBO_data_analysis/data/patch_file/data_99137.csv README.md LICENSE Pipfile Pipfile.lock  
+include README.MD LICENSE Pipfile Pipfile.lock 
+recursive-include data/*.csv 

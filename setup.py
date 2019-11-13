@@ -26,6 +26,7 @@ setuptools.setup(
     url=URL,
     python_requires=">=3.6.0",
     packages=setuptools.find_packages(),
+    package_data={'': ['data/*.csv']},
     install_requires=REQUIRED,
     include_package_data=True,
     zip_safe=False,
