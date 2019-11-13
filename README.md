@@ -22,6 +22,18 @@ pipenv shell
 
 위의 명령어를 터미널이 입력하고 엔터를 치면, 앞 부분이 `(KBO_data_analysis)`과 같이 나오면 가상환경으로 들어간 것입니다. 여기서 `python`이라고 입력하시면 파이썬을 사용할 수 있게 됩니다. 지금 가상환경을 **python3.7**로 만들었기 때문에 앞에 같이 입력해도 파이썬 3.7이 작동하게 됩니다.
 
+### 패키지 인스톨
+
+```bach
+pip3 install kbodatatools
+```
+
+### 패키지 임포트
+
+```python
+import kbodatatools
+```
+
 ### 개별 게임 자료를 받아오는 방법
 
 ```python
@@ -35,20 +47,13 @@ single_game['away_pitcher']
 single_game['home_pitcher']
 ```
 
-### 전체(2010 ~ 2019년 8월까지) 게임 자료를 받아오는 방법
+### 전체(2010 ~ 2019년 10월까지) 게임 자료를 받아오는 방법
 
 위의 방법을 통해 가상환경이 활성화되면 가상환경에서 아래의 순서대로 파이썬 스크립트 파일을 실행하면 전체 게임 자료를 받아올 수 있습니다. 참고로 전체 자료를 다운 받는 과정에는 약 3시간 이상의 시간이 소요됩니다. 아래의 과정을 끝 마치면 sample 폴더에서 2010~2019년 8월까지의 스코어 보드와 타자와 투수 데이터, 기타 정보가 있는 json 파일과 타자, 투수 데이터 그리고 경기 정보에 대한 데이터가 csv 파일로 생성됩니다.
 
-```bash
-cd KBO_data_analysis
+```python
 
-python3 save_all_games.py
 
-python3 match_player_id.py
-
-python3 patch.py
-
-python3 make_game_info.py
 ```
 
 ### 분석 모듈 사용 방법
