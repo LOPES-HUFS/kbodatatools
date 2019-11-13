@@ -1,5 +1,7 @@
 import pandas as pd
 import ast 
+from requests_html import HTMLSession
+from bs4 import BeautifulSoup
 
 '''
 parsing_page 함수들

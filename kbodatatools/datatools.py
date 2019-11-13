@@ -3,7 +3,7 @@
 '''
 
 import pandas
-from . import api
+from .api import get_game, get_data, modify_data
 from .make_id import match_id 
 import json
 
@@ -22,14 +22,14 @@ def stack_game_data(data):
         index = str(data.date[i])+data.gameid[i]
         print(i/len(data))
         try:
-            temp_data = api.get_data(api.get_game(date=data.date[i], home_team= data.iloc[i].gameid[2:4], away_team=data.iloc[i].gameid[0:2],double=data.iloc[i].gameid[4]))
+            temp_data = get_data(get_game(date=data.date[i], home_team= data.iloc[i].gameid[2:4], away_team=data.iloc[i].gameid[0:2],double=data.iloc[i].gameid[4]))
         except:
-            temp_data = api.get_data(api.get_game(date=data.date[i], home_team= data.iloc[i].gameid[2:4], away_team=data.iloc[i].gameid[0:2],double=data.iloc[i].gameid[4]))
+            temp_data = get_data(get_game(date=data.date[i], home_team= data.iloc[i].gameid[2:4], away_team=data.iloc[i].gameid[0:2],double=data.iloc[i].gameid[4]))
         finally: 
-            temp_data = api.modify_data(temp_data)
+            temp_data = modify_data(temp_data)
             full_data.update({index:temp_data})
-
-def write_json(data,filename):
+    return full_data
+def write_json(data):
     '''
     딕트 데이터를 json 파일로 쓰는 함수 
 
@@ -38,7 +38,7 @@ def write_json(data,filename):
     Returns:
         json 파일 
     '''
-    temp_file_name = f"data/sample/{filename}.json"
+    temp_file_name = "data/sample/all_data.json"
     with open(temp_file_name, 'w') as outfile:  
         json.dump(data, outfile)
 
