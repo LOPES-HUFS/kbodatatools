@@ -1,8 +1,7 @@
 '''
 타자 데이터와 투수 데이터 파일을 읽어와 원하는 선수를 찾고 선수의 기록을 확인하는 함수들 
 '''
-
-import api.bring_datas as dt
+from . import bring_datas as dt
 import pandas as pd
 
 # 아래의 함수에서 선수의 id를 확인하고 원하는 선수를 선택할 수 있다. 

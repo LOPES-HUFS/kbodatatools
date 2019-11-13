@@ -4,8 +4,8 @@
 
 import pandas as pd
 
-batter_data=pd.read_csv("./data/sample/KBO_batter_data_full.csv")
-pitcher_data=pd.read_csv("./data/sample/KBO_pitcher_data_full.csv")
+batter_data=pd.read_csv("data/sample/KBO_batter_data_full.csv")
+pitcher_data=pd.read_csv("data/sample/KBO_pitcher_data_full.csv")
 
 batter_data.id[(batter_data["id"]==0) & (batter_data["선수명"] == "이승호")] = 70820
 batter_data.id[(batter_data["id"]==0) & (batter_data["선수명"] == "허준혁")] = 74556
@@ -15,8 +15,8 @@ batter_data['date'] = ""
 for i in batter_data.index[(batter_data["id"]==0) & (batter_data["선수명"] == "이병규")]:
     batter_data.date.loc[i] = str(batter_data.year.loc[i])+"-"+ batter_data.dateindex.loc[i][4:6]+"-"+batter_data.dateindex.loc[i][6:8]
 
-data_97109 = pd.read_csv("./data/patch_file/data_97109.csv")
-data_76100 = pd.read_csv("./data/patch_file/data_76100.csv")
+data_97109 = pd.read_csv("data/patch_data_97109.csv")
+data_76100 = pd.read_csv("data/patch_data_76100.csv")
 
 date_76100=[i for i in list(batter_data.date[(batter_data["선수명"] == "이병규")& (batter_data.id==0)]) if i not in list(data_97109.date)]
 date_97109=[i for i in list(batter_data.date[(batter_data["선수명"] == "이병규")& (batter_data.id==0)]) if i not in list(data_76100.date)]
@@ -61,7 +61,7 @@ for i in data_76100_duplicated.date:
 
 batter_data_full = batter_data[["dateindex","year","선수명","id","팀","포지션","1","2","3","4","5","6","7","8","9","10","11","12","타수","안타","타율","타점","득점"]]
 
-batter_data_full.to_csv("./data/sample/KBO_batter_data_full.csv",index=False)
+batter_data_full.to_csv("data/sample/KBO_batter_data_full.csv",index=False)
 
 # 투수 id 패치 - 이승호, 허준혁 
 
@@ -70,8 +70,8 @@ pitcher_data['date'] = ""
 for i in pitcher_data.index[(pitcher_data["id"]==0) & (pitcher_data["선수명"] == "이승호")]:
     pitcher_data.date.loc[i] = str(pitcher_data.year.loc[i])+"-"+ pitcher_data.dateindex.loc[i][4:6]+"-"+pitcher_data.dateindex.loc[i][6:8]
 
-data_70820 = pd.read_csv("./data/patch_file/data_70820.csv")
-data_99137 = pd.read_csv("./data/patch_file/data_99137.csv")
+data_70820 = pd.read_csv("data/patch_data_70820.csv")
+data_99137 = pd.read_csv("data/patch_data_99137.csv")
 
 date_70820=[i for i in list(pitcher_data.date[(pitcher_data["선수명"] == "이승호")& (pitcher_data.id==0)]) if i not in list(data_99137.date)]
 date_99137=[i for i in list(pitcher_data.date[(pitcher_data["선수명"] == "이승호")& (pitcher_data.id==0)]) if i not in list(data_70820.date)]
@@ -121,8 +121,8 @@ for i in data_70820_duplicated.date:
 for i in pitcher_data.index[(pitcher_data["id"]==0) & (pitcher_data["선수명"] == "허준혁")]:
     pitcher_data.date.loc[i] = str(pitcher_data.year.loc[i])+"-"+ pitcher_data.dateindex.loc[i][4:6]+"-"+pitcher_data.dateindex.loc[i][6:8]
 
-data_74556 = pd.read_csv("./data/patch_file/data_74556.csv")
-data_79535 = pd.read_csv("./data/patch_file/data_79535.csv")
+data_74556 = pd.read_csv("data/patch_data_74556.csv")
+data_79535 = pd.read_csv("data/patch_data_79535.csv")
 
 date_74556 = [i for i in list(pitcher_data.date[(pitcher_data["선수명"] == "허준혁")& (pitcher_data.id==0)]) if i not in list(data_79535.date)]
 date_79535 = [i for i in list(pitcher_data.date[(pitcher_data["선수명"] == "허준혁")& (pitcher_data.id==0)]) if i not in list(data_74556.date)]
@@ -143,4 +143,4 @@ for i in duplicate_date:
 for i in data_74556_duplicated.date:
     pitcher_data = pitcher_compare_record(data_74556_duplicated,"허준혁",i,74556,79535)
 
-pitcher_data.to_csv("./data/sample/KBO_pitcher_data_full.csv",index=False)
+pitcher_data.to_csv("data/sample/KBO_pitcher_data_full.csv",index=False)

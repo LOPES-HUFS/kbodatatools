@@ -3,7 +3,8 @@
 '''
 
 import pandas
-import api 
+from . import api
+from .make_id import match_id 
 import json
 
 def stack_game_data(data):
@@ -28,7 +29,7 @@ def stack_game_data(data):
             temp_data = api.modify_data(temp_data)
             full_data.update({index:temp_data})
 
-def write_json(data):
+def write_json(data,filename):
     '''
     딕트 데이터를 json 파일로 쓰는 함수 
 
@@ -37,7 +38,7 @@ def write_json(data):
     Returns:
         json 파일 
     '''
-    temp_file_name = "./data/sample/all_data.json"
+    temp_file_name = f"data/sample/{filename}.json"
     with open(temp_file_name, 'w') as outfile:  
         json.dump(data, outfile)
 
@@ -78,7 +79,7 @@ def make_player_id(data):
     player_info = tempdata[["선수명","팀","year"]].drop_duplicates()
     player_info.index = range(0,len(player_info))
     for i in range(0,len(player_info)):
-        tempdata = api.make_id.match_id(tempdata,player_info.선수명[i],player_info.year[i],player_info.팀[i])
+        tempdata = match_id(tempdata,player_info.선수명[i],player_info.year[i],player_info.팀[i])
         
         if player_info.선수명[i] == "페르난데":
             tempdata['선수명'][tempdata['선수명']=="페르난데"] = "페르난데스"
