@@ -55,11 +55,11 @@ def data2dataframe(data:dict,datatype:str):
     '''
     temp = pd.DataFrame()
 
-    for i in range(0,len(data['fulldata'].keys())):
-        away = pd.DataFrame(data['fulldata'][list(data['fulldata'].keys())[i]][f'away_{datatype}'])
-        home = pd.DataFrame(data['fulldata'][list(data['fulldata'].keys())[i]][f'home_{datatype}'])
-        home['dateindex'] = list(data['fulldata'].keys())[i]
-        away['dateindex'] = list(data['fulldata'].keys())[i]
+    for i in range(0,len(data.keys())):
+        away = pd.DataFrame(data[list(data.keys())[i]][f'away_{datatype}'])
+        home = pd.DataFrame(data[list(data.keys())[i]][f'home_{datatype}'])
+        home['dateindex'] = list(data.keys())[i]
+        away['dateindex'] = list(data.keys())[i]
         temp = temp.append(away.append(home))
 
     temp = temp.fillna(0)
