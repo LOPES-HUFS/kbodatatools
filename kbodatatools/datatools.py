@@ -2,8 +2,8 @@
 함수들 몰아서 정리 파일 단순화시키기 
 '''
 
-import pandas
-from .api import get_game, get_data, modify_data
+import pandas as pd
+from .api import (get_game, get_data, modify_data)
 from .make_id import match_id 
 import json
 
