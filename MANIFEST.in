@@ -1,2 +1,2 @@
 include README.MD LICENSE Pipfile Pipfile.lock 
-recursive-include data/*.csv 
+recursive-include data *.csv 
