@@ -3,13 +3,10 @@
 '''
 
 import pandas as pd
-import pkg_resources
 
-
-stream = resource_stream("kbodatatools","/data/KBO_gameid_full_season.csv")
-player_id_list = pd.read_csv(stream)
-
-rename_player = pd.read_csv("data/renamed_player_list.csv")
+def read_idlist():
+    idlist = pd.read_csv("data/KBO_gameid_full_season.csv")
+    return idlist
 
 def get_id(name):
     '''
@@ -20,6 +17,7 @@ def get_id(name):
     Returns:
         output(list): 입력된 선수 이름의 모든 선수 id (동명이인 포함)
     '''
+    player_id_list = read_idlist()
     return list(player_id_list.ID[player_id_list['선수명']==name])
 
 def find_id(name,year,team):
@@ -36,6 +34,7 @@ def find_id(name,year,team):
     Returns:
         output(list): 입력된 선수 이름과 연도 팀으로 찾은 선수 id 
     '''
+    player_id_list = read_idlist()
     temp = player_id_list[player_id_list['선수명']==name]
     return [temp.ID[temp["season_"+year]==i].values for i in list(temp["season_"+year]) if team in i]
 
@@ -85,6 +84,8 @@ def check_rename(name):
     Returns:
         output(str): 만약 개명한 선수라면 선수의 개명한 이름이 나오고 아니라면 "not_rename_player" 문구가 리턴
     '''
+
+    rename_player = pd.read_csv("data/renamed_player_list.csv")
     rename_tmp=rename_player.where(name == rename_player.before_name).dropna()
     if len(rename_tmp) !=0:
         return rename_tmp["rename"].values[0]
