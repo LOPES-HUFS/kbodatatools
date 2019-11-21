@@ -3,8 +3,11 @@
 '''
 
 import pandas as pd
+import pkg_resources
 
-player_id_list = pd.read_csv("data/KBO_player_info_full.csv")
+
+stream = resource_stream("kbodatatools","/data/KBO_gameid_full_season.csv")
+player_id_list = pd.read_csv(stream)
 
 rename_player = pd.read_csv("data/renamed_player_list.csv")
 
