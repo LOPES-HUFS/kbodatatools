@@ -4,7 +4,7 @@ import setuptools
 
 NAME = "kbodatatools"
 DESCRIPTION = "KBO data wrangling & analysis tools"
-URL = "https://github.com/LOPES-HUFS/KBO_data_analysis"
+URL = "https://github.com/LOPES-HUFS/kbodatatools"
 EMAIL = "sunsick_choo@naver.com"
 AUTHOR = "Sunsick Choo"
 VERSION = "0.0.1"
