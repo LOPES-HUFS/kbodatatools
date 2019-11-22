@@ -131,6 +131,7 @@ def make_player_id(data):
     '''
     tempdata = data.copy()
     tempdata["year"] = [i[0:4] for i in data.dateindex]
+    tempdata["month"] = [i[4:6] for i in data.dateindex]
     tempdata["id"] = ""
     player_info = tempdata[["선수명","팀","year"]].drop_duplicates()
     player_info.index = range(0,len(player_info))
