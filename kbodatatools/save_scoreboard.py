@@ -60,10 +60,10 @@ row_des = {
     '10': tb.IntCol(pos=13),
     '11': tb.IntCol(pos=14),
     '12': tb.IntCol(pos=15),
-    'R': tb.IntCol(pos=15),
-    'H': tb.IntCol(pos=15),
-    'E': tb.IntCol(pos=15),
-    'B': tb.IntCol(pos=15)
+    'R': tb.IntCol(pos=16),
+    'H': tb.IntCol(pos=17),
+    'E': tb.IntCol(pos=18),
+    'B': tb.IntCol(pos=19)
 }
 
 filters = tb.Filters(complevel=0)
