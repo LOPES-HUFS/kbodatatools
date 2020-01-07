@@ -289,16 +289,7 @@ def check_date(data,theyear=None,themonth=None,full=False):
     Returns:
        output(pandas DF): 입력받은 년도하고 월에 따라 추출된 타자 또는 투수 데이터 
     '''
-    '''
-    if theyear == None and themonth == None:
-            return data[(data.year == max(data.year))]
-        if theyear != None and themonth == None:
-            return data[(data.year==theyear)]
-        if theyear == None and themonth != None:
-            return data[(data.month==themonth)]
-        if theyear != None and themonth != None:
-            return data[(data.year==theyear)&(data.month==themonth)] 
-    '''
+
     if full == True:
         return data
     else:
