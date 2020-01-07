@@ -3,11 +3,29 @@
 '''
 
 import pandas as pd
+import tables as tb 
+import os 
+
+def check_rawdata():
+    '''
+    데이터 다운 코드 실행 여부 검사하는 함수 
+    '''
+    if 'KBO_batter_data_full.csv' and 'KBO_pitcher_data_full.csv' in os.listdir("./data/sample"):
+        batterdata = pd.read_csv("./data/sample/KBO_batter_data_full.csv")
+        pitcherdata = pd.read_csv("./data/sample/KBO_pitcher_data_full.csv")
+        return {"batter":batterdata,"pitcher":pitcherdata}
+    else:
+        fulldata = tb.open_file("./data/KBO_full_data.h5","r")
+        batterdata = pd.DataFrame(fulldata.get_node('/')['batter_data'][:])
+        pitcherdata = pd.DataFrame(fulldata.get_node('/')['pitcherdata'][:])
+        return {"batter":batterdata,"pitcher":pitcherdata}
 
 
-def read_player_data():
-    player_data = pd.read_csv("data/KBO_player_info_full.csv")
-    return player_data
+def get_data():
+    base_data = check_rawdata
+    player_data = pd.read_csv("./data/KBO_player_info_full.csv")
+    base_data.update({"player_data":player_data})
+    return base_data
 
 # 아래의 함수에서 선수의 id를 확인하고 원하는 선수를 선택할 수 있다. 
 def find_player_info(name):
@@ -21,7 +39,8 @@ def find_player_info(name):
         idlist(list): 선수의 id와 연도별 팀 정보가 담긴 리스트로 리스트 안의 값은 딕트로 구성
     '''
     id_list=[]
-    player_data = read_player_data
+    data = get_data()
+    player_data = data['player_data']
     data = player_data[player_data['선수명']==name][player_data.columns[0:12]]
     data.index = range(0,len(data))
     for j in range(0,len(data)):
@@ -372,7 +391,8 @@ def get_record_data(**kwargs):
         output(pandas DF): 선수의 id와 기록이 있는 데이터 프레임 혹은 에러메세지
 
     '''
-    player_data = read_player_data()
+    data = get_data()
+    player_data = data['player_data']
     if "name" not in kwargs:
         return "에러:선수 이름이 누락되었습니다."
     if "record" not in kwargs:
