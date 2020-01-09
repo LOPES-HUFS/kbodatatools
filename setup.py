@@ -26,7 +26,7 @@ setuptools.setup(
     url=URL,
     python_requires=">=3.6.0",
     packages = ['kbodatatools'],
-    package_data={'kbodatatools': ['data/*']},
+    package_data={'': ['data/*']},
     package_dir={'kbodatatools': 'kbodatatools'},
     install_requires=REQUIRED,
     include_package_data=True,
