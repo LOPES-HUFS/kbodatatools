@@ -1,3 +1,2 @@
 include README.MD LICENSE Pipfile Pipfile.lock 
-recursive-include kbodatatools/data *.csv 
-recursive-include kbodatatools/data *.h5
+recursive-include data *.csv *.h5
