@@ -10,12 +10,12 @@ def check_rawdata():
     '''
     데이터 다운 코드 실행 여부 검사하는 함수 
     '''
-    if 'KBO_batter_data_full.csv' and 'KBO_pitcher_data_full.csv' in os.listdir("../data"):
-        batterdata = pd.read_csv("../data/KBO_batter_data_full.csv")
-        pitcherdata = pd.read_csv("../data/KBO_pitcher_data_full.csv")
+    if 'KBO_batter_data_full.csv' and 'KBO_pitcher_data_full.csv' in os.listdir("./kbodatatools"):
+        batterdata = pd.read_csv("./kbodatatools/data/KBO_batter_data_full.csv")
+        pitcherdata = pd.read_csv("./kbodatatools/data/KBO_pitcher_data_full.csv")
         return {"batter":batterdata,"pitcher":pitcherdata}
     else:
-        fulldata = tb.open_file("../data/KBO_full_data.h5","r")
+        fulldata = tb.open_file("./kbodatatools/data/KBO_full_data.h5","r")
         batterdata = pd.DataFrame(fulldata.get_node('/')['batter_data'][:])
         pitcherdata = pd.DataFrame(fulldata.get_node('/')['pitcherdata'][:])
         return {"batter":batterdata,"pitcher":pitcherdata}
@@ -23,7 +23,7 @@ def check_rawdata():
 
 def get_data():
     base_data = check_rawdata
-    player_data = pd.read_csv("../data/KBO_player_info_full.csv")
+    player_data = pd.read_csv("./kbodatatools/data/KBO_player_info_full.csv")
     base_data.update({"player_data":player_data})
     return base_data
 
