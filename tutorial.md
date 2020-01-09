@@ -13,7 +13,7 @@ import kbodatatools as kd
 '''python
 import pandas as pd
 
-full_season = pd.read_csv("data/KBO_gameid_full_season.csv")
+full_season = pd.read_csv("./data/KBO_gameid_full_season.csv")
 kd.datatools.write_json(kd.datatools.stack_game_data(full_season))
 '''
 
