@@ -10,9 +10,9 @@ def check_rawdata():
     '''
     데이터 다운 코드 실행 여부 검사하는 함수 
     '''
-    if 'KBO_batter_data_full.csv' and 'KBO_pitcher_data_full.csv' in os.listdir("./data/sample"):
-        batterdata = pd.read_csv("./data/sample/KBO_batter_data_full.csv")
-        pitcherdata = pd.read_csv("./data/sample/KBO_pitcher_data_full.csv")
+    if 'KBO_batter_data_full.csv' and 'KBO_pitcher_data_full.csv' in os.listdir("./data"):
+        batterdata = pd.read_csv("./data/KBO_batter_data_full.csv")
+        pitcherdata = pd.read_csv("./data/KBO_pitcher_data_full.csv")
         return {"batter":batterdata,"pitcher":pitcherdata}
     else:
         fulldata = tb.open_file("./data/KBO_full_data.h5","r")

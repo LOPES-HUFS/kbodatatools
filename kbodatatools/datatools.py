@@ -18,7 +18,7 @@ def sampling_date(data,year,month):
     Returns:
         output(pandas DF): 조건에 따라 특정 년도와 월의 게임 아이디 데이터 
     '''
-    temp = data.copy
+    temp = data.copy()
     if year is None:
         return temp
     if year is not None and month is None:
@@ -59,6 +59,16 @@ def stack_game_data(data,year=None,month=None):
                 return "network_error:please retry function"
     return full_data
 
+def read_gameid():
+    '''
+    gameid를 읽어오는 함수 
+ 
+    Returns:
+        pandas df로 된 gameid 파일 
+    '''
+    gameid = pd.read_csv("./data/KBO_gameid_full_season.csv")
+    return gameid
+
 def write_json(data,name=None):
     '''
     딕트 데이터를 json 파일로 쓰는 함수 
@@ -70,9 +80,9 @@ def write_json(data,name=None):
         json 파일 
     '''
     if name is None:
-        temp_file_name = "data/sample/all_data.json"
+        temp_file_name = "./data/all_data.json"
     else:
-        temp_file_name = f"data/sample/{name}.json"
+        temp_file_name = f"./data/{name}.json"
     with open(temp_file_name, 'w') as outfile:  
         json.dump(data, outfile)
 
@@ -85,7 +95,7 @@ def read_json(name):
     Returns:
         json 파일 
     '''
-    with open(f"data/sample/{name}", 'r') as outfile:
+    with open(f"./data/{name}.json", 'r') as outfile:
         playerdata = json.load(outfile)
     return playerdata
 
@@ -119,7 +129,7 @@ def save_csv(data,datatype):
         datatype(str): 타자 기록인지 투수 기록인지를 확인하는 인자로 
         타자면 batter 투수면 pitcher를 입력해 저장될 csv의 이름으로 사용한다.
     '''
-    data.to_csv(f"./data/sample/KBO_{datatype}_data_full.csv",index=False)
+    data.to_csv(f"./data/KBO_{datatype}_data_full.csv",index=False)
 
 def make_player_id(data):
     '''

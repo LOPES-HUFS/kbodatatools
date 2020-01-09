@@ -193,7 +193,7 @@ def batter_clean(data,section):
 
     '''
     temp_b=pd.DataFrame(data[section])
-    factorlist = pd.read_csv("data/KBO_factor_list.csv")
+    factorlist = pd.read_csv("./data/KBO_factor_list.csv")
     for i in factorlist.factor_list:
         temp_b=temp_b.replace(i,factorlist.code[factorlist.factor_list==i].tolist()[0])
         
@@ -283,7 +283,7 @@ def get_data(soup):
     가져온 개별 게임들을 스코어보드 ,타자, 투수 별로 정리 합니다.
     단순하게 사용하는 방법은 다음 링클를 참고합니다.
 
-    https://github.com/LOPES-HUFS/KBO_data_analysis/blob/master/README.md#개별-게임-자료를-받아오는-방법
+    https://github.com/LOPES-HUFS/kbodatatools/blob/master/README.md
 
     Args:
         soup (soup): get_game()으로 받아온 한 경기 자료
