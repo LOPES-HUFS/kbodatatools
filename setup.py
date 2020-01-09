@@ -27,7 +27,7 @@ setuptools.setup(
     python_requires=">=3.6.0",
     packages=setuptools.find_packages(),
     package_data={'': ['data/*.csv','data/*.h5']},
-    package_dir={'KBO_data_analysis': 'kbodatatools'},
+    package_dir={'kbodatatools': 'kbodatatools'},
     install_requires=REQUIRED,
     include_package_data=True,
     zip_safe=False,
